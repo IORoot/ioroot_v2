@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 
 	// Navigation menu items
@@ -11,17 +11,21 @@
 		null // Empty slot
 	];
 
-	// Inventory items with images
+	// Inventory items with images and URLs
 	const inventory = [
-		{ id: 1, image: '/images/inventory/gun.png', name: 'Gun' },
-		{ id: 2, image: '/images/inventory/shoe.png', name: 'Shoe' },
-		{ id: 3, image: '/images/inventory/laptop.png', name: 'Laptop' },
-		{ id: 4, image: '/images/inventory/book.png', name: 'Book' },
-		{ id: 5, image: '/images/inventory/axe.png', name: 'Axe' },
-		{ id: 6, image: '/images/inventory/keyboard.png', name: 'Keyboard' },
-		{ id: 7, image: '/images/inventory/phone.png', name: 'Phone' },
-		{ id: 8, image: '/images/inventory/flowers.png', name: 'Flowers' }
+		{ id: 1, image: '/images/inventory/gun.png', name: 'Gun', url: 'https://example.com/gun' },
+		{ id: 2, image: '/images/inventory/shoe.png', name: 'Shoe', url: 'https://example.com/shoe' },
+		{ id: 3, image: '/images/inventory/laptop.png', name: 'Laptop', url: 'https://example.com/laptop' },
+		{ id: 4, image: '/images/inventory/book.png', name: 'Book', url: 'https://example.com/book' },
+		{ id: 5, image: '/images/inventory/axe.png', name: 'Axe', url: 'https://example.com/axe' },
+		{ id: 6, image: '/images/inventory/keyboard.png', name: 'Keyboard', url: 'https://example.com/keyboard' },
+		{ id: 7, image: '/images/inventory/phone.png', name: 'Phone', url: 'https://example.com/phone' },
+		{ id: 8, image: '/images/inventory/flowers.png', name: 'Flowers', url: 'https://example.com/flowers' }
 	];
+
+	function handleInventoryClick(url: string) {
+		window.open(url, '_blank');
+	}
 </script>
 
 <div class="scumm-menu">
@@ -42,14 +46,18 @@
 		<!-- Inventory Grid (Right Half) -->
 		<div class="inventory-grid">
 			{#each inventory as item}
-				<div class="inventory-slot">
+				<button 
+					class="inventory-slot"
+					on:click={() => handleInventoryClick(item.url)}
+					title={`Click to visit ${item.name}`}
+				>
 					<img 
 						src={item.image} 
 						alt={item.name}
 						title={item.name}
 						class="inventory-image"
 					/>
-				</div>
+				</button>
 			{/each}
 		</div>
 	</div>
