@@ -123,13 +123,18 @@ body {
 	position: absolute;
 	width: 100%;
 	height: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 	pointer-events: none;
+	z-index: 15;
 }
 
 .interactive-object {
 	position: absolute;
 	cursor: pointer;
 	transition: all 0.2s ease;
+	z-index: 8;
 }
 
 .interactive-object:hover {

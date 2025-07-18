@@ -21,32 +21,32 @@ export const characterAnimations: Record<string, SpriteAnimation> = {
 	idle: {
 		id: 'idle',
 		frames: 1, // Only one frame for idle
-		frameWidth: 640,
-		frameHeight: 640,
+		frameWidth: 960,
+		frameHeight: 960,
 		fps: 1,
 		loop: false // Don't loop idle animation
 	},
 	walk: {
 		id: 'walk',
 		frames: 8,
-		frameWidth: 640,
-		frameHeight: 640,
+		frameWidth: 960,
+		frameHeight: 960,
 		fps: 12,
 		loop: true
 	},
 	walkLeft: {
 		id: 'walkLeft',
 		frames: 8,
-		frameWidth: 640,
-		frameHeight: 640,
+		frameWidth: 960,
+		frameHeight: 960,
 		fps: 12,
 		loop: true
 	},
 	walkRight: {
 		id: 'walkRight',
 		frames: 8,
-		frameWidth: 640,
-		frameHeight: 640,
+		frameWidth: 960,
+		frameHeight: 960,
 		fps: 12,
 		loop: true
 	}

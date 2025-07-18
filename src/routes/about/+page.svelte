@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { InteractiveObject } from '$lib/types';
+	import AnimatedCharacter from '$lib/components/AnimatedCharacter.svelte';
 
 	let characterX = 180;
 	let characterY = 200;
+	let targetX = 180;
+	let targetY = 200;
 	let isMoving = false;
 	let gameScene: HTMLElement;
 
@@ -63,15 +66,14 @@
 	function handleSceneClick(event: MouseEvent) {
 		if (isMoving) return;
 
-		const rect = event.currentTarget as HTMLElement;
-		const rectBounds = rect.getBoundingClientRect();
-		const x = event.clientX - rectBounds.left;
-		const y = event.clientY - rectBounds.top;
+		const rect = gameScene.getBoundingClientRect();
+		const clickX = event.clientX - rect.left;
+		const clickY = event.clientY - rect.top;
 
 		const clickedObject = interactiveObjects.find(obj => {
 			const pos = getPixelPosition(obj.x, obj.y, obj.width, obj.height);
-			return x >= pos.x && x <= pos.x + pos.width &&
-				   y >= pos.y && y <= pos.y + pos.height;
+			return clickX >= pos.x && clickX <= pos.x + pos.width &&
+				   clickY >= pos.y && clickY <= pos.y + pos.height;
 		});
 
 		if (clickedObject) {
@@ -79,7 +81,21 @@
 			return;
 		}
 
-		moveCharacter(x, y);
+		// Calculate character position so bottom center goes to clicked location
+		let characterWidth = 960;
+		let characterHeight = 960;
+		
+		// Responsive sizing based on screen width
+		if (rect.width <= 768) {
+			characterWidth = 480;
+			characterHeight = 480;
+		}
+		
+		const characterTargetX = clickX - (characterWidth / 2); // Center horizontally
+		const characterTargetY = clickY - characterHeight + 200; // Bottom vertically, plus 200px down
+
+		// Move character to calculated position
+		moveCharacter(characterTargetX, characterTargetY);
 	}
 
 	// Handle keyboard navigation
@@ -97,13 +113,15 @@
 		}
 	}
 
-	function moveCharacter(targetX: number, targetY: number) {
+	function moveCharacter(newTargetX: number, newTargetY: number) {
 		isMoving = true;
+		targetX = newTargetX;
+		targetY = newTargetY;
 		
 		const startX = characterX;
 		const startY = characterY;
 		const distance = Math.sqrt((targetX - startX) ** 2 + (targetY - startY) ** 2);
-		const duration = Math.min(distance / 2, 1000);
+		const duration = Math.min(distance / 0.5, 3000); // Slower movement: 0.5 pixels per ms, max 3 seconds
 		
 		const startTime = performance.now();
 		
@@ -135,35 +153,38 @@
 		role="button"
 		tabindex="0"
 		aria-label="About scene - click to move character or interact with links"
-		style="background: linear-gradient(to bottom, #27AE60 0%, #229954 100%);"
 	>
-		<!-- Interactive Objects -->
-		{#each interactiveObjects as object}
-			{@const pos = getPixelPosition(object.x, object.y, object.width, object.height)}
-			<div 
-				class="interactive-object"
-				style="left: {pos.x}px; top: {pos.y}px; width: {pos.width}px; height: {pos.height}px;"
-				title={object.label}
-				data-object-id={object.id}
-				role="button"
-				tabindex="0"
-				aria-label="Click to visit {object.label}"
-			>
-				<div class="object-label bg-green-500 bg-opacity-30 border-2 border-green-400 text-white text-sm">
-					{object.label}
+		<!-- Background Layer -->
+		<div class="background-layer" style="background-image: url('/images/backgrounds/about-bg.png')">
+			<!-- Interactive Objects -->
+			{#each interactiveObjects as object}
+				{@const pos = getPixelPosition(object.x, object.y, object.width, object.height)}
+				<div 
+					class="interactive-object"
+					style="left: {pos.x}px; top: {pos.y}px; width: {pos.width}px; height: {pos.height}px;"
+					title={object.label}
+					data-object-id={object.id}
+					role="button"
+					tabindex="0"
+					aria-label="Click to visit {object.label}"
+				>
+					<div class="object-label bg-green-500 bg-opacity-30 border-2 border-green-400 text-white text-sm">
+						{object.label}
+					</div>
 				</div>
-			</div>
-		{/each}
+			{/each}
 
-		<!-- Character -->
-		<div 
-			class="character"
-			style="left: {characterX}px; top: {characterY}px;"
-			aria-label="Player character"
-		>
-			<div class="w-full h-full bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
-				ME
-			</div>
+			<!-- Animated Character -->
+			<AnimatedCharacter 
+				x={characterX}
+				y={characterY}
+				isMoving={isMoving}
+				targetX={targetX}
+				targetY={targetY}
+			/>
+
+			<!-- Foreground Layer -->
+			<div class="foreground-layer" style="background-image: url('/images/backgrounds/about-fg.png')"></div>
 		</div>
 	</div>
 

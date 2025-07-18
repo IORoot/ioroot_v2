@@ -86,17 +86,17 @@
 
 		// Calculate character position so bottom center goes to clicked location
 		// Character size varies by screen size, so we need to calculate dynamically
-		let characterWidth = 640;
-		let characterHeight = 640;
+		let characterWidth = 960;
+		let characterHeight = 960;
 		
 		// Responsive sizing based on screen width
 		if (rect.width <= 768) {
-			characterWidth = 320;
-			characterHeight = 320;
+			characterWidth = 480;
+			characterHeight = 480;
 		}
 		
 		const characterTargetX = clickX - (characterWidth / 2); // Center horizontally
-		const characterTargetY = clickY - characterHeight; // Bottom vertically
+		const characterTargetY = clickY - characterHeight + 200; // Bottom vertically, plus 200px down
 
 		// Move character to calculated position
 		moveCharacter(characterTargetX, characterTargetY);
@@ -207,6 +207,9 @@
 				targetX={targetX}
 				targetY={targetY}
 			/>
+
+			<!-- Foreground Layer -->
+			<div class="foreground-layer" style="background-image: url('/images/backgrounds/home-fg.png')"></div>
 		</div>
 	</div>
 

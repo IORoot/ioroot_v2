@@ -108,9 +108,9 @@
 <style>
 	.animated-character {
 		position: absolute;
-		width: 640px;
-		height: 640px;
-		z-index: 10;
+		width: 960px;
+		height: 960px;
+		z-index: 5;
 		transition: none; /* Disable CSS transitions for sprite animations */
 		background-color: transparent;
 	}
@@ -141,7 +141,7 @@
 		justify-content: center;
 		color: white;
 		font-weight: bold;
-		font-size: 120px;
+		font-size: 180px;
 		opacity: 0; /* Hide fallback when sprite is loaded */
 	}
 
@@ -154,21 +154,21 @@
 	/* Responsive sizing */
 	@media (max-width: 768px) {
 		.animated-character {
-			width: 320px;
-			height: 320px;
+			width: 480px;
+			height: 480px;
 		}
 		.character-fallback {
-			font-size: 60px;
+			font-size: 90px;
 		}
 	}
 
 	@media (min-width: 1025px) {
 		.animated-character {
-			width: 640px;
-			height: 640px;
+			width: 960px;
+			height: 960px;
 		}
 		.character-fallback {
-			font-size: 120px;
+			font-size: 180px;
 		}
 	}
 </style> 

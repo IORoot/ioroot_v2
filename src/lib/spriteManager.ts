@@ -42,15 +42,15 @@ export const defaultSprites: Sprite[] = [
 	{
 		id: 'character',
 		url: '/images/sprites/character.png',
-		width: 640,
-		height: 640,
+		width: 960,
+		height: 960,
 		animationFrames: 4
 	},
 	{
 		id: 'characterSprite',
 		url: '/images/sprites/character-sprite.png',
-		width: 5120, // 8 frames * 640px width
-		height: 640,
+		width: 7680, // 8 frames * 960px width
+		height: 960,
 		animationFrames: 8
 	},
 	{

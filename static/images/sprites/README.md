@@ -7,10 +7,10 @@ This is your main character sprite sheet for walking animations.
 
 **Requirements:**
 - **Format**: PNG with transparency
-- **Frame Size**: 640x640 pixels per frame
+- **Frame Size**: 960x960 pixels per frame
 - **Layout**: Horizontal sprite sheet (all frames in one row)
-- **Total Width**: 5120px (8 frames × 640px)
-- **Total Height**: 640px
+- **Total Width**: 7680px (8 frames × 960px)
+- **Total Height**: 960px
 
 **Frame Layout:**
 ```
@@ -18,7 +18,7 @@ This is your main character sprite sheet for walking animations.
 ```
 
 **Animation Types:**
-- **Idle Animation**: Frames 0-3 (4 frames, 8 FPS)
+- **Idle Animation**: Frames 0-0 (1 frame, static pose)
 - **Walking Animation**: Frames 0-7 (8 frames, 12 FPS)
 - **Direction**: Character automatically flips horizontally for left/right movement
 
@@ -49,7 +49,7 @@ Place your other sprite images in this directory:
 
 ## Creating Your Character Sprite Sheet
 
-1. **Design your character** in 640x640 pixel frames
+1. **Design your character** in 960x960 pixel frames
 2. **Create walking animation** with 8 frames showing the walk cycle
 3. **Arrange horizontally** in a single row
 4. **Export as PNG** with transparency
