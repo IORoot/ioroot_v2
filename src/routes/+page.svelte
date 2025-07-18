@@ -6,17 +6,18 @@
 	import AnimatedCharacter from '$lib/components/AnimatedCharacter.svelte';
 	import CollisionDebug from '$lib/components/CollisionDebug.svelte';
 	import InteractiveDebug from '$lib/components/InteractiveDebug.svelte';
+	import ScummMenu from '$lib/components/ScummMenu.svelte';
 	import { checkCollision, findValidPath } from '$lib/collisionDetection';
 
 	let gameScene: HTMLElement;
 	let character: HTMLElement;
 	let isMoving = false;
 
-	// Character position (responsive)
-	let characterX = 50;
-	let characterY = 200; // Default fallback
-	let targetX = 50;
-	let targetY = 200;
+	// Character position (responsive) - Home page starts bottom left
+	let characterX = 100;
+	let characterY = 400; // Home page starts at bottom
+	let targetX = 100;
+	let targetY = 400;
 
 	// Game state
 	let currentScene = 'home';
@@ -24,6 +25,7 @@
 	let activeMenu = '';
 	let showCollisionDebug = false;
 	let showInteractiveDebug = false;
+	let mouseCoordinates = { x: 0, y: 0 };
 
 	// Responsive interactive objects
 	let interactiveObjects: InteractiveObject[] = [
@@ -108,6 +110,9 @@
 		const rect = gameScene.getBoundingClientRect();
 		const clickX = event.clientX - rect.left;
 		const clickY = event.clientY - rect.top;
+
+		// Update mouse coordinates for display
+		mouseCoordinates = { x: Math.round(clickX), y: Math.round(clickY) };
 
 		// Check if clicking on interactive object
 		const clickedObject = interactiveObjects.find(obj => {
@@ -273,13 +278,8 @@
 		showInteractiveDebug = !showInteractiveDebug;
 	}
 
-	// Update character position on mount (client-side only)
+	// Initialize game state on mount
 	onMount(() => {
-		if (typeof window !== 'undefined') {
-			characterY = window.innerHeight - 960 - 50;
-			targetY = window.innerHeight - 960 - 50;
-		}
-		
 		// Initialize game state
 		gameState.set({
 			currentScene,
@@ -350,81 +350,33 @@
 	</div>
 
 	<!-- SCUMM-style Menu -->
-	<div class="scumm-menu">
-		<div class="menu-bar">
-			<button 
-				class="menu-item active" 
-				aria-label="Current page - Home"
-			>
-				Home
-			</button>
-			<button 
-				class="menu-item" 
-				class:active={activeMenu === 'projects'}
-				on:click={() => handleNavigation('/projects')}
-				aria-label="Navigate to projects page"
-			>
-				Projects
-			</button>
-			<button 
-				class="menu-item" 
-				class:active={activeMenu === 'websites'}
-				on:click={() => handleNavigation('/websites')}
-				aria-label="Navigate to websites page"
-			>
-				Websites
-			</button>
-			<button 
-				class="menu-item" 
-				class:active={activeMenu === 'articles'}
-				on:click={() => handleNavigation('/articles')}
-				aria-label="Navigate to articles page"
-			>
-				Articles
-			</button>
-			<button 
-				class="menu-item" 
-				class:active={activeMenu === 'about'}
-				on:click={() => handleNavigation('/about')}
-				aria-label="Navigate to about page"
-			>
-				About
-			</button>
-		</div>
+	<ScummMenu />
+	
+	<!-- Debug Controls -->
+	<div class="debug-controls">
+		<button 
+			class="debug-button"
+			class:active={showCollisionDebug}
+			on:click={toggleCollisionDebug}
+			aria-label="Toggle collision debug mode"
+			title="Toggle collision areas visibility"
+		>
+			{showCollisionDebug ? 'Hide' : 'Show'} Collisions
+		</button>
+		<button 
+			class="debug-button"
+			class:active={showInteractiveDebug}
+			on:click={toggleInteractiveDebug}
+			aria-label="Toggle interactive debug mode"
+			title="Toggle interactive areas visibility"
+		>
+			{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
+		</button>
 		
-		<div class="inventory-area">
-			<div class="text-white text-sm mb-2">Inventory:</div>
-			{#each Array(8) as _, i}
-				<div class="inventory-slot">
-					{#if inventory[i]}
-						{inventory[i]}
-					{:else}
-						{i + 1}
-					{/if}
-				</div>
-			{/each}
-		</div>
-		
-		<!-- Debug Controls -->
-		<div class="debug-controls">
-			<button 
-				class="debug-button"
-				class:active={showCollisionDebug}
-				on:click={toggleCollisionDebug}
-				aria-label="Toggle collision debug mode"
-				title="Toggle collision areas visibility"
-			>
-				{showCollisionDebug ? 'Hide' : 'Show'} Collisions
-			</button>
-			<button 
-				class="debug-button"
-				class:active={showInteractiveDebug}
-				on:click={toggleInteractiveDebug}
-				aria-label="Toggle interactive debug mode"
-				title="Toggle interactive areas visibility"
-			>
-				{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
-			</button>
+		<!-- Mouse Coordinates Display -->
+		<div class="coordinates-display">
+			<div class="coordinate-label">Mouse Position:</div>
+			<div class="coordinate-value">X: {mouseCoordinates.x}, Y: {mouseCoordinates.y}</div>
 		</div>
 	</div>
 </div>
@@ -465,4 +417,28 @@
 	.debug-button.active:hover {
 		background: rgba(255, 0, 0, 0.8);
 	}
+
+	.coordinates-display {
+		background: rgba(0, 0, 0, 0.8);
+		color: #00ff00;
+		border: 1px solid #00ff00;
+		padding: 8px 12px;
+		border-radius: 4px;
+		font-size: 11px;
+		font-family: 'Courier New', monospace;
+		margin-top: 5px;
+		text-align: center;
+	}
+
+	.coordinate-label {
+		font-weight: bold;
+		margin-bottom: 2px;
+	}
+
+	.coordinate-value {
+		font-size: 10px;
+		opacity: 0.9;
+	}
+
+
 </style> 

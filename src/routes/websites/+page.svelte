@@ -4,24 +4,25 @@
 	import AnimatedCharacter from '$lib/components/AnimatedCharacter.svelte';
 	import InteractiveDebug from '$lib/components/InteractiveDebug.svelte';
 	import CollisionDebug from '$lib/components/CollisionDebug.svelte';
+	import ScummMenu from '$lib/components/ScummMenu.svelte';
 	import { checkCollision, findValidPath } from '$lib/collisionDetection';
 	import { onMount } from 'svelte';
 
-	let characterX = 50;
-	let characterY = 200; // Default fallback
-	let targetX = 50;
-	let targetY = 200;
+	// Character position (responsive) - Websites page starts center
+	let characterX = 400;
+	let characterY = 800; // Websites page starts at upper center
+	let targetX = 400;
+	let targetY = 150;
 	let isMoving = false;
 	let gameScene: HTMLElement;
 	let showInteractiveDebug = false;
 	let showCollisionDebug = false;
+	let inventory: string[] = [];
+	let mouseCoordinates = { x: 0, y: 0 };
 
-	// Update character position on mount (client-side only)
+	// Initialize on mount
 	onMount(() => {
-		if (typeof window !== 'undefined') {
-			characterY = window.innerHeight - 960 - 50;
-			targetY = window.innerHeight - 960 - 50;
-		}
+		// Any initialization can go here
 	});
 
 	// Responsive interactive objects using percentages
@@ -96,6 +97,9 @@
 		const rect = gameScene.getBoundingClientRect();
 		const clickX = event.clientX - rect.left;
 		const clickY = event.clientY - rect.top;
+
+		// Update mouse coordinates for display
+		mouseCoordinates = { x: Math.round(clickX), y: Math.round(clickY) };
 
 		const clickedObject = interactiveObjects.find(obj => {
 			const pos = getPixelPosition(obj.x, obj.y, obj.width, obj.height);
@@ -304,39 +308,33 @@
 	</div>
 
 	<!-- SCUMM-style Menu -->
-	<div class="scumm-menu">
-		<div class="menu-bar">
-			<button class="menu-item" on:click={() => goto('/')} aria-label="Navigate to home page">Home</button>
-			<button class="menu-item" on:click={() => goto('/projects')} aria-label="Navigate to projects page">Projects</button>
-			<button class="menu-item active" aria-label="Current page - Websites">Websites</button>
-			<button class="menu-item" on:click={() => goto('/articles')} aria-label="Navigate to articles page">Articles</button>
-			<button class="menu-item" on:click={() => goto('/about')} aria-label="Navigate to about page">About</button>
-		</div>
+	<ScummMenu />
+	
+	<!-- Debug Controls -->
+	<div class="debug-controls">
+		<button 
+			class="debug-button"
+			class:active={showCollisionDebug}
+			on:click={toggleCollisionDebug}
+			aria-label="Toggle collision debug mode"
+			title="Toggle collision areas visibility"
+		>
+			{showCollisionDebug ? 'Hide' : 'Show'} Collisions
+		</button>
+		<button 
+			class="debug-button"
+			class:active={showInteractiveDebug}
+			on:click={toggleInteractiveDebug}
+			aria-label="Toggle interactive debug mode"
+			title="Toggle interactive areas visibility"
+		>
+			{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
+		</button>
 		
-		<div class="inventory-area">
-			<div class="text-white text-sm">Websites Gallery - Click on websites to visit them</div>
-		</div>
-		
-		<!-- Debug Controls -->
-		<div class="debug-controls">
-			<button 
-				class="debug-button"
-				class:active={showCollisionDebug}
-				on:click={toggleCollisionDebug}
-				aria-label="Toggle collision debug mode"
-				title="Toggle collision areas visibility"
-			>
-				{showCollisionDebug ? 'Hide' : 'Show'} Collisions
-			</button>
-			<button 
-				class="debug-button"
-				class:active={showInteractiveDebug}
-				on:click={toggleInteractiveDebug}
-				aria-label="Toggle interactive debug mode"
-				title="Toggle interactive areas visibility"
-			>
-				{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
-			</button>
+		<!-- Mouse Coordinates Display -->
+		<div class="coordinates-display">
+			<div class="coordinate-label">Mouse Position:</div>
+			<div class="coordinate-value">X: {mouseCoordinates.x}, Y: {mouseCoordinates.y}</div>
 		</div>
 	</div>
 </div>
@@ -376,5 +374,151 @@
 
 	.debug-button.active:hover {
 		background: rgba(0, 0, 255, 0.8);
+	}
+
+	.coordinates-display {
+		background: rgba(0, 0, 0, 0.8);
+		color: #00ff00;
+		border: 1px solid #00ff00;
+		padding: 8px 12px;
+		border-radius: 4px;
+		font-size: 11px;
+		font-family: 'Courier New', monospace;
+		margin-top: 5px;
+		text-align: center;
+	}
+
+	.coordinate-label {
+		font-weight: bold;
+		margin-bottom: 2px;
+	}
+
+	.coordinate-value {
+		font-size: 10px;
+		opacity: 0.9;
+	}
+
+	/* SCUMM Menu Styles */
+	.scumm-menu {
+		background: linear-gradient(to bottom, #2c3e50, #34495e);
+		border-top: 3px solid #95a5a6;
+		padding: 30px;
+		height: 400px;
+	}
+
+	.menu-container {
+		display: flex;
+		gap: 20px;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	/* Navigation Grid (Left Half) */
+	.navigation-grid {
+		flex: 1;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: repeat(3, 1fr);
+		gap: 12px;
+		height: 300px;
+	}
+
+	.menu-item {
+		background: linear-gradient(to bottom, #3498db, #2980b9);
+		color: white;
+		border: 2px solid #2c3e50;
+		border-radius: 8px;
+		padding: 20px 12px;
+		font-size: 18px;
+		font-weight: bold;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		min-height: 80px;
+	}
+
+	.menu-item:hover {
+		background: linear-gradient(to bottom, #5dade2, #3498db);
+		border-color: #ecf0f1;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.menu-item.active {
+		background: linear-gradient(to bottom, #e74c3c, #c0392b);
+		border-color: #ecf0f1;
+		box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+	}
+
+	.empty-slot {
+		background: rgba(52, 73, 94, 0.3);
+		border: 2px dashed #7f8c8d;
+		border-radius: 8px;
+		min-height: 80px;
+	}
+
+	/* Inventory Grid (Right Half) */
+	.inventory-grid {
+		flex: 1;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		grid-template-rows: repeat(2, 1fr);
+		gap: 12px;
+		height: 300px;
+	}
+
+	.inventory-slot {
+		background: linear-gradient(to bottom, #95a5a6, #7f8c8d);
+		border: 2px solid #2c3e50;
+		border-radius: 6px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 16px;
+		font-weight: bold;
+		color: white;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		min-height: 80px;
+	}
+
+	.inventory-slot:hover {
+		background: linear-gradient(to bottom, #bdc3c7, #95a5a6);
+		border-color: #ecf0f1;
+		transform: translateY(-1px);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+		.scumm-menu {
+			height: 300px;
+			padding: 20px;
+		}
+
+		.menu-container {
+			flex-direction: column;
+			gap: 15px;
+		}
+
+		.navigation-grid,
+		.inventory-grid {
+			height: 200px;
+		}
+
+		.menu-item {
+			font-size: 14px;
+			padding: 15px 8px;
+			min-height: 60px;
+		}
+
+		.inventory-slot {
+			font-size: 12px;
+			min-height: 60px;
+		}
 	}
 </style> 

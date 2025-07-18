@@ -4,24 +4,25 @@
 	import AnimatedCharacter from '$lib/components/AnimatedCharacter.svelte';
 	import InteractiveDebug from '$lib/components/InteractiveDebug.svelte';
 	import CollisionDebug from '$lib/components/CollisionDebug.svelte';
+	import ScummMenu from '$lib/components/ScummMenu.svelte';
 	import { checkCollision, findValidPath } from '$lib/collisionDetection';
 	import { onMount } from 'svelte';
 
-	let characterX = 50;
-	let characterY = 200; // Default fallback
-	let targetX = 50;
-	let targetY = 200;
+	// Character position (responsive) - Projects page starts center left
+	let characterX = 1000;
+	let characterY = 500; // Projects page starts at center
+	let targetX = 200;
+	let targetY = 300;
 	let isMoving = false;
 	let gameScene: HTMLElement;
 	let showInteractiveDebug = false;
 	let showCollisionDebug = false;
+	let inventory: string[] = [];
+	let mouseCoordinates = { x: 0, y: 0 };
 
-	// Update character position on mount (client-side only)
+	// Initialize on mount
 	onMount(() => {
-		if (typeof window !== 'undefined') {
-			characterY = window.innerHeight - 960 - 50;
-			targetY = window.innerHeight - 960 - 50;
-		}
+		// Any initialization can go here
 	});
 
 	// Responsive interactive objects using percentages
@@ -132,6 +133,9 @@
 		const rect = gameScene.getBoundingClientRect();
 		const clickX = event.clientX - rect.left;
 		const clickY = event.clientY - rect.top;
+
+		// Update mouse coordinates for display
+		mouseCoordinates = { x: Math.round(clickX), y: Math.round(clickY) };
 
 		const clickedObject = interactiveObjects.find(obj => {
 			const pos = getPixelPosition(obj.x, obj.y, obj.width, obj.height);
@@ -340,39 +344,33 @@
 	</div>
 
 	<!-- SCUMM-style Menu -->
-	<div class="scumm-menu">
-		<div class="menu-bar">
-			<button class="menu-item" on:click={() => goto('/')} aria-label="Navigate to home page">Home</button>
-			<button class="menu-item active" aria-label="Current page - Projects">Projects</button>
-			<button class="menu-item" on:click={() => goto('/websites')} aria-label="Navigate to websites page">Websites</button>
-			<button class="menu-item" on:click={() => goto('/articles')} aria-label="Navigate to articles page">Articles</button>
-			<button class="menu-item" on:click={() => goto('/about')} aria-label="Navigate to about page">About</button>
-		</div>
+	<ScummMenu />
+	
+	<!-- Debug Controls -->
+	<div class="debug-controls">
+		<button 
+			class="debug-button"
+			class:active={showCollisionDebug}
+			on:click={toggleCollisionDebug}
+			aria-label="Toggle collision debug mode"
+			title="Toggle collision areas visibility"
+		>
+			{showCollisionDebug ? 'Hide' : 'Show'} Collisions
+		</button>
+		<button 
+			class="debug-button"
+			class:active={showInteractiveDebug}
+			on:click={toggleInteractiveDebug}
+			aria-label="Toggle interactive debug mode"
+			title="Toggle interactive areas visibility"
+		>
+			{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
+		</button>
 		
-		<div class="inventory-area">
-			<div class="text-white text-sm">Projects Room - Click on projects to view them</div>
-		</div>
-		
-		<!-- Debug Controls -->
-		<div class="debug-controls">
-			<button 
-				class="debug-button"
-				class:active={showCollisionDebug}
-				on:click={toggleCollisionDebug}
-				aria-label="Toggle collision debug mode"
-				title="Toggle collision areas visibility"
-			>
-				{showCollisionDebug ? 'Hide' : 'Show'} Collisions
-			</button>
-			<button 
-				class="debug-button"
-				class:active={showInteractiveDebug}
-				on:click={toggleInteractiveDebug}
-				aria-label="Toggle interactive debug mode"
-				title="Toggle interactive areas visibility"
-			>
-				{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
-			</button>
+		<!-- Mouse Coordinates Display -->
+		<div class="coordinates-display">
+			<div class="coordinate-label">Mouse Position:</div>
+			<div class="coordinate-value">X: {mouseCoordinates.x}, Y: {mouseCoordinates.y}</div>
 		</div>
 	</div>
 </div>
@@ -413,4 +411,28 @@
 	.debug-button.active:hover {
 		background: rgba(0, 0, 255, 0.8);
 	}
+
+	.coordinates-display {
+		background: rgba(0, 0, 0, 0.8);
+		color: #00ff00;
+		border: 1px solid #00ff00;
+		padding: 8px 12px;
+		border-radius: 4px;
+		font-size: 11px;
+		font-family: 'Courier New', monospace;
+		margin-top: 5px;
+		text-align: center;
+	}
+
+	.coordinate-label {
+		font-weight: bold;
+		margin-bottom: 2px;
+	}
+
+	.coordinate-value {
+		font-size: 10px;
+		opacity: 0.9;
+	}
+
+
 </style> 
