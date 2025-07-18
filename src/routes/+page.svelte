@@ -1,24 +1,29 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import type { InteractiveObject } from '$lib/types';
+	import type { InteractiveObject, CollisionArea } from '$lib/types';
 	import { gameState } from '$lib/stores';
 	import AnimatedCharacter from '$lib/components/AnimatedCharacter.svelte';
+	import CollisionDebug from '$lib/components/CollisionDebug.svelte';
+	import InteractiveDebug from '$lib/components/InteractiveDebug.svelte';
+	import { checkCollision, findValidPath } from '$lib/collisionDetection';
 
 	let gameScene: HTMLElement;
 	let character: HTMLElement;
 	let isMoving = false;
 
 	// Character position (responsive)
-	let characterX = 100;
-	let characterY = 200;
-	let targetX = 100;
+	let characterX = 50;
+	let characterY = 200; // Default fallback
+	let targetX = 50;
 	let targetY = 200;
 
 	// Game state
 	let currentScene = 'home';
 	let inventory: string[] = [];
 	let activeMenu = '';
+	let showCollisionDebug = false;
+	let showInteractiveDebug = false;
 
 	// Responsive interactive objects
 	let interactiveObjects: InteractiveObject[] = [
@@ -49,6 +54,38 @@
 			label: 'Window',
 			action: () => goto('/websites')
 		}
+	];
+
+	// Collision areas - define where character can't walk
+	let collisionAreas: CollisionArea[] = [
+		// Example furniture/obstacles (smaller, more reasonable)
+		{
+			id: 'desk',
+			x: 0,
+			y: 0,
+			width: 35,
+			height: 70,
+			type: 'blocked',
+			label: 'Desk'
+		},
+		{
+			id: 'desk',
+			x: 0,
+			y: 0,
+			width: 100,
+			height: 60,
+			type: 'blocked',
+			label: 'Desk'
+		},{
+			id: 'chair',
+			x: 60,
+			y: 0,
+			width: 10,
+			height: 70,
+			type: 'blocked',
+			label: 'chair'
+		},
+		
 	];
 
 	// Convert percentage positions to pixel positions
@@ -82,6 +119,16 @@
 		if (clickedObject) {
 			clickedObject.action();
 			return;
+		}
+
+		// Check if clicking inside collision areas
+		for (const area of collisionAreas) {
+			const pos = getPixelPosition(area.x, area.y, area.width, area.height);
+			if (clickX >= pos.x && clickX <= pos.x + pos.width &&
+				clickY >= pos.y && clickY <= pos.y + pos.height) {
+				console.log('Clicked inside collision area:', area.label);
+				return; // Don't move if clicking in collision area
+			}
 		}
 
 		// Calculate character position so bottom center goes to clicked location
@@ -119,9 +166,58 @@
 
 	// Animate character movement
 	function moveCharacter(newTargetX: number, newTargetY: number) {
+		if (!gameScene) return;
+		
+		const rect = gameScene.getBoundingClientRect();
+		let characterWidth = 960;
+		let characterHeight = 960;
+		
+		// Responsive sizing based on screen width
+		if (rect.width <= 768) {
+			characterWidth = 480;
+			characterHeight = 480;
+		}
+
+		// Check if target position is valid
+		if (checkCollision(newTargetX, newTargetY, characterWidth, characterHeight, collisionAreas, rect.width, rect.height)) {
+			console.log('Target position blocked, finding alternative path...');
+		}
+
+		// Find valid path to target
+		const validTarget = findValidPath(
+			characterX,
+			characterY,
+			newTargetX,
+			newTargetY,
+			characterWidth,
+			characterHeight,
+			collisionAreas,
+			rect.width,
+			rect.height
+		);
+
+		if (!validTarget) {
+			console.log('No valid path to target');
+			return;
+		}
+
+		// Check if the valid target is the same as current position
+		const distanceToTarget = Math.sqrt((validTarget.x - characterX) ** 2 + (validTarget.y - characterY) ** 2);
+		console.log('Movement debug:', {
+			currentPos: { x: characterX, y: characterY },
+			targetPos: { x: newTargetX, y: newTargetY },
+			validTarget: validTarget,
+			distance: distanceToTarget
+		});
+		
+		if (distanceToTarget < 5) {
+			console.log('Target too close to current position, not moving');
+			return;
+		}
+
 		isMoving = true;
-		targetX = newTargetX;
-		targetY = newTargetY;
+		targetX = validTarget.x;
+		targetY = validTarget.y;
 		
 		const startX = characterX;
 		const startY = characterY;
@@ -137,8 +233,18 @@
 			// Easing function for smooth movement
 			const easeProgress = 1 - Math.pow(1 - progress, 3);
 			
-			characterX = startX + (targetX - startX) * easeProgress;
-			characterY = startY + (targetY - startY) * easeProgress;
+			const newX = startX + (targetX - startX) * easeProgress;
+			const newY = startY + (targetY - startY) * easeProgress;
+			
+			// Check collision at each step
+			if (checkCollision(newX, newY, characterWidth, characterHeight, collisionAreas, rect.width, rect.height)) {
+				console.log('Collision detected during movement, stopping');
+				isMoving = false;
+				return;
+			}
+			
+			characterX = newX;
+			characterY = newY;
 			
 			if (progress < 1) {
 				requestAnimationFrame(animate);
@@ -159,7 +265,21 @@
 		goto(page);
 	}
 
+	function toggleCollisionDebug() {
+		showCollisionDebug = !showCollisionDebug;
+	}
+
+	function toggleInteractiveDebug() {
+		showInteractiveDebug = !showInteractiveDebug;
+	}
+
+	// Update character position on mount (client-side only)
 	onMount(() => {
+		if (typeof window !== 'undefined') {
+			characterY = window.innerHeight - 960 - 50;
+			targetY = window.innerHeight - 960 - 50;
+		}
+		
 		// Initialize game state
 		gameState.set({
 			currentScene,
@@ -210,6 +330,22 @@
 
 			<!-- Foreground Layer -->
 			<div class="foreground-layer" style="background-image: url('/images/backgrounds/home-fg.png')"></div>
+
+			<!-- Collision Debug (optional) -->
+			<CollisionDebug 
+				collisionAreas={collisionAreas}
+				containerWidth={gameScene?.getBoundingClientRect().width || 0}
+				containerHeight={gameScene?.getBoundingClientRect().height || 0}
+				showDebug={showCollisionDebug}
+			/>
+
+			<!-- Interactive Debug (optional) -->
+			<InteractiveDebug 
+				interactiveObjects={interactiveObjects}
+				containerWidth={gameScene?.getBoundingClientRect().width || 0}
+				containerHeight={gameScene?.getBoundingClientRect().height || 0}
+				showDebug={showInteractiveDebug}
+			/>
 		</div>
 	</div>
 
@@ -268,5 +404,65 @@
 				</div>
 			{/each}
 		</div>
+		
+		<!-- Debug Controls -->
+		<div class="debug-controls">
+			<button 
+				class="debug-button"
+				class:active={showCollisionDebug}
+				on:click={toggleCollisionDebug}
+				aria-label="Toggle collision debug mode"
+				title="Toggle collision areas visibility"
+			>
+				{showCollisionDebug ? 'Hide' : 'Show'} Collisions
+			</button>
+			<button 
+				class="debug-button"
+				class:active={showInteractiveDebug}
+				on:click={toggleInteractiveDebug}
+				aria-label="Toggle interactive debug mode"
+				title="Toggle interactive areas visibility"
+			>
+				{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
+			</button>
+		</div>
 	</div>
-</div> 
+</div>
+
+<style>
+	.debug-controls {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 30;
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.debug-button {
+		background: rgba(0, 0, 0, 0.7);
+		color: white;
+		border: 1px solid #666;
+		padding: 8px 12px;
+		border-radius: 4px;
+		font-size: 12px;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		white-space: nowrap;
+	}
+
+	.debug-button:hover {
+		background: rgba(0, 0, 0, 0.8);
+		border-color: #888;
+	}
+
+	.debug-button.active {
+		background: rgba(255, 0, 0, 0.7);
+		border-color: #ff4444;
+	}
+
+	.debug-button.active:hover {
+		background: rgba(255, 0, 0, 0.8);
+	}
+</style> 

@@ -5,7 +5,7 @@ import type { GameState, Scene, Sprite } from './types';
 export const gameState = writable<GameState>({
 	currentScene: 'home',
 	inventory: [],
-	characterPosition: { x: 100, y: 200 }
+	characterPosition: { x: 50, y: 50 }
 });
 
 // Available scenes

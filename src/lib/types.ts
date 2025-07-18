@@ -1,23 +1,27 @@
 export interface InteractiveObject {
 	id: string;
-	x: number;
-	y: number;
-	width: number;
-	height: number;
+	x: number; // percentage
+	y: number; // percentage
+	width: number; // percentage
+	height: number; // percentage
 	label: string;
 	action: () => void;
-	sprite?: string;
 }
 
-export interface CharacterPosition {
-	x: number;
-	y: number;
+export interface CollisionArea {
+	id: string;
+	x: number; // percentage
+	y: number; // percentage
+	width: number; // percentage
+	height: number; // percentage
+	type: 'blocked' | 'walkable' | 'water' | 'wall';
+	label?: string;
 }
 
 export interface GameState {
 	currentScene: string;
 	inventory: string[];
-	characterPosition: CharacterPosition;
+	characterPosition: { x: number; y: number };
 }
 
 export interface Scene {
