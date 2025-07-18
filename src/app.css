@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for the adventure game */
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-family: 'Courier New', monospace;
+	background: #000;
+	color: #fff;
+	height: 100vh;
+	width: 100vw;
+}
+
+.game-container {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.game-scene {
+	flex: 1;
+	position: relative;
+	background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
+	min-height: 0;
+	overflow: hidden;
+}
+
+.character {
+	position: absolute;
+	width: clamp(32px, 4vw, 64px);
+	height: clamp(32px, 4vw, 64px);
+	background: #ff6b6b;
+	border-radius: 50%;
+	transition: all 0.3s ease;
+	z-index: 10;
+}
+
+.scumm-menu {
+	position: relative;
+	height: clamp(80px, 12vh, 120px);
+	background: #2c3e50;
+	border-top: 3px solid #34495e;
+	display: flex;
+	flex-direction: column;
+	padding: clamp(5px, 1vh, 10px);
+	min-height: 0;
+}
+
+.menu-bar {
+	display: flex;
+	gap: clamp(10px, 2vw, 20px);
+	margin-bottom: clamp(5px, 1vh, 10px);
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.menu-item {
+	background: #34495e;
+	color: #ecf0f1;
+	padding: clamp(4px, 1vh, 8px) clamp(8px, 2vw, 16px);
+	border: 2px solid #2c3e50;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	font-size: clamp(10px, 2vw, 14px);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.menu-item:hover {
+	background: #3498db;
+	border-color: #2980b9;
+}
+
+.menu-item.active {
+	background: #e74c3c;
+	border-color: #c0392b;
+}
+
+.inventory-area {
+	flex: 1;
+	background: #34495e;
+	border: 2px solid #2c3e50;
+	border-radius: 4px;
+	padding: clamp(5px, 1vh, 10px);
+	display: flex;
+	gap: clamp(5px, 1vw, 10px);
+	align-items: center;
+	overflow-x: auto;
+	min-height: 0;
+}
+
+.inventory-slot {
+	width: clamp(30px, 4vw, 40px);
+	height: clamp(30px, 4vw, 40px);
+	background: #2c3e50;
+	border: 2px solid #34495e;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #7f8c8d;
+	font-size: clamp(8px, 1.5vw, 12px);
+	flex-shrink: 0;
+}
+
+.background-layer {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.foreground-layer {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.interactive-object {
+	position: absolute;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.interactive-object:hover {
+	transform: scale(1.1);
+	filter: brightness(1.2);
+}
+
+/* Responsive object sizing */
+.object-label {
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-weight: bold;
+	word-wrap: break-word;
+	overflow: hidden;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+	.game-scene {
+		height: calc(100vh - 80px);
+	}
+	
+	.scumm-menu {
+		height: 80px;
+		padding: 5px;
+	}
+	
+	.menu-bar {
+		gap: 8px;
+		margin-bottom: 5px;
+	}
+	
+	.menu-item {
+		padding: 4px 8px;
+		font-size: 10px;
+	}
+	
+	.inventory-area {
+		padding: 5px;
+		gap: 5px;
+	}
+	
+	.inventory-slot {
+		width: 30px;
+		height: 30px;
+		font-size: 8px;
+	}
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+	.game-scene {
+		height: calc(100vh - 100px);
+	}
+	
+	.scumm-menu {
+		height: 100px;
+		padding: 8px;
+	}
+	
+	.menu-item {
+		font-size: 12px;
+	}
+}
+
+/* Large screen optimizations */
+@media (min-width: 1025px) {
+	.game-scene {
+		height: calc(100vh - 120px);
+	}
+	
+	.scumm-menu {
+		height: 120px;
+		padding: 10px;
+	}
+	
+	.menu-item {
+		font-size: 14px;
+	}
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+	.scumm-menu {
+		height: 60px;
+		padding: 3px;
+	}
+	
+	.menu-bar {
+		margin-bottom: 3px;
+		gap: 5px;
+	}
+	
+	.menu-item {
+		padding: 2px 6px;
+		font-size: 10px;
+	}
+	
+	.inventory-area {
+		padding: 3px;
+		gap: 3px;
+	}
+	
+	.inventory-slot {
+		width: 25px;
+		height: 25px;
+		font-size: 8px;
+	}
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	.character {
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+	}
+	
+	.interactive-object {
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+	}
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+	.character {
+		transition: none;
+	}
+	
+	.interactive-object {
+		transition: none;
+	}
+	
+	.interactive-object:hover {
+		transform: none;
+	}
+}
+
+/* Focus styles for keyboard navigation */
+.menu-item:focus,
+.interactive-object:focus {
+	outline: 2px solid #3498db;
+	outline-offset: 2px;
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+	.interactive-object {
+		min-width: 44px;
+		min-height: 44px;
+	}
+	
+	.menu-item {
+		min-height: 44px;
+		min-width: 44px;
+	}
+} 
