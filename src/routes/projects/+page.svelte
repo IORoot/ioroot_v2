@@ -299,7 +299,7 @@
 				{#each filteredRepos as repo}
 					{@const firstImage = repo.readme_content ? extractFirstImage(repo.readme_content, repo.name) : null}
 					<a href="/projects/{repo.name}" class="group block">
-						<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+						<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-sm transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
 							<!-- Project Image -->
 							<div class="aspect-video bg-gray-200 dark:bg-gray-700">
 								{#if firstImage}

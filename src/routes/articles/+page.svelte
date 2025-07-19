@@ -142,7 +142,7 @@
 				
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 					{#each articles.slice(1) as article}
-						<a href="/articles/{article.slug}" class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-orange-200 dark:border-orange-700">
+						<a href="/articles/{article.slug}" class="card group hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border-2 border-orange-200 dark:border-orange-700">
 							<div class="p-6">
 								<div class="flex items-center space-x-3 mb-4">
 									<span class="text-2xl">{article.icon}</span>

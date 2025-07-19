@@ -96,7 +96,7 @@
 			
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 				{#each latestContent as item}
-					<a href={item.href} class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+					<a href={item.href} class="card group hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
 						<div class="p-6">
 							<div class="flex items-center space-x-3 mb-4">
 								<span class="text-3xl">{item.icon}</span>
@@ -123,25 +123,25 @@
 			</h2>
 			
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-				<a href="/about" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+				<a href="/about" class="card text-center p-8 hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
 					<div class="text-4xl mb-4">👤</div>
 					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">About Me</h3>
 					<p class="text-gray-600 dark:text-gray-400">Learn about my background, skills, and experience</p>
 				</a>
 				
-				<a href="/projects" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+				<a href="/projects" class="card text-center p-8 hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
 					<div class="text-4xl mb-4">💻</div>
 					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">Projects</h3>
 					<p class="text-gray-600 dark:text-gray-400">Explore my coding projects and technical work</p>
 				</a>
 				
-				<a href="/websites" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+				<a href="/websites" class="card text-center p-8 hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
 					<div class="text-4xl mb-4">🌐</div>
 					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">Websites</h3>
 					<p class="text-gray-600 dark:text-gray-400">Check out the websites I've built and maintain</p>
 				</a>
 				
-				<a href="/articles" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+				<a href="/articles" class="card text-center p-8 hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
 					<div class="text-4xl mb-4">📝</div>
 					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">Articles</h3>
 					<p class="text-gray-600 dark:text-gray-400">Read my thoughts on tech, parkour, and more</p>

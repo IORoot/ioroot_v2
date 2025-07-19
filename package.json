@@ -33,5 +33,9 @@
     "vite": "^5.0.3"
   },
   "type": "module",
-  "dependencies": {}
-} 
+  "dependencies": {
+    "@mdx-js/esbuild": "^3.1.0",
+    "@mdx-js/rollup": "^3.1.0",
+    "gray-matter": "^4.0.3"
+  }
+}

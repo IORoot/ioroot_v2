@@ -26,7 +26,7 @@
 	}
 	
 	.card {
-		@apply bg-white rounded-xl shadow-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700;
+		@apply bg-white rounded-xl shadow-sm border border-gray-200 dark:bg-gray-800 dark:border-gray-700;
 	}
 	
 	.container-custom {
