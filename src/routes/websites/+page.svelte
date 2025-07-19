@@ -15,19 +15,7 @@
 <div class="min-h-screen">
 	<Navigation theme="green" />
 	
-	<!-- Hero Section -->
-	<section class="py-20 bg-gradient-to-br from-green-700 to-green-800 dark:from-green-900 dark:to-green-800">
-		<div class="container-custom">
-			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-5xl md:text-6xl font-bold text-white dark:text-green-100 mb-6">
-					Websites
-				</h1>
-				<p class="text-xl text-green-50 dark:text-green-200 mb-8">
-					Digital playgrounds and community spaces
-				</p>
-			</div>
-		</div>
-	</section>
+
 	
 	<!-- Websites List -->
 	<section class="py-20 bg-gray-50 dark:bg-gray-900">

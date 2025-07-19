@@ -7,26 +7,117 @@
 		{
 			title: 'Lead DevOps Engineer',
 			company: 'ThirtyThree Global',
+			logo: 'https://media.licdn.com/dms/image/v2/C4D0BAQE8kw0bxG_7ZA/company-logo_100_100/company-logo_100_100/0/1646822065749?e=1755734400&v=beta&t=M4oj5z7Wo1iow4Jjj4J9x2C_nwtCeViLHskdBzsoL7c',
 			period: 'Jan 2019 - Present',
-			description: 'Leading DevOps department with infrastructure-as-code using Puppet and Terraform. Managing CI/CD pipelines, cloud resources across Microsoft Azure, and supporting development teams with robust deployment workflows.'
+			description: 'Leading DevOps department with infrastructure-as-code using Puppet and Terraform. Managing CI/CD pipelines, cloud resources across Microsoft Azure, and supporting development teams with robust deployment workflows.',
+			skills: ['Infrastructure as Code', 'CI/CD Pipelines', 'Cloud Architecture', 'Team Leadership', 'Security'],
+			technologies: ['Terraform', 'Puppet', 'Azure', 'Kubernetes', 'Docker', 'GitLab CI/CD', 'Prometheus', 'Grafana'],
+			achievements: ['Led DevOps transformation', '99.9% uptime maintained', 'Reduced deployment time by 80%', 'Implemented security best practices'],
+			highlighted: true
 		},
 		{
 			title: 'Director, Owner & Head Coach',
 			company: 'LondonParkour Ltd',
+			logo: 'https://media.licdn.com/dms/image/v2/C560BAQF5BKyVLfUd5w/company-logo_100_100/company-logo_100_100/0/1630599297634?e=1755734400&v=beta&t=WkAffPhB2r5qPwavXtzAlEnfR537DU6tKwZbSS1TVWw',
 			period: 'Apr 2018 - Present',
-			description: 'Founder and head coach leading all aspects of the business. 20+ years of parkour coaching experience, international education programs, and establishing ParkourUK as the UK\'s first national governing body.'
+			description: 'Founder and head coach leading all aspects of the business. 20+ years of parkour coaching experience, international education programs, and establishing ParkourUK as the UK\'s first national governing body.',
+			skills: ['Business Development', 'Coaching Excellence', 'Event Production', 'Community Building', 'International Education'],
+			technologies: ['WordPress', 'PHP', 'Social Media', 'Video Production', 'Website Management'],
+			achievements: ['Founded successful business', 'Established ParkourUK', 'International coaching programs', 'Thousands of students coached'],
+			highlighted: true
 		},
 		{
 			title: 'DevOps Engineer',
 			company: 'Herdl',
+			logo: 'https://media.licdn.com/dms/image/v2/D560BAQFsmInQ1PK4gw/company-logo_100_100/company-logo_100_100/0/1700660712513/herdl_logo?e=1755734400&v=beta&t=V-dtYIZJF0Fi2UTQ4X6_ud1xEAvfVzk3Xc5r7tUA6PI',
 			period: 'Sep 2021 - Apr 2023',
-			description: 'Freelance DevOps engineering role focusing on infrastructure automation and deployment optimization.'
+			description: 'Freelance DevOps engineering role focusing on infrastructure automation and deployment optimization.',
+			skills: ['Infrastructure Automation', 'Deployment Optimization', 'Cloud Management', 'System Administration'],
+			technologies: ['AWS', 'Docker', 'Kubernetes', 'Terraform', 'CI/CD', 'Monitoring'],
+			achievements: ['Improved deployment efficiency', 'Enhanced system reliability', 'Reduced operational costs'],
+			highlighted: true
 		},
 		{
 			title: 'Chief Technology Officer & Senior Coach',
 			company: 'Parkour Generations',
 			period: 'Jul 2006 - Mar 2018',
-			description: 'Leading digital presence, web development, and IT systems while running international parkour coaching programs and events.'
+			description: 'Leading digital presence, web development, and IT systems while running international parkour coaching programs and events.',
+			skills: ['Technology Leadership', 'Web Development', 'Digital Marketing', 'International Coaching', 'Event Management'],
+			technologies: ['LAMP Stack', 'WordPress', 'PHP', 'JavaScript', 'CSS', 'Social Media'],
+			achievements: ['Built international brand', 'Developed coaching programs', 'Created digital platforms', 'Established industry standards'],
+			highlighted: true
+		},
+		{
+			title: 'Server Stability Project Lead',
+			company: 'Mblox (now Sinch)',
+			period: 'Jun 2008 - Aug 2008',
+			description: 'Contract role focusing on server stability and performance optimization.'
+		},
+		{
+			title: 'Lead Test Analyst',
+			company: 'Schroders',
+			period: 'Dec 2007 - May 2008',
+			description: 'Contract role leading test analysis and quality assurance processes.'
+		},
+		{
+			title: 'Lead Test Analyst',
+			company: 'GE',
+			period: 'Jul 2007 - Nov 2007',
+			description: 'Contract role leading test analysis and quality assurance processes.'
+		},
+		{
+			title: 'Senior Test Analyst',
+			company: 'IMG Media',
+			period: 'Feb 2007 - Jun 2007',
+			description: 'Contract role in senior test analysis and quality assurance.'
+		},
+		{
+			title: 'Senior Test Analyst',
+			company: 'Sky',
+			period: 'Nov 2006 - Feb 2007',
+			description: 'Contract role in senior test analysis and quality assurance.'
+		},
+		{
+			title: 'Server Analysis and Administration',
+			company: 'The Football Association',
+			period: 'Jun 2006 - Nov 2006',
+			description: 'Contract role in server analysis and administration.'
+		},
+		{
+			title: 'Fraud Management Test Analyst',
+			company: 'John Lewis & Partners',
+			period: 'Mar 2006 - Jun 2006',
+			description: 'Contract role in fraud management testing and analysis.'
+		},
+		{
+			title: 'System Test Analyst and Project Leader',
+			company: 'Channel 5',
+			period: 'Jan 2006 - Mar 2006',
+			description: 'Contract role leading system testing and project management.'
+		},
+		{
+			title: 'GUI Test Analyst',
+			company: 'ERNEST JONES',
+			period: 'Aug 2005 - Feb 2006',
+			description: 'Contract role in GUI testing and analysis.'
+		},
+		{
+			title: 'Database Testing Team',
+			company: 'TUI',
+			period: 'Dec 2004 - Jul 2005',
+			description: 'Contract role in database testing and quality assurance.'
+		},
+		{
+			title: 'Lead Implementation Engineer',
+			company: 'WatchMark',
+			period: 'Aug 2004 - Nov 2004',
+			description: 'Full-time role leading implementation engineering.'
+		},
+		{
+			title: 'Network Performance Management Consultant',
+			company: 'ADC Telecommunications',
+			period: 'Feb 2001 - Jul 2004',
+			description: 'Full-time role in network performance management and consulting.'
 		}
 	];
 	
@@ -52,6 +143,154 @@
 		londonparkour: 'https://www.instagram.com/london_parkour/',
 		youtube: 'https://www.youtube.com/@AndyPearson'
 	};
+	
+	const skillTree = {
+		'Infrastructure & DevOps': {
+			icon: '☁️',
+			level: 'Master',
+			children: {
+				'Cloud Platforms': {
+					icon: '🔷',
+					level: 'Expert',
+					children: {
+						'Microsoft Azure': { icon: '🔷', level: 'Expert' },
+						'AKS (Azure Kubernetes Service)': { icon: '🐳', level: 'Expert' },
+						'Azure Container Registry': { icon: '📦', level: 'Expert' }
+					}
+				},
+				'Infrastructure as Code': {
+					icon: '🏗️',
+					level: 'Expert',
+					children: {
+						'Terraform': { icon: '🏗️', level: 'Expert' },
+						'Puppet': { icon: '🎭', level: 'Expert' }
+					}
+				},
+				'Containerization': {
+					icon: '🐳',
+					level: 'Expert',
+					children: {
+						'Docker': { icon: '🐳', level: 'Expert' },
+						'Kubernetes': { icon: '⚓', level: 'Expert' },
+						'Helm': { icon: '⚓', level: 'Expert' },
+						'Orbstack': { icon: '🚀', level: 'Advanced' }
+					}
+				},
+				'CI/CD': {
+					icon: '🔄',
+					level: 'Expert',
+					children: {
+						'GitLab CI/CD': { icon: '🦊', level: 'Expert' },
+						'GitHub Actions': { icon: '🐙', level: 'Expert' },
+						'Git': { icon: '📝', level: 'Expert' }
+					}
+				},
+				'Monitoring & Observability': {
+					icon: '📊',
+					level: 'Expert',
+					children: {
+						'Prometheus': { icon: '📊', level: 'Expert' },
+						'Grafana': { icon: '📈', level: 'Expert' },
+						'Loki': { icon: '📝', level: 'Expert' }
+					}
+				}
+			}
+		},
+		'System Administration': {
+			icon: '🖥️',
+			level: 'Expert',
+			children: {
+				'Operating Systems': {
+					icon: '💻',
+					level: 'Expert',
+					children: {
+						'CentOS': { icon: '🐧', level: 'Expert' },
+						'Rocky Linux': { icon: '🪨', level: 'Expert' },
+						'BASH/ZSH': { icon: '💻', level: 'Expert' }
+					}
+				},
+				'Web Technologies': {
+					icon: '🌐',
+					level: 'Expert',
+					children: {
+						'LAMP Stack': { icon: '🦬', level: 'Expert' },
+						'PHP/Laravel': { icon: '🐘', level: 'Expert' },
+						'WordPress': { icon: '📝', level: 'Expert' },
+						'Concrete5': { icon: '🏗️', level: 'Advanced' }
+					}
+				},
+				'Security': {
+					icon: '🔒',
+					level: 'Expert',
+					children: {
+						'SSL Certificates': { icon: '🔐', level: 'Expert' },
+						'OWASP ZAP': { icon: '🛡️', level: 'Expert' },
+						'Critical Incident Response': { icon: '🚨', level: 'Expert' }
+					}
+				}
+			}
+		},
+		'Parkour & Movement': {
+			icon: '🏃‍♂️',
+			level: 'Master',
+			children: {
+				'Coaching': {
+					icon: '👨‍🏫',
+					level: 'Master',
+					children: {
+						'ADAPT Level 3': { icon: '🏆', level: 'Master' },
+						'ParkourUK Level 2': { icon: '🇬🇧', level: 'Expert' },
+						'PTLLS Level 4': { icon: '📚', level: 'Expert' },
+						'Level 3 Tutoring Sport': { icon: '🎓', level: 'Expert' }
+					}
+				},
+				'Safety & First Aid': {
+					icon: '🆘',
+					level: 'Expert',
+					children: {
+						'ITC Level 2 First Aid': { icon: '🩹', level: 'Expert' },
+						'Emergency Life Support': { icon: '💓', level: 'Expert' },
+						'Safeguarding Children': { icon: '👶', level: 'Expert' },
+						'Enhanced DBS Checked': { icon: '✅', level: 'Expert' }
+					}
+				},
+				'Business Leadership': {
+					icon: '💼',
+					level: 'Expert',
+					children: {
+						'Business Development': { icon: '📈', level: 'Expert' },
+						'Event Production': { icon: '🎪', level: 'Expert' },
+						'International Education': { icon: '🌍', level: 'Expert' }
+					}
+				}
+			}
+		},
+		'Testing & Quality Assurance': {
+			icon: '🔍',
+			level: 'Expert',
+			children: {
+				'Test Analysis': {
+					icon: '📊',
+					level: 'Expert',
+					children: {
+						'System Testing': { icon: '⚙️', level: 'Expert' },
+						'GUI Testing': { icon: '🖥️', level: 'Expert' },
+						'Database Testing': { icon: '🗄️', level: 'Expert' },
+						'Fraud Management Testing': { icon: '🕵️', level: 'Expert' }
+					}
+				},
+				'Project Leadership': {
+					icon: '👥',
+					level: 'Expert',
+					children: {
+						'Team Leadership': { icon: '👨‍💼', level: 'Expert' },
+						'Project Management': { icon: '📋', level: 'Expert' },
+						'Quality Assurance': { icon: '✅', level: 'Expert' }
+					}
+				}
+			}
+		}
+	};
 </script>
 
 <svelte:head>
@@ -62,160 +301,225 @@
 <div class="min-h-screen">
 	<Navigation theme="blue" />
 	
-	<!-- Hero Section -->
-	<section class="relative py-32 overflow-hidden">
-		<!-- Background Image -->
-		<div class="absolute inset-0 z-0">
-			<img src="/images/about/andy_full.jpg" alt="Andy Pearson" class="w-full h-full object-cover opacity-20" />
-			<div class="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-blue-800/80"></div>
-		</div>
-		
-		<!-- Content -->
-		<div class="container-custom relative z-10">
-			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-					About Me
-				</h1>
-				<p class="text-xl text-blue-100 mb-8">
-					Lead DevOps Engineer with 20+ years of parkour coaching experience, building infrastructure and movement communities.
-				</p>
-			</div>
-		</div>
-	</section>
+
 	
 	<!-- Bio Section -->
 	<section class="py-20 bg-white dark:bg-gray-900">
 		<div class="container-custom">
-			<div class="max-w-4xl mx-auto">
-				<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 					<div>
-						<h2 class="text-3xl font-bold text-blue-800 dark:text-blue-200 mb-6">
-							Background
-						</h2>
-						<div class="prose prose-lg dark:prose-invert">
-							<p class="mb-4">
-								I'm a Lead DevOps Engineer at ThirtyThree Global with over 6 years of experience managing infrastructure, 
-								CI/CD pipelines, and cloud resources across Microsoft Azure. I specialize in infrastructure-as-code using 
-								Puppet and Terraform, Kubernetes, and automated deployment workflows.
-							</p>
-							<p class="mb-4">
-								I'm also the founder and head coach of LondonParkour Ltd, with 20+ years of parkour coaching experience. 
-								I've coached thousands of students internationally and helped establish ParkourUK as the UK's first 
-								national governing body for parkour.
-							</p>
-							<p>
-								I believe in building robust, scalable systems and fostering strong communities through movement and technology.
-							</p>
-						</div>
+											<h2 class="text-5xl font-black text-blue-800 dark:text-blue-200 mb-8">
+						Background
+					</h2>
+					<div class="prose prose-2xl dark:prose-invert">
+						<p class="mb-6 text-xl font-semibold leading-relaxed">
+							I'm a Lead DevOps Engineer at ThirtyThree Global with over 6 years of experience managing infrastructure, 
+							CI/CD pipelines, and cloud resources across Microsoft Azure. I specialize in infrastructure-as-code using 
+							Puppet and Terraform, Kubernetes, and automated deployment workflows.
+						</p>
+						<p class="mb-6 text-xl font-semibold leading-relaxed">
+							I'm also the founder and head coach of LondonParkour Ltd, with 20+ years of parkour coaching experience. 
+							I've coached thousands of students internationally and helped establish ParkourUK as the UK's first 
+							national governing body for parkour.
+						</p>
+						<p class="text-xl font-semibold leading-relaxed">
+							I believe in building robust, scalable systems and fostering strong communities through movement and technology.
+						</p>
+					</div>
 					</div>
 					<div class="text-center">
 						<img src="/images/about/andy_profile.jpg" alt="Andy Pearson" class="w-64 h-64 mx-auto rounded-full object-cover shadow-lg" />
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 	
 
 	
 	<!-- Experience Section -->
 	<section class="py-20 bg-white dark:bg-gray-900">
 		<div class="container-custom">
-			<div class="max-w-4xl mx-auto">
-				<h2 class="text-3xl font-bold text-center text-blue-800 dark:text-blue-200 mb-12">
-					Professional Experience
-				</h2>
-				
-				<div class="space-y-8">
+			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+				Professional Experience
+			</h2>
+			
+							<div class="space-y-8">
 					{#each experience as job}
-						<div class="card p-6">
+						<div class="card p-6 {job.highlighted ? 'border-2 border-blue-200 dark:border-blue-700 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800' : ''}">
 							<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-								<h3 class="text-xl font-semibold text-blue-800 dark:text-blue-200">
-									{job.title}
-								</h3>
-								<span class="text-blue-600 dark:text-blue-400 font-medium">
+								<div class="flex items-center space-x-4">
+									{#if job.logo}
+										<img src={job.logo} alt="{job.company} logo" class="w-12 h-12 rounded-lg object-cover shadow-sm" />
+									{/if}
+									<h3 class="text-3xl font-black text-blue-800 dark:text-blue-200">
+										{job.title}
+									</h3>
+								</div>
+								<span class="text-xl text-blue-600 dark:text-blue-400 font-bold">
 									{job.period}
 								</span>
 							</div>
-							<p class="text-blue-600 dark:text-blue-400 mb-2">
+							<p class="text-xl text-blue-600 dark:text-blue-400 mb-3 font-semibold">
 								{job.company}
 							</p>
-							<p class="text-gray-600 dark:text-gray-400">
+							<p class="text-lg text-gray-600 dark:text-gray-400 mb-6 font-medium leading-relaxed">
 								{job.description}
 							</p>
+							
+							{#if job.highlighted}
+								<!-- Skills Section -->
+								<div class="mb-4">
+									<h4 class="text-xl font-black text-blue-700 dark:text-blue-300 mb-3">Key Skills</h4>
+									<div class="flex flex-wrap gap-3">
+										{#each job.skills as skill}
+											<span class="px-4 py-2 bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-300 text-lg font-bold rounded-full">
+												{skill}
+											</span>
+										{/each}
+									</div>
+								</div>
+								
+								<!-- Technologies Section -->
+								<div class="mb-6">
+									<h4 class="text-xl font-black text-blue-700 dark:text-blue-300 mb-3">Technologies</h4>
+									<div class="flex flex-wrap gap-3">
+										{#each job.technologies as tech}
+											<span class="px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 text-lg font-bold rounded-full font-mono">
+												{tech}
+											</span>
+										{/each}
+									</div>
+								</div>
+								
+								<!-- Achievements Section -->
+								<div>
+									<h4 class="text-xl font-black text-blue-700 dark:text-blue-300 mb-3">Key Achievements</h4>
+									<ul class="list-disc list-inside text-lg text-gray-600 dark:text-gray-400 space-y-2 font-semibold">
+										{#each job.achievements as achievement}
+											<li>{achievement}</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
 						</div>
 					{/each}
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	
+	<!-- Skill Tree Section -->
+	<section class="py-20 bg-blue-50 dark:bg-blue-900">
+		<div class="container-custom">
+			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+				Skill Tree
+			</h2>
+				
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+					{#each Object.entries(skillTree) as [category, data]}
+						<div class="card p-6">
+							<div class="flex items-center space-x-3 mb-6">
+								<span class="text-3xl">{data.icon}</span>
+								<div>
+									<h3 class="text-3xl font-black text-blue-800 dark:text-blue-200">
+										{category}
+									</h3>
+
+								</div>
+							</div>
+							
+							<div class="space-y-4">
+								{#each Object.entries(data.children) as [subcategory, subdata]}
+									<div class="border-l-2 border-blue-200 dark:border-blue-700 pl-4">
+										<div class="flex items-center space-x-2 mb-3">
+											<span class="text-xl">{subdata.icon}</span>
+											<h4 class="text-xl font-black text-blue-700 dark:text-blue-300">
+												{subcategory}
+											</h4>
+
+										</div>
+										
+										{#if subdata.children}
+											<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 ml-4">
+												{#each Object.entries(subdata.children) as [skill, skillData]}
+													<div class="flex items-center space-x-2 text-lg">
+														<span class="text-xl">{skillData.icon}</span>
+														<span class="text-gray-700 dark:text-gray-300 font-semibold">{skill}</span>
+
+													</div>
+												{/each}
+											</div>
+										{/if}
+									</div>
+								{/each}
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		</section>
 	
 	<!-- Education Section -->
 	<section class="py-20 bg-blue-50 dark:bg-blue-900">
 		<div class="container-custom">
-			<div class="max-w-4xl mx-auto">
-				<h2 class="text-3xl font-bold text-center text-blue-800 dark:text-blue-200 mb-12">
-					Education
-				</h2>
+			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+				Education
+			</h2>
 				
 				<div class="space-y-8">
 					{#each education as edu}
 						<div class="card p-6">
 							<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-								<h3 class="text-xl font-semibold text-blue-800 dark:text-blue-200">
+								<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200">
 									{edu.degree}
 								</h3>
-								<span class="text-blue-600 dark:text-blue-400 font-medium">
+								<span class="text-lg text-blue-600 dark:text-blue-400 font-bold">
 									{edu.period}
 								</span>
 							</div>
-							<p class="text-blue-600 dark:text-blue-400 mb-2">
+							<p class="text-lg text-blue-600 dark:text-blue-400 mb-3 font-semibold">
 								{edu.school}
 							</p>
-							<p class="text-gray-600 dark:text-gray-400">
+							<p class="text-lg text-gray-600 dark:text-gray-400 font-semibold">
 								Grade: {edu.grade}
 							</p>
 						</div>
 					{/each}
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 	
 	<!-- Contact Section -->
 	<section class="py-20 bg-white dark:bg-gray-900">
 		<div class="container-custom">
-			<div class="max-w-4xl mx-auto text-center">
-				<h2 class="text-3xl font-bold text-blue-800 dark:text-blue-200 mb-12">
-					Get In Touch
-				</h2>
+			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+				Get In Touch
+			</h2>
 				
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 					<a href="mailto:{contact.email}" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
 						<div class="text-3xl mb-4">📧</div>
-						<h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">Email</h3>
-						<p class="text-blue-600 dark:text-blue-400">{contact.email}</p>
+						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">Email</h3>
+						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">{contact.email}</p>
 					</a>
 					
 					<a href={contact.github} target="_blank" rel="noopener noreferrer" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-						<div class="text-3xl mb-4">🐙</div>
-						<h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">GitHub</h3>
-						<p class="text-blue-600 dark:text-blue-400">@ioroot</p>
+						<div class="text-4xl mb-4">🐙</div>
+						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">GitHub</h3>
+						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">@ioroot</p>
 					</a>
 					
 					<a href={contact.instagram} target="_blank" rel="noopener noreferrer" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-						<div class="text-3xl mb-4">📸</div>
-						<h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">Instagram</h3>
-						<p class="text-blue-600 dark:text-blue-400">@andy_n_p</p>
+						<div class="text-4xl mb-4">📸</div>
+						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">Instagram</h3>
+						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">@andy_n_p</p>
 					</a>
 					
 					<a href={contact.youtube} target="_blank" rel="noopener noreferrer" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-						<div class="text-3xl mb-4">📺</div>
-						<h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">YouTube</h3>
-						<p class="text-blue-600 dark:text-blue-400">@AndyPearson</p>
+						<div class="text-4xl mb-4">📺</div>
+						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">YouTube</h3>
+						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">@AndyPearson</p>
 					</a>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 </div> 

@@ -69,19 +69,7 @@
 <div class="min-h-screen">
 	<Navigation theme="orange" />
 	
-	<!-- Hero Section -->
-	<section class="py-20 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800">
-		<div class="container-custom">
-			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-5xl md:text-6xl font-bold text-orange-800 dark:text-orange-200 mb-6">
-					Articles
-				</h1>
-				<p class="text-xl text-orange-600 dark:text-orange-400 mb-8">
-					Thoughts on tech, movement, and everything in between
-				</p>
-			</div>
-		</div>
-	</section>
+
 	
 	<!-- Featured Article -->
 	<section class="py-20 bg-white dark:bg-gray-900">
