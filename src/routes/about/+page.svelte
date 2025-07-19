@@ -308,21 +308,21 @@
 		<div class="container-custom">
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 					<div>
-											<h2 class="text-5xl font-black text-blue-800 dark:text-blue-200 mb-8">
+											<h2 class="text-5xl font-black text-[#434840] mb-8">
 						Background
 					</h2>
-					<div class="prose prose-2xl dark:prose-invert">
-						<p class="mb-6 text-xl font-semibold leading-relaxed">
+					<div class="prose prose-2xl">
+						<p class="mb-6 text-xl font-semibold leading-relaxed text-[#434840]">
 							I'm a Lead DevOps Engineer at ThirtyThree Global with over 6 years of experience managing infrastructure, 
 							CI/CD pipelines, and cloud resources across Microsoft Azure. I specialize in infrastructure-as-code using 
 							Puppet and Terraform, Kubernetes, and automated deployment workflows.
 						</p>
-						<p class="mb-6 text-xl font-semibold leading-relaxed">
+						<p class="mb-6 text-xl font-semibold leading-relaxed text-[#434840]">
 							I'm also the founder and head coach of LondonParkour Ltd, with 20+ years of parkour coaching experience. 
 							I've coached thousands of students internationally and helped establish ParkourUK as the UK's first 
 							national governing body for parkour.
 						</p>
-						<p class="text-xl font-semibold leading-relaxed">
+						<p class="text-xl font-semibold leading-relaxed text-[#434840]">
 							I believe in building robust, scalable systems and fostering strong communities through movement and technology.
 						</p>
 					</div>
@@ -337,42 +337,42 @@
 
 	
 	<!-- Experience Section -->
-	<section class="py-20 bg-white dark:bg-gray-900">
+	<section class="py-20 bg-[#E4EDEE]">
 		<div class="container-custom">
-			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+			<h2 class="text-5xl font-black text-center text-[#434840] mb-12">
 				Professional Experience
 			</h2>
 			
 							<div class="space-y-8">
 					{#each experience as job}
-						<div class="card p-6 {job.highlighted ? 'border-2 border-blue-200 dark:border-blue-700 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800' : ''}">
+						<div class="card p-6 {job.highlighted ? 'border-2 border-[#677A67] bg-gradient-to-r from-[#EAE6D8] to-[#E4EDEE]' : ''}">
 							<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
 								<div class="flex items-center space-x-4">
 									{#if job.logo}
 										<img src={job.logo} alt="{job.company} logo" class="w-12 h-12 rounded-lg object-cover shadow-sm" />
 									{/if}
-									<h3 class="text-3xl font-black text-blue-800 dark:text-blue-200">
+									<h3 class="text-3xl font-black text-[#434840]">
 										{job.title}
 									</h3>
 								</div>
-								<span class="text-xl text-blue-600 dark:text-blue-400 font-bold">
+								<span class="text-xl text-[#677A67] font-bold">
 									{job.period}
 								</span>
 							</div>
-							<p class="text-xl text-blue-600 dark:text-blue-400 mb-3 font-semibold">
+							<p class="text-xl text-[#677A67] mb-3 font-semibold">
 								{job.company}
 							</p>
-							<p class="text-lg text-gray-600 dark:text-gray-400 mb-6 font-medium leading-relaxed">
+							<p class="text-lg text-[#434840] mb-6 font-medium leading-relaxed">
 								{job.description}
 							</p>
 							
 							{#if job.highlighted}
 								<!-- Skills Section -->
 								<div class="mb-4">
-									<h4 class="text-xl font-black text-blue-700 dark:text-blue-300 mb-3">Key Skills</h4>
+									<h4 class="text-xl font-black text-[#677A67] mb-3">Key Skills</h4>
 									<div class="flex flex-wrap gap-3">
 										{#each job.skills as skill}
-											<span class="px-4 py-2 bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-300 text-lg font-bold rounded-full">
+											<span class="px-4 py-2 bg-[#EAE6D8] text-[#434840] text-lg font-bold rounded-full">
 												{skill}
 											</span>
 										{/each}
@@ -381,10 +381,10 @@
 								
 								<!-- Technologies Section -->
 								<div class="mb-6">
-									<h4 class="text-xl font-black text-blue-700 dark:text-blue-300 mb-3">Technologies</h4>
+									<h4 class="text-xl font-black text-[#677A67] mb-3">Technologies</h4>
 									<div class="flex flex-wrap gap-3">
 										{#each job.technologies as tech}
-											<span class="px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 text-lg font-bold rounded-full font-mono">
+											<span class="px-4 py-2 bg-[#E4EDEE] text-[#434840] text-lg font-bold rounded-full font-mono">
 												{tech}
 											</span>
 										{/each}
@@ -393,8 +393,8 @@
 								
 								<!-- Achievements Section -->
 								<div>
-									<h4 class="text-xl font-black text-blue-700 dark:text-blue-300 mb-3">Key Achievements</h4>
-									<ul class="list-disc list-inside text-lg text-gray-600 dark:text-gray-400 space-y-2 font-semibold">
+									<h4 class="text-xl font-black text-[#677A67] mb-3">Key Achievements</h4>
+									<ul class="list-disc list-inside text-lg text-[#434840] space-y-2 font-semibold">
 										{#each job.achievements as achievement}
 											<li>{achievement}</li>
 										{/each}
@@ -408,9 +408,9 @@
 		</section>
 	
 	<!-- Skill Tree Section -->
-	<section class="py-20 bg-blue-50 dark:bg-blue-900">
+	<section class="py-20 bg-[#EAE6D8]">
 		<div class="container-custom">
-			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+			<h2 class="text-5xl font-black text-center text-[#434840] mb-12">
 				Skill Tree
 			</h2>
 				
@@ -420,7 +420,7 @@
 							<div class="flex items-center space-x-3 mb-6">
 								<span class="text-3xl">{data.icon}</span>
 								<div>
-									<h3 class="text-3xl font-black text-blue-800 dark:text-blue-200">
+									<h3 class="text-3xl font-black text-[#434840]">
 										{category}
 									</h3>
 
@@ -432,7 +432,7 @@
 									<div class="border-l-2 border-blue-200 dark:border-blue-700 pl-4">
 										<div class="flex items-center space-x-2 mb-3">
 											<span class="text-xl">{subdata.icon}</span>
-											<h4 class="text-xl font-black text-blue-700 dark:text-blue-300">
+											<h4 class="text-xl font-black text-[#677A67]">
 												{subcategory}
 											</h4>
 
@@ -443,7 +443,7 @@
 												{#each Object.entries(subdata.children) as [skill, skillData]}
 													<div class="flex items-center space-x-2 text-lg">
 														<span class="text-xl">{skillData.icon}</span>
-														<span class="text-gray-700 dark:text-gray-300 font-semibold">{skill}</span>
+														<span class="text-[#434840] font-semibold">{skill}</span>
 
 													</div>
 												{/each}
@@ -459,9 +459,9 @@
 		</section>
 	
 	<!-- Education Section -->
-	<section class="py-20 bg-blue-50 dark:bg-blue-900">
+	<section class="py-20 bg-[#E4EDEE]">
 		<div class="container-custom">
-			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+			<h2 class="text-5xl font-black text-center text-[#434840] mb-12">
 				Education
 			</h2>
 				
@@ -469,17 +469,17 @@
 					{#each education as edu}
 						<div class="card p-6">
 							<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-								<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200">
+								<h3 class="text-2xl font-black text-[#434840]">
 									{edu.degree}
 								</h3>
-								<span class="text-lg text-blue-600 dark:text-blue-400 font-bold">
+								<span class="text-lg text-[#677A67] font-bold">
 									{edu.period}
 								</span>
 							</div>
-							<p class="text-lg text-blue-600 dark:text-blue-400 mb-3 font-semibold">
+							<p class="text-lg text-[#677A67] mb-3 font-semibold">
 								{edu.school}
 							</p>
-							<p class="text-lg text-gray-600 dark:text-gray-400 font-semibold">
+							<p class="text-lg text-[#434840] font-semibold">
 								Grade: {edu.grade}
 							</p>
 						</div>
@@ -489,35 +489,35 @@
 		</section>
 	
 	<!-- Contact Section -->
-	<section class="py-20 bg-white dark:bg-gray-900">
+	<section class="py-20 bg-white">
 		<div class="container-custom">
-			<h2 class="text-5xl font-black text-center text-blue-800 dark:text-blue-200 mb-12">
+			<h2 class="text-5xl font-black text-center text-[#434840] mb-12">
 				Get In Touch
 			</h2>
 				
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 					<a href="mailto:{contact.email}" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
 						<div class="text-3xl mb-4">📧</div>
-						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">Email</h3>
-						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">{contact.email}</p>
+						<h3 class="text-2xl font-black text-[#434840] mb-3">Email</h3>
+						<p class="text-lg text-[#677A67] font-semibold">{contact.email}</p>
 					</a>
 					
 					<a href={contact.github} target="_blank" rel="noopener noreferrer" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
 						<div class="text-4xl mb-4">🐙</div>
-						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">GitHub</h3>
-						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">@ioroot</p>
+						<h3 class="text-2xl font-black text-[#434840] mb-3">GitHub</h3>
+						<p class="text-lg text-[#677A67] font-semibold">@ioroot</p>
 					</a>
 					
 					<a href={contact.instagram} target="_blank" rel="noopener noreferrer" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
 						<div class="text-4xl mb-4">📸</div>
-						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">Instagram</h3>
-						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">@andy_n_p</p>
+						<h3 class="text-2xl font-black text-[#434840] mb-3">Instagram</h3>
+						<p class="text-lg text-[#677A67] font-semibold">@andy_n_p</p>
 					</a>
 					
 					<a href={contact.youtube} target="_blank" rel="noopener noreferrer" class="card p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
 						<div class="text-4xl mb-4">📺</div>
-						<h3 class="text-2xl font-black text-blue-800 dark:text-blue-200 mb-3">YouTube</h3>
-						<p class="text-lg text-blue-600 dark:text-blue-400 font-semibold">@AndyPearson</p>
+						<h3 class="text-2xl font-black text-[#434840] mb-3">YouTube</h3>
+						<p class="text-lg text-[#677A67] font-semibold">@AndyPearson</p>
 					</a>
 				</div>
 			</div>

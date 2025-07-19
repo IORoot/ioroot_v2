@@ -66,27 +66,27 @@
 	<meta name="description" content="Read Andy Pearson's thoughts on web development, technology, parkour, and community building." />
 </svelte:head>
 
-<div class="min-h-screen">
-	<Navigation theme="orange" />
+<div class="min-h-screen bg-[#E4EDEE]">
+	<Navigation theme="neutral" />
 	
 
 	
 	<!-- Featured Article -->
-	<section class="py-20 bg-white dark:bg-gray-900">
+	<section class="py-20 bg-white">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto">
-				<h2 class="text-3xl font-bold text-orange-800 dark:text-orange-200 mb-8">
+				<h2 class="text-5xl font-black text-[#434840] mb-8">
 					Featured Article
 				</h2>
 				
-				<div class="card p-8 border-2 border-orange-200 dark:border-orange-700">
+				<div class="card p-8 border-2 border-[#87A7AC]">
 					<div class="flex items-center space-x-4 mb-6">
 						<span class="text-4xl">{featuredArticle.icon}</span>
 						<div>
-							<h3 class="text-2xl font-bold text-orange-800 dark:text-orange-200">
+							<h3 class="text-3xl font-black text-[#434840]">
 								{featuredArticle.title}
 							</h3>
-							<div class="flex items-center space-x-4 text-sm text-orange-600 dark:text-orange-400">
+							<div class="flex items-center space-x-4 text-lg text-[#677A67]">
 								<span>{featuredArticle.date}</span>
 								<span>•</span>
 								<span>{featuredArticle.readTime}</span>
@@ -94,13 +94,13 @@
 						</div>
 					</div>
 					
-					<p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
+					<p class="text-xl text-[#434840] mb-6 font-semibold">
 						{featuredArticle.excerpt}
 					</p>
 					
 					<div class="flex flex-wrap gap-2 mb-6">
 						{#each featuredArticle.tags as tag}
-							<span class="px-3 py-1 bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-300 text-sm rounded-full">
+							<span class="px-4 py-2 bg-[#EAE6D8] text-[#434840] text-lg font-bold rounded-full">
 								{tag}
 							</span>
 						{/each}
@@ -108,10 +108,10 @@
 					
 					<a 
 						href="/articles/{featuredArticle.slug}" 
-						class="inline-flex items-center space-x-2 bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors duration-200"
+						class="inline-flex items-center space-x-2 bg-[#677A67] text-white px-8 py-4 rounded-lg hover:bg-[#87A7AC] transition-colors duration-200 text-xl font-bold"
 					>
 						<span>Read Article</span>
-						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
 						</svg>
 					</a>
@@ -121,24 +121,24 @@
 	</section>
 	
 	<!-- All Articles -->
-	<section class="py-20 bg-orange-50 dark:bg-orange-900">
+	<section class="py-20 bg-[#E4EDEE]">
 		<div class="container-custom">
 			<div class="max-w-6xl mx-auto">
-				<h2 class="text-3xl font-bold text-orange-800 dark:text-orange-200 mb-8">
+				<h2 class="text-5xl font-black text-[#434840] mb-8">
 					All Articles
 				</h2>
 				
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 					{#each articles.slice(1) as article}
-						<a href="/articles/{article.slug}" class="card group hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border-2 border-orange-200 dark:border-orange-700">
+						<a href="/articles/{article.slug}" class="card group hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border-2 border-[#87A7AC] bg-white">
 							<div class="p-6">
 								<div class="flex items-center space-x-3 mb-4">
 									<span class="text-2xl">{article.icon}</span>
 									<div class="flex-1">
-										<h3 class="text-lg font-semibold text-orange-800 dark:text-orange-200 group-hover:text-orange-600 dark:group-hover:text-orange-400">
+										<h3 class="text-xl font-black text-[#434840] group-hover:text-[#677A67]">
 											{article.title}
 										</h3>
-										<div class="flex items-center space-x-2 text-sm text-orange-600 dark:text-orange-400">
+										<div class="flex items-center space-x-2 text-lg text-[#677A67]">
 											<span>{article.date}</span>
 											<span>•</span>
 											<span>{article.readTime}</span>
@@ -146,18 +146,18 @@
 									</div>
 								</div>
 								
-								<p class="text-gray-600 dark:text-gray-400 mb-4">
+								<p class="text-[#434840] mb-4 font-semibold">
 									{article.excerpt}
 								</p>
 								
 								<div class="flex flex-wrap gap-2">
 									{#each article.tags.slice(0, 2) as tag}
-										<span class="px-2 py-1 bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-300 text-xs rounded-full">
+										<span class="px-3 py-1 bg-[#EAE6D8] text-[#434840] text-sm font-bold rounded-full">
 											{tag}
 										</span>
 									{/each}
 									{#if article.tags.length > 2}
-										<span class="px-2 py-1 bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-300 text-xs rounded-full">
+										<span class="px-3 py-1 bg-[#EAE6D8] text-[#434840] text-sm font-bold rounded-full">
 											+{article.tags.length - 2} more
 										</span>
 									{/if}
