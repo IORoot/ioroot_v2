@@ -1,0 +1,51 @@
+---
+alwaysApply: true
+---
+
+[project]
+- This is a personal portfolio website for Andy Pearson. 
+- This is a modern website that gets high performance, seo and usability scores in googles lighthouse tool.
+- The site is built with sveltekit, tailwind, javascript.
+
+
+[sitemap]
+The website is built with the following structure:
+
+- Homepage 
+- About Me
+	- CV
+	- Jobs
+	- Skills / Projects
+	- Social Media / Links
+	- Parkour
+    - Contact
+- Projects 
+	- Github Project Link - Use Readmes
+	- Designs
+- Websites
+	- LondonParkour.com
+	- IORoot.com
+	- RF-1.com
+	- SVGEncode.com
+	- HouseQuests.com
+- Articles
+	- Article Pages
+
+[themes]
+Each section of the website will have a different theme
+
+- Homepage (Modernism / Grid Theme)
+- About Me ( Professional Theme )
+- Projects ( Coding / AI Theme )
+- Websites ( 8-Bit game Theme )
+- Articles (80s retro theme)
+
+[details]
+- Articles Page : A Chronological list of articles. The individual articles should be written in markdown .mdx files. These will be used to build the article pages.
+- Websites Page : This will be a grid of websites. These website pages are written in markdown .mdx files. They'll contain links to the external sites, images, and a summary.
+- Projects Page : An organised grid of projects by categories. All individual projects are the Readme files of my Github account repos.
+- About Me Page : A single page with details about me.
+- Homepage Page : A pretty collection of links, images, hero slideshows that highlight the newest content on the site.
+
+[docs]
+Whenever you create new functionality or thing that need documentation, add a file to the ./docs folder.

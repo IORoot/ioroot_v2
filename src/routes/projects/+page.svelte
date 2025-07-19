@@ -1,438 +1,159 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import type { InteractiveObject, CollisionArea } from '$lib/types';
-	import AnimatedCharacter from '$lib/components/AnimatedCharacter.svelte';
-	import InteractiveDebug from '$lib/components/InteractiveDebug.svelte';
-	import CollisionDebug from '$lib/components/CollisionDebug.svelte';
-	import ScummMenu from '$lib/components/ScummMenu.svelte';
-	import { checkCollision, findValidPath } from '$lib/collisionDetection';
-	import { onMount } from 'svelte';
-
-	// Character position (responsive) - Projects page starts center left
-	let characterX = 1000;
-	let characterY = 500; // Projects page starts at center
-	let targetX = 200;
-	let targetY = 300;
-	let isMoving = false;
-	let gameScene: HTMLElement;
-	let showInteractiveDebug = false;
-	let showCollisionDebug = false;
-	let inventory: string[] = [];
-	let mouseCoordinates = { x: 0, y: 0 };
-
-	// Initialize on mount
-	onMount(() => {
-		// Any initialization can go here
-	});
-
-	// Responsive interactive objects using percentages
-	let interactiveObjects: InteractiveObject[] = [
-		{
-			id: 'project1',
-			x: 25,
-			y: 15,
-			width: 20,
-			height: 16,
-			label: 'Web App',
-			action: () => window.open('https://example.com/project1', '_blank')
-		},
-		{
-			id: 'project2',
-			x: 40,
-			y: 12,
-			width: 20,
-			height: 16,
-			label: 'Mobile App',
-			action: () => window.open('https://example.com/project2', '_blank')
-		},
-		{
-			id: 'project3',
-			x: 55,
-			y: 18,
-			width: 20,
-			height: 16,
-			label: 'API Service',
-			action: () => window.open('https://example.com/project3', '_blank')
-		},
-		{
-			id: 'back',
-			x: 5,
-			y: 5,
-			width: 16,
-			height: 8,
-			label: '← Back',
-			action: () => goto('/')
-		}
-	];
-
-	// Collision areas - define where character can't walk
-	let collisionAreas: CollisionArea[] = [
-		{
-			id: 'section1',
-			x: 0,
-			y: 0,
-			width: 25,
-			height: 85,
-			type: 'blocked',
-			label: 'section1'
-		},
-		{
-			id: 'section2',
-			x: 25,
-			y: 0,
-			width: 25,
-			height: 70,
-			type: 'blocked',
-			label: 'section2'
-		},
-		{
-			id: 'section3',
-			x: 50,
-			y: 0,
-			width: 25,
-			height: 60,
-			type: 'blocked',
-			label: 'section3'
-		},
-		{
-			id: 'section4',
-			x: 75,
-			y: 0,
-			width: 15,
-			height: 55,
-			type: 'blocked',
-			label: 'section4'
-		},
-		{
-			id: 'section5',
-			x: 90,
-			y: 0,
-			width: 10,
-			height: 50,
-			type: 'blocked',
-			label: 'section5'
-		}
-	];
-
-	// Convert percentage positions to pixel positions
-	function getPixelPosition(percentX: number, percentY: number, percentWidth: number, percentHeight: number) {
-		if (!gameScene) return { x: 0, y: 0, width: 0, height: 0 };
-		
-		const rect = gameScene.getBoundingClientRect();
-		return {
-			x: (percentX / 100) * rect.width,
-			y: (percentY / 100) * rect.height,
-			width: (percentWidth / 100) * rect.width,
-			height: (percentHeight / 100) * rect.height
-		};
-	}
-
-	function handleSceneClick(event: MouseEvent) {
-		if (isMoving) return;
-
-		const rect = gameScene.getBoundingClientRect();
-		const clickX = event.clientX - rect.left;
-		const clickY = event.clientY - rect.top;
-
-		// Update mouse coordinates for display
-		mouseCoordinates = { x: Math.round(clickX), y: Math.round(clickY) };
-
-		const clickedObject = interactiveObjects.find(obj => {
-			const pos = getPixelPosition(obj.x, obj.y, obj.width, obj.height);
-			return clickX >= pos.x && clickX <= pos.x + pos.width &&
-				   clickY >= pos.y && clickY <= pos.y + pos.height;
-		});
-
-		if (clickedObject) {
-			clickedObject.action();
-			return;
-		}
-
-		// Check if clicking inside collision areas
-		for (const area of collisionAreas) {
-			const pos = getPixelPosition(area.x, area.y, area.width, area.height);
-			if (clickX >= pos.x && clickX <= pos.x + pos.width &&
-				clickY >= pos.y && clickY <= pos.y + pos.height) {
-				console.log('Clicked inside collision area:', area.label);
-				return; // Don't move if clicking in collision area
-			}
-		}
-
-		// Calculate character position so bottom center goes to clicked location
-		let characterWidth = 960;
-		let characterHeight = 960;
-		
-		// Responsive sizing based on screen width
-		if (rect.width <= 768) {
-			characterWidth = 480;
-			characterHeight = 480;
-		}
-		
-		const characterTargetX = clickX - (characterWidth / 2); // Center horizontally
-		const characterTargetY = clickY - characterHeight + 200; // Bottom vertically, plus 200px down
-
-		// Move character to calculated position
-		moveCharacter(characterTargetX, characterTargetY);
-	}
-
-	// Handle keyboard navigation
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			const target = event.target as HTMLElement;
-			if (target.classList.contains('interactive-object')) {
-				const objectId = target.dataset.objectId;
-				const object = interactiveObjects.find(obj => obj.id === objectId);
-				if (object) {
-					object.action();
-				}
-			}
-		}
-	}
-
-	function moveCharacter(newTargetX: number, newTargetY: number) {
-		if (!gameScene) return;
-		
-		const rect = gameScene.getBoundingClientRect();
-		let characterWidth = 960;
-		let characterHeight = 960;
-		
-		// Responsive sizing based on screen width
-		if (rect.width <= 768) {
-			characterWidth = 480;
-			characterHeight = 480;
-		}
-
-		// Check if target position is valid
-		if (checkCollision(newTargetX, newTargetY, characterWidth, characterHeight, collisionAreas, rect.width, rect.height)) {
-			console.log('Target position blocked, finding alternative path...');
-		}
-
-		// Find valid path to target
-		const validTarget = findValidPath(
-			characterX,
-			characterY,
-			newTargetX,
-			newTargetY,
-			characterWidth,
-			characterHeight,
-			collisionAreas,
-			rect.width,
-			rect.height
-		);
-
-		if (!validTarget) {
-			console.log('No valid path to target');
-			return;
-		}
-
-		// Check if the valid target is the same as current position
-		const distanceToTarget = Math.sqrt((validTarget.x - characterX) ** 2 + (validTarget.y - characterY) ** 2);
-		if (distanceToTarget < 5) {
-			console.log('Target too close to current position, not moving');
-			return;
-		}
-
-		isMoving = true;
-		targetX = validTarget.x;
-		targetY = validTarget.y;
-		
-		const startX = characterX;
-		const startY = characterY;
-		const distance = Math.sqrt((targetX - startX) ** 2 + (targetY - startY) ** 2);
-		const duration = Math.min(distance / 0.5, 3000); // Slower movement: 0.5 pixels per ms, max 3 seconds
-		
-		const startTime = performance.now();
-		
-		function animate(currentTime: number) {
-			const elapsed = currentTime - startTime;
-			const progress = Math.min(elapsed / duration, 1);
-			
-			// Easing function for smooth movement
-			const easeProgress = 1 - Math.pow(1 - progress, 3);
-			
-			const newX = startX + (targetX - startX) * easeProgress;
-			const newY = startY + (targetY - startY) * easeProgress;
-			
-			// Check collision at each step
-			if (checkCollision(newX, newY, characterWidth, characterHeight, collisionAreas, rect.width, rect.height)) {
-				console.log('Collision detected during movement, stopping');
-				isMoving = false;
-				return;
-			}
-			
-			characterX = newX;
-			characterY = newY;
-			
-			if (progress < 1) {
-				requestAnimationFrame(animate);
-			} else {
-				isMoving = false;
-			}
-		}
-		
-		requestAnimationFrame(animate);
-	}
-
-	function toggleInteractiveDebug() {
-		showInteractiveDebug = !showInteractiveDebug;
-	}
-
-	function toggleCollisionDebug() {
-		showCollisionDebug = !showCollisionDebug;
-	}
+  import Navigation from '$lib/components/Navigation.svelte';
+  import type { PageData } from './$types';
+	
+	export let data: PageData;
+	
+	$: ({ repos, categories, totalRepos } = data);
 </script>
 
-<div class="game-container">
-	<div 
-		class="game-scene" 
-		bind:this={gameScene}
-		on:click={handleSceneClick}
-		on:keydown={handleKeydown}
-		role="button"
-		tabindex="0"
-		aria-label="Projects scene - click to move character or interact with projects"
-	>
-		<!-- Background Layer -->
-		<div class="background-layer" style="background-image: url('/images/backgrounds/projects-bg.png')">
-		<!-- Interactive Objects -->
-		{#each interactiveObjects as object}
-			{@const pos = getPixelPosition(object.x, object.y, object.width, object.height)}
-			<div 
-				class="interactive-object"
-				style="left: {pos.x}px; top: {pos.y}px; width: {pos.width}px; height: {pos.height}px;"
-				title={object.label}
-				data-object-id={object.id}
-				role="button"
-				tabindex="0"
-				aria-label="Click to view {object.label}"
-			>
-				<div class="object-label bg-green-500 bg-opacity-30 border-2 border-green-400 text-white text-sm">
-					{object.label}
-				</div>
-			</div>
-		{/each}
+<svelte:head>
+	<title>Projects - Andy Pearson</title>
+	<meta name="description" content="Explore Andy Pearson's coding projects, web applications, and technical work." />
+</svelte:head>
 
-		<!-- Animated Character -->
-		<AnimatedCharacter 
-			x={characterX}
-			y={characterY}
-			isMoving={isMoving}
-			targetX={targetX}
-			targetY={targetY}
-		/>
-
-		<!-- Foreground Layer -->
-		<div class="foreground-layer" style="background-image: url('/images/backgrounds/projects-fg.png')"></div>
-
-		<!-- Interactive Debug (optional) -->
-		<InteractiveDebug 
-			interactiveObjects={interactiveObjects}
-			containerWidth={gameScene?.getBoundingClientRect().width || 0}
-			containerHeight={gameScene?.getBoundingClientRect().height || 0}
-			showDebug={showInteractiveDebug}
-		/>
-
-		<!-- Collision Debug (optional) -->
-		<CollisionDebug 
-			collisionAreas={collisionAreas}
-			containerWidth={gameScene?.getBoundingClientRect().width || 0}
-			containerHeight={gameScene?.getBoundingClientRect().height || 0}
-			showDebug={showCollisionDebug}
-		/>
-		</div>
-	</div>
-
-	<!-- SCUMM-style Menu -->
-	<ScummMenu />
+<div class="min-h-screen">
+	<Navigation theme="tech" />
 	
-	<!-- Debug Controls -->
-	<div class="debug-controls">
-		<button 
-			class="debug-button"
-			class:active={showCollisionDebug}
-			on:click={toggleCollisionDebug}
-			aria-label="Toggle collision debug mode"
-			title="Toggle collision areas visibility"
-		>
-			{showCollisionDebug ? 'Hide' : 'Show'} Collisions
-		</button>
-		<button 
-			class="debug-button"
-			class:active={showInteractiveDebug}
-			on:click={toggleInteractiveDebug}
-			aria-label="Toggle interactive debug mode"
-			title="Toggle interactive areas visibility"
-		>
-			{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
-		</button>
-		
-		<!-- Mouse Coordinates Display -->
-		<div class="coordinates-display">
-			<div class="coordinate-label">Mouse Position:</div>
-			<div class="coordinate-value">X: {mouseCoordinates.x}, Y: {mouseCoordinates.y}</div>
+	<!-- Hero Section -->
+	<section class="py-20 bg-gradient-to-br from-tech-50 to-tech-100 dark:from-tech-900 dark:to-tech-800">
+		<div class="container-custom">
+			<div class="max-w-4xl mx-auto text-center">
+				<h1 class="text-5xl md:text-6xl font-bold text-tech-800 dark:text-tech-200 mb-6">
+					Projects
+				</h1>
+				<p class="text-xl text-tech-600 dark:text-tech-400 mb-8">
+					Exploring the intersection of code, AI, and user experience
+				</p>
+			</div>
 		</div>
-	</div>
-</div>
-
-<style>
-	.debug-controls {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		z-index: 30;
-		display: flex;
-		flex-direction: column;
-		gap: 5px;
-	}
-
-	.debug-button {
-		background: rgba(0, 0, 0, 0.7);
-		color: white;
-		border: 1px solid #666;
-		padding: 8px 12px;
-		border-radius: 4px;
-		font-size: 12px;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		white-space: nowrap;
-	}
-
-	.debug-button:hover {
-		background: rgba(0, 0, 0, 0.8);
-		border-color: #888;
-	}
-
-	.debug-button.active {
-		background: rgba(0, 0, 255, 0.7);
-		border-color: #4444ff;
-	}
-
-	.debug-button.active:hover {
-		background: rgba(0, 0, 255, 0.8);
-	}
-
-	.coordinates-display {
-		background: rgba(0, 0, 0, 0.8);
-		color: #00ff00;
-		border: 1px solid #00ff00;
-		padding: 8px 12px;
-		border-radius: 4px;
-		font-size: 11px;
-		font-family: 'Courier New', monospace;
-		margin-top: 5px;
-		text-align: center;
-	}
-
-	.coordinate-label {
-		font-weight: bold;
-		margin-bottom: 2px;
-	}
-
-	.coordinate-value {
-		font-size: 10px;
-		opacity: 0.9;
-	}
-
-
-</style> 
+	</section>
+	
+	<!-- Projects by Category -->
+	<section class="py-20 bg-white dark:bg-gray-900">
+		<div class="container-custom">
+			{#if data.error}
+				<!-- Error State -->
+				<div class="max-w-2xl mx-auto text-center">
+					<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-8 mb-8">
+						<div class="flex justify-center mb-4">
+							<svg class="h-12 w-12 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+								<path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+							</svg>
+						</div>
+						<h3 class="text-lg font-medium text-yellow-800 mb-2">
+							GitHub API Rate Limited
+						</h3>
+						<p class="text-yellow-700 mb-4">
+							{data.error}
+						</p>
+						<p class="text-sm text-yellow-600">
+							The projects will be available once the rate limit resets.
+						</p>
+					</div>
+				</div>
+			{:else}
+				<!-- Stats -->
+				<div class="text-center mb-12">
+					<h2 class="text-3xl font-bold text-tech-800 dark:text-tech-200 mb-4">
+						{totalRepos} Projects from GitHub
+					</h2>
+					<p class="text-tech-600 dark:text-tech-400">
+						Automatically updated from your GitHub repositories
+					</p>
+				</div>
+			
+			{#each categories as category}
+				<div class="mb-16">
+					<h2 class="text-3xl font-bold text-tech-800 dark:text-tech-200 mb-8 flex items-center">
+						<span class="text-4xl mr-4">{category.icon}</span>
+						{category.name}
+						<span class="ml-4 text-lg text-tech-600 dark:text-tech-400">
+							({category.repos.length} projects)
+						</span>
+					</h2>
+					
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{#each category.repos as repo}
+							<a href="/projects/{repo.name}" class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+								<div class="p-6">
+									<!-- Header -->
+									<div class="flex items-start justify-between mb-4">
+										<div class="flex-1">
+											<h3 class="text-xl font-semibold text-tech-800 dark:text-tech-200 mb-2 group-hover:text-tech-600 dark:group-hover:text-tech-400">
+												{repo.name}
+											</h3>
+											<p class="text-sm text-tech-600 dark:text-tech-400 mb-2">
+												{repo.formattedDate}
+											</p>
+										</div>
+										<div class="flex items-center space-x-2 text-sm text-tech-600 dark:text-tech-400">
+											<span class="flex items-center">
+												⭐ {repo.stargazers_count}
+											</span>
+											<span class="flex items-center">
+												🍴 {repo.forks_count}
+											</span>
+										</div>
+									</div>
+									
+									<!-- Description -->
+									{#if repo.description}
+										<p class="text-gray-600 dark:text-gray-400 mb-4">
+											{repo.description}
+										</p>
+									{/if}
+									
+									<!-- Tags -->
+									{#if repo.tags.length > 0}
+										<div class="flex flex-wrap gap-2 mb-4">
+											{#each repo.tags.slice(0, 5) as tag}
+												<span class="px-2 py-1 bg-tech-100 text-tech-700 dark:bg-tech-800 dark:text-tech-300 text-xs rounded-full">
+													{tag}
+												</span>
+											{/each}
+											{#if repo.tags.length > 5}
+												<span class="px-2 py-1 bg-tech-100 text-tech-700 dark:bg-tech-800 dark:text-tech-300 text-xs rounded-full">
+													+{repo.tags.length - 5} more
+												</span>
+											{/if}
+										</div>
+									{/if}
+									
+									<!-- Links -->
+									<div class="flex space-x-4">
+										<a 
+											href={repo.html_url} 
+											target="_blank" 
+											rel="noopener noreferrer"
+											class="flex items-center space-x-2 text-tech-600 dark:text-tech-400 hover:text-tech-700 dark:hover:text-tech-300"
+										>
+											<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+												<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+											</svg>
+											<span>View on GitHub</span>
+										</a>
+										{#if repo.homepage}
+											<a 
+												href={repo.homepage} 
+												target="_blank" 
+												rel="noopener noreferrer"
+												class="flex items-center space-x-2 text-tech-600 dark:text-tech-400 hover:text-tech-700 dark:hover:text-tech-300"
+											>
+												<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+												</svg>
+												<span>Live Demo</span>
+											</a>
+										{/if}
+									</div>
+								</div>
+							</a>
+						{/each}
+					</div>
+				</div>
+			{/each}
+			{/if}
+		</div>
+	</section>
+</div> 

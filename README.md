@@ -1,170 +1,157 @@
-# Adventure Game Website
+# Andy Pearson Portfolio Website
 
-A side-scrolling point-and-click adventure game website built with SvelteKit, TailwindCSS, and TypeScript. The website features you as the main character navigating through different "rooms" that represent different sections of your portfolio.
+A modern, high-performance personal portfolio website built with SvelteKit, Tailwind CSS, and TypeScript.
 
-## Features
+## 🚀 Features
 
-- **Point-and-Click Navigation**: Click anywhere in the scene to move your character
-- **Interactive Objects**: Click on objects to navigate to different pages or open links
-- **SCUMM-style Menu**: Classic LucasArts-style menu system at the bottom
-- **Smooth Animations**: Character movement with easing functions
-- **Responsive Design**: Works on different screen sizes
-- **Sprite System**: Easy to add and manage different sprites and graphics
+- **Multi-theme Design**: Each section has its own unique theme
+  - 🏠 Homepage: Modernism/Grid Theme
+  - 👤 About: Professional Theme  
+  - 💻 Projects: Coding/AI Theme
+  - 🌐 Websites: 8-Bit Game Theme
+  - 📝 Articles: 80s Retro Theme
 
-## Project Structure
+- **Performance Optimized**: Built for high Lighthouse scores
+- **SEO Friendly**: Proper meta tags and structured content
+- **Responsive Design**: Mobile-first approach
+- **Dark Mode Support**: Automatic theme switching
+- **Markdown Support**: Articles and content in MDX format
 
-```
-src/
-├── lib/
-│   ├── types.ts          # TypeScript type definitions
-│   ├── stores.ts         # Svelte stores for game state
-│   └── spriteManager.ts  # Sprite management system
-├── routes/
-│   ├── +layout.svelte    # Main layout
-│   ├── +page.svelte      # Home page (main game scene)
-│   ├── projects/         # Projects page
-│   ├── websites/         # Websites page
-│   ├── articles/         # Articles page
-│   └── about/            # About page
-└── app.css              # Main styles with TailwindCSS
-```
+## 🛠️ Quick Start
 
-## Getting Started
-
-1. Install dependencies:
+1. **Install dependencies:**
    ```bash
+   # Option 1: Using the Node.js script
+   node install.js
+   
+   # Option 2: Using npm directly
    npm install
+   
+   # Option 3: Using the shell script
+   chmod +x install-deps.sh
+   ./install-deps.sh
    ```
 
-2. Start the development server:
+2. **Start development server:**
    ```bash
    npm run dev
    ```
 
-3. Open your browser to `http://localhost:5173`
+3. **Open your browser:**
+   Navigate to `http://localhost:5173`
 
-## Adding Your Artwork
+## 📁 Project Structure
 
-### Sprites
-Place your sprite images in the `static/images/sprites/` directory:
-- `character.png` - Your character sprite (64x64px recommended)
-- `computer.png` - Computer object sprite
-- `bookshelf.png` - Bookshelf object sprite
-- `window.png` - Window object sprite
-- `project.png` - Project object sprite
-- `website.png` - Website object sprite
-- `article.png` - Article object sprite
-- `link.png` - Link object sprite
-
-### Backgrounds
-Place your background images in the `static/images/backgrounds/` directory:
-- `home-bg.png` - Home office background
-- `projects-bg.png` - Projects room background
-- `websites-bg.png` - Websites gallery background
-- `articles-bg.jpg` - Articles library background
-- `about-bg.jpg` - About page background
-
-### Customizing Sprites
-
-1. **Add new sprites**: Edit `src/lib/spriteManager.ts` and add your sprite configuration:
-
-```typescript
-{
-  id: 'my-sprite',
-  url: '/images/sprites/my-sprite.png',
-  width: 100,
-  height: 80,
-  animationFrames: 4 // Optional for animated sprites
-}
+```
+src/
+├── lib/
+│   └── components/          # Reusable components
+├── routes/
+│   ├── +layout.svelte      # Root layout
+│   ├── +page.svelte        # Homepage
+│   ├── about/
+│   ├── projects/
+│   ├── websites/
+│   └── articles/
+├── content/
+│   ├── articles/           # MDX article files
+│   └── websites/           # MDX website files
+├── app.css                 # Global styles
+└── app.html               # HTML template
 ```
 
-2. **Register the sprite**: Call `registerSprite()` with your sprite configuration.
+## 🎨 Themes
 
-### Customizing Scenes
+Each section uses a different color palette:
 
-1. **Add interactive objects**: Edit the `interactiveObjects` array in each page:
+- **Modern**: Clean, grid-based design for homepage
+- **Professional**: Blue tones for about page
+- **Tech**: Purple/neon colors for projects
+- **Game**: Yellow/orange 8-bit aesthetic for websites
+- **Retro**: Pink/purple 80s vibe for articles
 
-```typescript
-{
-  id: 'my-object',
-  x: 300,
-  y: 150,
-  width: 100,
-  height: 80,
-  label: 'My Object',
-  action: () => window.open('https://example.com', '_blank')
-}
-```
+## 📝 Content Management
 
-2. **Change backgrounds**: Update the background style in each page's game scene.
+### Articles
+- Stored as `.mdx` files in `src/content/articles/`
+- Frontmatter for metadata (title, date, description, tags)
+- Automatic chronological listing
 
-## Game Mechanics
+### Websites
+- Stored as `.mdx` files in `src/content/websites/`
+- Include external links, images, and summaries
+- Grid layout with 8-bit game theme
 
-### Character Movement
-- Click anywhere in the scene to move your character
-- Character movement is animated with easing functions
-- Movement is blocked while animations are running
+### Projects
+- GitHub README integration
+- Organized by categories
+- Coding/AI theme with modern tech aesthetics
 
-### Interactive Objects
-- Objects have defined click areas (x, y, width, height)
-- Clicking an object triggers its action (navigation, opening links, etc.)
-- Objects are highlighted on hover
+## 🚀 Deployment
 
-### SCUMM Menu
-- Fixed menu bar at the bottom
-- Navigation between different pages
-- Inventory system (expandable)
-- Classic adventure game styling
+The site is configured for static site generation and can be deployed to:
 
-## Customization
+- **Vercel**: `vercel --prod`
+- **Netlify**: `netlify deploy --prod`
+- **GitHub Pages**: `npm run build`
+- Any static hosting service
 
-### Colors and Styling
-Edit `src/app.css` to customize:
-- Game container styling
-- Character appearance
-- SCUMM menu colors
-- Interactive object styling
+## 📊 Performance Goals
 
-### Animation Speed
-Adjust the `animationSpeed` in `src/lib/stores.ts` to change character movement speed.
+- Lighthouse Performance: 95+
+- Lighthouse SEO: 95+
+- Lighthouse Accessibility: 95+
+- Lighthouse Best Practices: 95+
 
-### Scene Layout
-Modify the `interactiveObjects` arrays in each page to change object positions and actions.
-
-## Technologies Used
-
-- **SvelteKit**: Full-stack web framework
-- **TailwindCSS**: Utility-first CSS framework
-- **TypeScript**: Type-safe JavaScript
-- **Vite**: Fast build tool and dev server
-
-## Development
-
-### Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run check` - Type check
-- `npm run lint` - Lint code
-
-### Adding New Pages
-
-1. Create a new directory in `src/routes/`
-2. Add a `+page.svelte` file
-3. Follow the pattern from existing pages
-4. Add navigation to the SCUMM menu
-
-## Deployment
-
-Build the project for production:
+## 🛠️ Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
 npm run build
+
+# Preview production build
+npm run preview
+
+# Check types
+npm run check
+
+# Lint code
+npm run lint
+
+# Format code
+npm run format
 ```
 
-The built files will be in the `build/` directory, ready for deployment to any static hosting service.
+## 🎯 Technologies Used
 
-## License
+- **SvelteKit**: Full-stack framework
+- **Tailwind CSS**: Utility-first CSS framework
+- **TypeScript**: Type safety
+- **MDsveX**: Markdown support
+- **Vite**: Build tool
+- **PostCSS**: CSS processing
 
-MIT License - feel free to use this project as a starting point for your own adventure game website! 
+## 📚 Documentation
+
+See the [docs/](./docs/) folder for detailed documentation about:
+- Project structure
+- Content management
+- Deployment
+- Customization
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE). 

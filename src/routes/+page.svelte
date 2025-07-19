@@ -1,444 +1,152 @@
-<script lang="ts">
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import type { InteractiveObject, CollisionArea } from '$lib/types';
-	import { gameState } from '$lib/stores';
-	import AnimatedCharacter from '$lib/components/AnimatedCharacter.svelte';
-	import CollisionDebug from '$lib/components/CollisionDebug.svelte';
-	import InteractiveDebug from '$lib/components/InteractiveDebug.svelte';
-	import ScummMenu from '$lib/components/ScummMenu.svelte';
-	import { checkCollision, findValidPath } from '$lib/collisionDetection';
-
-	let gameScene: HTMLElement;
-	let character: HTMLElement;
-	let isMoving = false;
-
-	// Character position (responsive) - Home page starts bottom left
-	let characterX = 100;
-	let characterY = 400; // Home page starts at bottom
-	let targetX = 100;
-	let targetY = 400;
-
-	// Game state
-	let currentScene = 'home';
-	let inventory: string[] = [];
-	let activeMenu = '';
-	let showCollisionDebug = false;
-	let showInteractiveDebug = false;
-	let mouseCoordinates = { x: 0, y: 0 };
-
-	// Responsive interactive objects
-	let interactiveObjects: InteractiveObject[] = [
+<script>
+	import Navigation from '$lib/components/Navigation.svelte';
+	
+	// Mock data for latest content
+	const latestContent = [
 		{
-			id: 'computer',
-			x: 20,
-			y: 15,
-			width: 15,
-			height: 12,
-			label: 'Computer',
-			action: () => goto('/projects')
+			type: 'project',
+			title: 'AI Chat Interface',
+			description: 'A modern chat interface built with React and OpenAI API',
+			icon: '🤖',
+			href: '/projects/ai-chat',
+			date: '2024-01-15'
 		},
 		{
-			id: 'bookshelf',
-			x: 35,
-			y: 10,
-			width: 18,
-			height: 25,
-			label: 'Bookshelf',
-			action: () => goto('/articles')
+			type: 'website',
+			title: 'LondonParkour.com',
+			description: 'Community website for London parkour scene',
+			icon: '🏃‍♂️',
+			href: '/websites/londonparkour',
+			date: '2024-01-10'
 		},
 		{
-			id: 'window',
-			x: 55,
-			y: 12,
-			width: 20,
-			height: 16,
-			label: 'Window',
-			action: () => goto('/websites')
+			type: 'article',
+			title: 'Building High-Performance Web Apps',
+			description: 'Tips and tricks for optimizing your web applications',
+			icon: '⚡',
+			href: '/articles/performance-tips',
+			date: '2024-01-05'
 		}
 	];
-
-	// Collision areas - define where character can't walk
-	let collisionAreas: CollisionArea[] = [
-		// Example furniture/obstacles (smaller, more reasonable)
+	
+	const heroSlides = [
 		{
-			id: 'desk',
-			x: 0,
-			y: 0,
-			width: 35,
-			height: 70,
-			type: 'blocked',
-			label: 'Desk'
+			title: 'Full-Stack Developer',
+			subtitle: 'Building modern web experiences',
+			image: '/images/hero-1.jpg',
+			cta: 'View Projects'
 		},
 		{
-			id: 'desk',
-			x: 0,
-			y: 0,
-			width: 100,
-			height: 60,
-			type: 'blocked',
-			label: 'Desk'
-		},{
-			id: 'chair',
-			x: 60,
-			y: 0,
-			width: 10,
-			height: 70,
-			type: 'blocked',
-			label: 'chair'
-		},
-		
+			title: 'Parkour Enthusiast',
+			subtitle: 'Exploring movement and community',
+			image: '/images/hero-2.jpg',
+			cta: 'Learn More'
+		}
 	];
-
-	// Convert percentage positions to pixel positions
-	function getPixelPosition(percentX: number, percentY: number, percentWidth: number, percentHeight: number) {
-		if (!gameScene) return { x: 0, y: 0, width: 0, height: 0 };
-		
-		const rect = gameScene.getBoundingClientRect();
-		return {
-			x: (percentX / 100) * rect.width,
-			y: (percentY / 100) * rect.height,
-			width: (percentWidth / 100) * rect.width,
-			height: (percentHeight / 100) * rect.height
-		};
-	}
-
-	// Handle scene clicks for character movement
-	function handleSceneClick(event: MouseEvent) {
-		if (isMoving) return;
-
-		const rect = gameScene.getBoundingClientRect();
-		const clickX = event.clientX - rect.left;
-		const clickY = event.clientY - rect.top;
-
-		// Update mouse coordinates for display
-		mouseCoordinates = { x: Math.round(clickX), y: Math.round(clickY) };
-
-		// Check if clicking on interactive object
-		const clickedObject = interactiveObjects.find(obj => {
-			const pos = getPixelPosition(obj.x, obj.y, obj.width, obj.height);
-			return clickX >= pos.x && clickX <= pos.x + pos.width &&
-				   clickY >= pos.y && clickY <= pos.y + pos.height;
-		});
-
-		if (clickedObject) {
-			clickedObject.action();
-			return;
-		}
-
-		// Check if clicking inside collision areas
-		for (const area of collisionAreas) {
-			const pos = getPixelPosition(area.x, area.y, area.width, area.height);
-			if (clickX >= pos.x && clickX <= pos.x + pos.width &&
-				clickY >= pos.y && clickY <= pos.y + pos.height) {
-				console.log('Clicked inside collision area:', area.label);
-				return; // Don't move if clicking in collision area
-			}
-		}
-
-		// Calculate character position so bottom center goes to clicked location
-		// Character size varies by screen size, so we need to calculate dynamically
-		let characterWidth = 960;
-		let characterHeight = 960;
-		
-		// Responsive sizing based on screen width
-		if (rect.width <= 768) {
-			characterWidth = 480;
-			characterHeight = 480;
-		}
-		
-		const characterTargetX = clickX - (characterWidth / 2); // Center horizontally
-		const characterTargetY = clickY - characterHeight + 200; // Bottom vertically, plus 200px down
-
-		// Move character to calculated position
-		moveCharacter(characterTargetX, characterTargetY);
-	}
-
-	// Handle keyboard navigation
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			const target = event.target as HTMLElement;
-			if (target.classList.contains('interactive-object')) {
-				const objectId = target.dataset.objectId;
-				const object = interactiveObjects.find(obj => obj.id === objectId);
-				if (object) {
-					object.action();
-				}
-			}
-		}
-	}
-
-	// Animate character movement
-	function moveCharacter(newTargetX: number, newTargetY: number) {
-		if (!gameScene) return;
-		
-		const rect = gameScene.getBoundingClientRect();
-		let characterWidth = 960;
-		let characterHeight = 960;
-		
-		// Responsive sizing based on screen width
-		if (rect.width <= 768) {
-			characterWidth = 480;
-			characterHeight = 480;
-		}
-
-		// Check if target position is valid
-		if (checkCollision(newTargetX, newTargetY, characterWidth, characterHeight, collisionAreas, rect.width, rect.height)) {
-			console.log('Target position blocked, finding alternative path...');
-		}
-
-		// Find valid path to target
-		const validTarget = findValidPath(
-			characterX,
-			characterY,
-			newTargetX,
-			newTargetY,
-			characterWidth,
-			characterHeight,
-			collisionAreas,
-			rect.width,
-			rect.height
-		);
-
-		if (!validTarget) {
-			console.log('No valid path to target');
-			return;
-		}
-
-		// Check if the valid target is the same as current position
-		const distanceToTarget = Math.sqrt((validTarget.x - characterX) ** 2 + (validTarget.y - characterY) ** 2);
-		console.log('Movement debug:', {
-			currentPos: { x: characterX, y: characterY },
-			targetPos: { x: newTargetX, y: newTargetY },
-			validTarget: validTarget,
-			distance: distanceToTarget
-		});
-		
-		if (distanceToTarget < 5) {
-			console.log('Target too close to current position, not moving');
-			return;
-		}
-
-		isMoving = true;
-		targetX = validTarget.x;
-		targetY = validTarget.y;
-		
-		const startX = characterX;
-		const startY = characterY;
-		const distance = Math.sqrt((targetX - startX) ** 2 + (targetY - startY) ** 2);
-		const duration = Math.min(distance / 0.5, 3000); // Slower movement: 0.5 pixels per ms, max 3 seconds
-		
-		const startTime = performance.now();
-		
-		function animate(currentTime: number) {
-			const elapsed = currentTime - startTime;
-			const progress = Math.min(elapsed / duration, 1);
-			
-			// Easing function for smooth movement
-			const easeProgress = 1 - Math.pow(1 - progress, 3);
-			
-			const newX = startX + (targetX - startX) * easeProgress;
-			const newY = startY + (targetY - startY) * easeProgress;
-			
-			// Check collision at each step
-			if (checkCollision(newX, newY, characterWidth, characterHeight, collisionAreas, rect.width, rect.height)) {
-				console.log('Collision detected during movement, stopping');
-				isMoving = false;
-				return;
-			}
-			
-			characterX = newX;
-			characterY = newY;
-			
-			if (progress < 1) {
-				requestAnimationFrame(animate);
-			} else {
-				isMoving = false;
-			}
-		}
-		
-		requestAnimationFrame(animate);
-	}
-
-	// Menu handlers
-	function handleMenuClick(menu: string) {
-		activeMenu = activeMenu === menu ? '' : menu;
-	}
-
-	function handleNavigation(page: string) {
-		goto(page);
-	}
-
-	function toggleCollisionDebug() {
-		showCollisionDebug = !showCollisionDebug;
-	}
-
-	function toggleInteractiveDebug() {
-		showInteractiveDebug = !showInteractiveDebug;
-	}
-
-	// Initialize game state on mount
-	onMount(() => {
-		// Initialize game state
-		gameState.set({
-			currentScene,
-			inventory,
-			characterPosition: { x: characterX, y: characterY }
-		});
-	});
+	
+	let currentSlide = 0;
+	
+	// Auto-advance slides
+	setInterval(() => {
+		currentSlide = (currentSlide + 1) % heroSlides.length;
+	}, 5000);
 </script>
 
-<div class="game-container">
-	<div 
-		class="game-scene" 
-		bind:this={gameScene}
-		on:click={handleSceneClick}
-		on:keydown={handleKeydown}
-		role="button"
-		tabindex="0"
-		aria-label="Game scene - click to move character or interact with objects"
-	>
-		<!-- Background Layer -->
-		<div class="background-layer" style="background-image: url('/images/backgrounds/home-bg.png')">
-			<!-- Interactive Objects -->
-			{#each interactiveObjects as object}
-				{@const pos = getPixelPosition(object.x, object.y, object.width, object.height)}
-				<div 
-					class="interactive-object"
-					style="left: {pos.x}px; top: {pos.y}px; width: {pos.width}px; height: {pos.height}px;"
-					title={object.label}
-					data-object-id={object.id}
-					role="button"
-					tabindex="0"
-					aria-label="Click to interact with {object.label}"
-				>
-					<div class="object-label bg-blue-500 bg-opacity-30 border-2 border-blue-400 text-white text-sm">
-						{object.label}
-					</div>
-				</div>
-			{/each}
+<svelte:head>
+	<title>Andy Pearson - Full-Stack Developer & Parkour Enthusiast</title>
+	<meta name="description" content="Personal portfolio of Andy Pearson, showcasing web development projects, websites, and articles about technology and parkour." />
+</svelte:head>
 
-			<!-- Animated Character -->
-			<AnimatedCharacter 
-				x={characterX}
-				y={characterY}
-				isMoving={isMoving}
-				targetX={targetX}
-				targetY={targetY}
-			/>
-
-			<!-- Foreground Layer -->
-			<div class="foreground-layer" style="background-image: url('/images/backgrounds/home-fg.png')"></div>
-
-			<!-- Collision Debug (optional) -->
-			<CollisionDebug 
-				collisionAreas={collisionAreas}
-				containerWidth={gameScene?.getBoundingClientRect().width || 0}
-				containerHeight={gameScene?.getBoundingClientRect().height || 0}
-				showDebug={showCollisionDebug}
-			/>
-
-			<!-- Interactive Debug (optional) -->
-			<InteractiveDebug 
-				interactiveObjects={interactiveObjects}
-				containerWidth={gameScene?.getBoundingClientRect().width || 0}
-				containerHeight={gameScene?.getBoundingClientRect().height || 0}
-				showDebug={showInteractiveDebug}
-			/>
-		</div>
-	</div>
-
-	<!-- SCUMM-style Menu -->
-	<ScummMenu />
+<div class="min-h-screen">
+	<Navigation theme="modern" />
 	
-	<!-- Debug Controls -->
-	<div class="debug-controls">
-		<button 
-			class="debug-button"
-			class:active={showCollisionDebug}
-			on:click={toggleCollisionDebug}
-			aria-label="Toggle collision debug mode"
-			title="Toggle collision areas visibility"
-		>
-			{showCollisionDebug ? 'Hide' : 'Show'} Collisions
-		</button>
-		<button 
-			class="debug-button"
-			class:active={showInteractiveDebug}
-			on:click={toggleInteractiveDebug}
-			aria-label="Toggle interactive debug mode"
-			title="Toggle interactive areas visibility"
-		>
-			{showInteractiveDebug ? 'Hide' : 'Show'} Interactive
-		</button>
+	<!-- Hero Section -->
+	<section class="relative h-screen flex items-center justify-center overflow-hidden">
+		<div class="absolute inset-0 bg-gradient-to-br from-modern-50 to-modern-100 dark:from-modern-900 dark:to-modern-800"></div>
 		
-		<!-- Mouse Coordinates Display -->
-		<div class="coordinates-display">
-			<div class="coordinate-label">Mouse Position:</div>
-			<div class="coordinate-value">X: {mouseCoordinates.x}, Y: {mouseCoordinates.y}</div>
+		<!-- Grid Background -->
+		<div class="absolute inset-0 opacity-10">
+			<div class="absolute inset-0" style="background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
 		</div>
-	</div>
-</div>
-
-<style>
-	.debug-controls {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		z-index: 30;
-		display: flex;
-		flex-direction: column;
-		gap: 5px;
-	}
-
-	.debug-button {
-		background: rgba(0, 0, 0, 0.7);
-		color: white;
-		border: 1px solid #666;
-		padding: 8px 12px;
-		border-radius: 4px;
-		font-size: 12px;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		white-space: nowrap;
-	}
-
-	.debug-button:hover {
-		background: rgba(0, 0, 0, 0.8);
-		border-color: #888;
-	}
-
-	.debug-button.active {
-		background: rgba(255, 0, 0, 0.7);
-		border-color: #ff4444;
-	}
-
-	.debug-button.active:hover {
-		background: rgba(255, 0, 0, 0.8);
-	}
-
-	.coordinates-display {
-		background: rgba(0, 0, 0, 0.8);
-		color: #00ff00;
-		border: 1px solid #00ff00;
-		padding: 8px 12px;
-		border-radius: 4px;
-		font-size: 11px;
-		font-family: 'Courier New', monospace;
-		margin-top: 5px;
-		text-align: center;
-	}
-
-	.coordinate-label {
-		font-weight: bold;
-		margin-bottom: 2px;
-	}
-
-	.coordinate-value {
-		font-size: 10px;
-		opacity: 0.9;
-	}
-
-
-</style> 
+		
+		<div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+			<h1 class="text-6xl md:text-8xl font-bold text-modern-800 dark:text-modern-200 mb-6">
+				Andy Pearson
+			</h1>
+			<p class="text-xl md:text-2xl text-modern-600 dark:text-modern-400 mb-8">
+				Full-Stack Developer & Parkour Enthusiast
+			</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="/projects" class="btn btn-primary bg-modern-600 hover:bg-modern-700">
+					View Projects
+				</a>
+				<a href="/about" class="btn btn-secondary">
+					About Me
+				</a>
+			</div>
+		</div>
+	</section>
+	
+	<!-- Latest Content Section -->
+	<section class="py-20 bg-white dark:bg-gray-900">
+		<div class="container-custom">
+			<h2 class="text-4xl font-bold text-center text-modern-800 dark:text-modern-200 mb-12">
+				Latest Content
+			</h2>
+			
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{#each latestContent as item}
+					<a href={item.href} class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+						<div class="p-6">
+							<div class="flex items-center space-x-3 mb-4">
+								<span class="text-3xl">{item.icon}</span>
+								<span class="text-sm text-gray-500 dark:text-gray-400">{item.date}</span>
+							</div>
+							<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2 group-hover:text-modern-600 dark:group-hover:text-modern-400">
+								{item.title}
+							</h3>
+							<p class="text-gray-600 dark:text-gray-400">
+								{item.description}
+							</p>
+						</div>
+					</a>
+				{/each}
+			</div>
+		</div>
+	</section>
+	
+	<!-- Quick Links Section -->
+	<section class="py-20 bg-modern-50 dark:bg-modern-900">
+		<div class="container-custom">
+			<h2 class="text-4xl font-bold text-center text-modern-800 dark:text-modern-200 mb-12">
+				Explore
+			</h2>
+			
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<a href="/about" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+					<div class="text-4xl mb-4">👤</div>
+					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">About Me</h3>
+					<p class="text-gray-600 dark:text-gray-400">Learn about my background, skills, and experience</p>
+				</a>
+				
+				<a href="/projects" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+					<div class="text-4xl mb-4">💻</div>
+					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">Projects</h3>
+					<p class="text-gray-600 dark:text-gray-400">Explore my coding projects and technical work</p>
+				</a>
+				
+				<a href="/websites" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+					<div class="text-4xl mb-4">🌐</div>
+					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">Websites</h3>
+					<p class="text-gray-600 dark:text-gray-400">Check out the websites I've built and maintain</p>
+				</a>
+				
+				<a href="/articles" class="card text-center p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+					<div class="text-4xl mb-4">📝</div>
+					<h3 class="text-xl font-semibold text-modern-800 dark:text-modern-200 mb-2">Articles</h3>
+					<p class="text-gray-600 dark:text-gray-400">Read my thoughts on tech, parkour, and more</p>
+				</a>
+			</div>
+		</div>
+	</section>
+</div> 
