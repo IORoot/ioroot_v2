@@ -176,24 +176,40 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
     const reposWithReadme = await Promise.all(
       allRepos.map(async (repo) => {
         try {
-          const readmeResponse = await fetch(`https://api.github.com/repos/${username}/${repo.name}/readme`, {
-            headers
-          });
+          // Try to fetch raw README from GitHub's raw URL
+          const rawReadmeUrl = `https://raw.githubusercontent.com/${username}/${repo.name}/refs/heads/master/README.md`;
+          const readmeResponse = await fetch(rawReadmeUrl);
+          
           if (readmeResponse.ok) {
-            const readmeData = await readmeResponse.json();
-            let readmeContent = '';
-            
-            // Decode the base64 content
-            readmeContent = atob(readmeData.content);
-            
+            const readmeContent = await readmeResponse.text();
             console.log(`✅ README fetched for ${repo.name} (${readmeContent.length} chars)`);
             return {
               ...repo,
               readme_content: readmeContent,
-              readme_html: readmeData.html_url
+              readme_html: `https://github.com/${username}/${repo.name}/blob/master/README.md`
             };
           } else {
-            console.log(`❌ No README for ${repo.name} (${readmeResponse.status})`);
+            // Fallback to GitHub API if raw URL doesn't work
+            console.log(`⚠️ Raw README not found for ${repo.name}, trying API...`);
+            const apiReadmeResponse = await fetch(`https://api.github.com/repos/${username}/${repo.name}/readme`, {
+              headers
+            });
+            if (apiReadmeResponse.ok) {
+              const readmeData = await apiReadmeResponse.json();
+              let readmeContent = '';
+              
+              // Decode the base64 content
+              readmeContent = atob(readmeData.content);
+              
+              console.log(`✅ README fetched via API for ${repo.name} (${readmeContent.length} chars)`);
+              return {
+                ...repo,
+                readme_content: readmeContent,
+                readme_html: readmeData.html_url
+              };
+            } else {
+              console.log(`❌ No README for ${repo.name} (${apiReadmeResponse.status})`);
+            }
           }
         } catch (error) {
           console.warn(`Could not fetch README for ${repo.name}:`, error);

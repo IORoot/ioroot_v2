@@ -1,4 +1,4 @@
-![header](header.png)
+![header](https://raw.githubusercontent.com/IORoot/ioroot_v2/refs/heads/master/header.png)
 
 # Andy Pearson Portfolio Website
 
