@@ -17,6 +17,8 @@ A modern, high-performance personal portfolio website built with SvelteKit, Tail
 - **Dark Mode Support**: Automatic theme switching
 - **Markdown Support**: Articles and content in MDX format
 
+![header](header.png)
+
 ## 🛠️ Quick Start
 
 1. **Install dependencies:**

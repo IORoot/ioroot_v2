@@ -68,23 +68,11 @@
 		selectedTags = [];
 	}
 	
-	// Extract first image from markdown content, prioritizing header.png/header.jpg
-	function extractFirstImage(markdown: string, repoName: string): string | null {
+	// Extract first image from markdown content
+	function extractFirstImage(markdown: string): string | null {
 		if (!markdown) return null;
 		
-		// First, check for header.png or header.jpg in the markdown
-		const headerImageMatch = markdown.match(/!\[([^\]]*)\]\(([^)]*header\.(png|jpg|jpeg))\)/i);
-		if (headerImageMatch) {
-			return headerImageMatch[2]; // Return the header image URL
-		}
-		
-		// Also check for HTML img tags with header images
-		const headerHtmlMatch = markdown.match(/<img[^>]+src="([^"]*header\.(png|jpg|jpeg))"/i);
-		if (headerHtmlMatch) {
-			return headerHtmlMatch[1];
-		}
-		
-		// If no header image found, look for any image
+		// Match markdown image syntax: ![alt](url)
 		const imageMatch = markdown.match(/!\[([^\]]*)\]\(([^)]+)\)/);
 		if (imageMatch) {
 			return imageMatch[2]; // Return the URL
@@ -289,7 +277,7 @@
 		<div class="px-4 sm:px-6 lg:px-8">
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 w-full">
 				{#each filteredRepos as repo}
-					{@const firstImage = repo.readme_content ? extractFirstImage(repo.readme_content, repo.name) : null}
+					{@const firstImage = repo.readme_content ? extractFirstImage(repo.readme_content) : null}
 					<a href="/projects/{repo.name}" class="group block">
 						<div class="relative overflow-hidden rounded-lg transition-all duration-300 transform hover:-translate-y-1">
 							<!-- Project Image -->
