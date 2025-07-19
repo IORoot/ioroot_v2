@@ -38,16 +38,16 @@
 </svelte:head>
 
 <div class="min-h-screen">
-	<Navigation theme="professional" />
+	<Navigation theme="blue" />
 	
 	<!-- Hero Section -->
-	<section class="py-20 bg-gradient-to-br from-professional-50 to-professional-100 dark:from-professional-900 dark:to-professional-800">
+	<section class="py-20 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-5xl md:text-6xl font-bold text-professional-800 dark:text-professional-200 mb-6">
+				<h1 class="text-5xl md:text-6xl font-bold text-blue-800 dark:text-blue-200 mb-6">
 					About Me
 				</h1>
-				<p class="text-xl text-professional-600 dark:text-professional-400 mb-8">
+				<p class="text-xl text-blue-600 dark:text-blue-400 mb-8">
 					Full-Stack Developer with a passion for building modern web experiences and exploring movement through parkour.
 				</p>
 			</div>
@@ -60,7 +60,7 @@
 			<div class="max-w-4xl mx-auto">
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 					<div>
-						<h2 class="text-3xl font-bold text-professional-800 dark:text-professional-200 mb-6">
+						<h2 class="text-3xl font-bold text-blue-800 dark:text-blue-200 mb-6">
 							Background
 						</h2>
 						<div class="prose prose-lg dark:prose-invert">
@@ -79,7 +79,7 @@
 						</div>
 					</div>
 					<div class="text-center">
-						<div class="w-64 h-64 mx-auto bg-gradient-to-br from-professional-400 to-professional-600 rounded-full flex items-center justify-center text-8xl">
+						<div class="w-64 h-64 mx-auto bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-8xl">
 							👨‍💻
 						</div>
 					</div>
@@ -89,10 +89,10 @@
 	</section>
 	
 	<!-- Skills Section -->
-	<section class="py-20 bg-professional-50 dark:bg-professional-900">
+	<section class="py-20 bg-blue-50 dark:bg-blue-900">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto">
-				<h2 class="text-3xl font-bold text-center text-professional-800 dark:text-professional-200 mb-12">
+				<h2 class="text-3xl font-bold text-center text-blue-800 dark:text-blue-200 mb-12">
 					Skills & Technologies
 				</h2>
 				
@@ -101,12 +101,12 @@
 						<div class="card p-6">
 							<div class="flex items-center space-x-3 mb-4">
 								<span class="text-2xl">{skill.icon}</span>
-								<h3 class="text-lg font-semibold text-professional-800 dark:text-professional-200">
+								<h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200">
 									{skill.name}
 								</h3>
 							</div>
 							<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-								<div class="bg-professional-500 h-2 rounded-full" style="width: {skill.level}%"></div>
+								<div class="bg-blue-500 h-2 rounded-full" style="width: {skill.level}%"></div>
 							</div>
 						</div>
 					{/each}
@@ -119,7 +119,7 @@
 	<section class="py-20 bg-white dark:bg-gray-900">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto">
-				<h2 class="text-3xl font-bold text-center text-professional-800 dark:text-professional-200 mb-12">
+				<h2 class="text-3xl font-bold text-center text-blue-800 dark:text-blue-200 mb-12">
 					Professional Experience
 				</h2>
 				
@@ -127,14 +127,14 @@
 					{#each experience as job}
 						<div class="card p-6">
 							<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-								<h3 class="text-xl font-semibold text-professional-800 dark:text-professional-200">
+								<h3 class="text-xl font-semibold text-blue-800 dark:text-blue-200">
 									{job.title}
 								</h3>
-								<span class="text-professional-600 dark:text-professional-400 font-medium">
+								<span class="text-blue-600 dark:text-blue-400 font-medium">
 									{job.period}
 								</span>
 							</div>
-							<p class="text-professional-600 dark:text-professional-400 mb-2">
+							<p class="text-blue-600 dark:text-blue-400 mb-2">
 								{job.company}
 							</p>
 							<p class="text-gray-600 dark:text-gray-400">

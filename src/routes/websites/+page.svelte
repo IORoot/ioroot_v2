@@ -56,16 +56,16 @@
 </svelte:head>
 
 <div class="min-h-screen">
-	<Navigation theme="game" />
+	<Navigation theme="green" />
 	
 	<!-- Hero Section -->
-	<section class="py-20 bg-gradient-to-br from-game-50 to-game-100 dark:from-game-900 dark:to-game-800">
+	<section class="py-20 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-5xl md:text-6xl font-bold text-game-800 dark:text-game-200 mb-6">
+				<h1 class="text-5xl md:text-6xl font-bold text-green-800 dark:text-green-200 mb-6">
 					Websites
 				</h1>
-				<p class="text-xl text-game-600 dark:text-game-400 mb-8">
+				<p class="text-xl text-green-600 dark:text-green-400 mb-8">
 					Digital playgrounds and community spaces
 				</p>
 			</div>
@@ -77,17 +77,17 @@
 		<div class="container-custom">
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 				{#each websites as website}
-					<div class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-game-200 dark:border-game-700">
+					<div class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-green-200 dark:border-green-700">
 						<div class="p-6">
 							<!-- Header -->
 							<div class="flex items-center justify-between mb-4">
 								<div class="flex items-center space-x-3">
 									<span class="text-3xl">{website.icon}</span>
 									<div>
-										<h3 class="text-xl font-bold text-game-800 dark:text-game-200 group-hover:text-game-600 dark:group-hover:text-game-400">
+										<h3 class="text-xl font-bold text-green-800 dark:text-green-200 group-hover:text-green-600 dark:group-hover:text-green-400">
 											{website.title}
 										</h3>
-										<span class="inline-block px-2 py-1 bg-game-100 text-game-700 dark:bg-game-800 dark:text-game-300 text-xs rounded-full">
+										<span class="inline-block px-2 py-1 bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-300 text-xs rounded-full">
 											{website.status}
 										</span>
 									</div>
@@ -102,7 +102,7 @@
 							<!-- Tech Stack -->
 							<div class="flex flex-wrap gap-2 mb-4">
 								{#each website.tech as tech}
-									<span class="px-2 py-1 bg-game-100 text-game-700 dark:bg-game-800 dark:text-game-300 text-xs rounded-full font-mono">
+									<span class="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-300 text-xs rounded-full font-mono">
 										{tech}
 									</span>
 								{/each}
@@ -113,7 +113,7 @@
 								href={website.url} 
 								target="_blank" 
 								rel="noopener noreferrer"
-								class="inline-flex items-center space-x-2 bg-game-600 text-white px-4 py-2 rounded-lg hover:bg-game-700 transition-colors duration-200 font-mono"
+								class="inline-flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 font-mono"
 							>
 								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
@@ -128,25 +128,25 @@
 	</section>
 	
 	<!-- Stats Section -->
-	<section class="py-20 bg-game-50 dark:bg-game-900">
+	<section class="py-20 bg-green-50 dark:bg-green-900">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
-				<h2 class="text-3xl font-bold text-game-800 dark:text-game-200 mb-12">
+				<h2 class="text-3xl font-bold text-green-800 dark:text-green-200 mb-12">
 					Website Stats
 				</h2>
 				
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 					<div class="card text-center p-6">
-						<div class="text-4xl font-bold text-game-600 dark:text-game-400 mb-2">5</div>
-						<div class="text-game-700 dark:text-game-300">Active Websites</div>
+						<div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">5</div>
+						<div class="text-green-700 dark:text-green-300">Active Websites</div>
 					</div>
 					<div class="card text-center p-6">
-						<div class="text-4xl font-bold text-game-600 dark:text-game-400 mb-2">10K+</div>
-						<div class="text-game-700 dark:text-game-300">Monthly Visitors</div>
+						<div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">10K+</div>
+						<div class="text-green-700 dark:text-green-300">Monthly Visitors</div>
 					</div>
 					<div class="card text-center p-6">
-						<div class="text-4xl font-bold text-game-600 dark:text-game-400 mb-2">99.9%</div>
-						<div class="text-game-700 dark:text-game-300">Uptime</div>
+						<div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">99.9%</div>
+						<div class="text-green-700 dark:text-green-300">Uptime</div>
 					</div>
 				</div>
 			</div>

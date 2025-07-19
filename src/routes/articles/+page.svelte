@@ -67,16 +67,16 @@
 </svelte:head>
 
 <div class="min-h-screen">
-	<Navigation theme="retro" />
+	<Navigation theme="orange" />
 	
 	<!-- Hero Section -->
-	<section class="py-20 bg-gradient-to-br from-retro-50 to-retro-100 dark:from-retro-900 dark:to-retro-800">
+	<section class="py-20 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-5xl md:text-6xl font-bold text-retro-800 dark:text-retro-200 mb-6">
+				<h1 class="text-5xl md:text-6xl font-bold text-orange-800 dark:text-orange-200 mb-6">
 					Articles
 				</h1>
-				<p class="text-xl text-retro-600 dark:text-retro-400 mb-8">
+				<p class="text-xl text-orange-600 dark:text-orange-400 mb-8">
 					Thoughts on tech, movement, and everything in between
 				</p>
 			</div>
@@ -87,18 +87,18 @@
 	<section class="py-20 bg-white dark:bg-gray-900">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto">
-				<h2 class="text-3xl font-bold text-retro-800 dark:text-retro-200 mb-8">
+				<h2 class="text-3xl font-bold text-orange-800 dark:text-orange-200 mb-8">
 					Featured Article
 				</h2>
 				
-				<div class="card p-8 border-2 border-retro-200 dark:border-retro-700">
+				<div class="card p-8 border-2 border-orange-200 dark:border-orange-700">
 					<div class="flex items-center space-x-4 mb-6">
 						<span class="text-4xl">{featuredArticle.icon}</span>
 						<div>
-							<h3 class="text-2xl font-bold text-retro-800 dark:text-retro-200">
+							<h3 class="text-2xl font-bold text-orange-800 dark:text-orange-200">
 								{featuredArticle.title}
 							</h3>
-							<div class="flex items-center space-x-4 text-sm text-retro-600 dark:text-retro-400">
+							<div class="flex items-center space-x-4 text-sm text-orange-600 dark:text-orange-400">
 								<span>{featuredArticle.date}</span>
 								<span>•</span>
 								<span>{featuredArticle.readTime}</span>
@@ -112,7 +112,7 @@
 					
 					<div class="flex flex-wrap gap-2 mb-6">
 						{#each featuredArticle.tags as tag}
-							<span class="px-3 py-1 bg-retro-100 text-retro-700 dark:bg-retro-800 dark:text-retro-300 text-sm rounded-full">
+							<span class="px-3 py-1 bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-300 text-sm rounded-full">
 								{tag}
 							</span>
 						{/each}
@@ -120,7 +120,7 @@
 					
 					<a 
 						href="/articles/{featuredArticle.slug}" 
-						class="inline-flex items-center space-x-2 bg-retro-600 text-white px-6 py-3 rounded-lg hover:bg-retro-700 transition-colors duration-200"
+						class="inline-flex items-center space-x-2 bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors duration-200"
 					>
 						<span>Read Article</span>
 						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,24 +133,24 @@
 	</section>
 	
 	<!-- All Articles -->
-	<section class="py-20 bg-retro-50 dark:bg-retro-900">
+	<section class="py-20 bg-orange-50 dark:bg-orange-900">
 		<div class="container-custom">
 			<div class="max-w-6xl mx-auto">
-				<h2 class="text-3xl font-bold text-retro-800 dark:text-retro-200 mb-8">
+				<h2 class="text-3xl font-bold text-orange-800 dark:text-orange-200 mb-8">
 					All Articles
 				</h2>
 				
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 					{#each articles.slice(1) as article}
-						<a href="/articles/{article.slug}" class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-retro-200 dark:border-retro-700">
+						<a href="/articles/{article.slug}" class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-orange-200 dark:border-orange-700">
 							<div class="p-6">
 								<div class="flex items-center space-x-3 mb-4">
 									<span class="text-2xl">{article.icon}</span>
 									<div class="flex-1">
-										<h3 class="text-lg font-semibold text-retro-800 dark:text-retro-200 group-hover:text-retro-600 dark:group-hover:text-retro-400">
+										<h3 class="text-lg font-semibold text-orange-800 dark:text-orange-200 group-hover:text-orange-600 dark:group-hover:text-orange-400">
 											{article.title}
 										</h3>
-										<div class="flex items-center space-x-2 text-sm text-retro-600 dark:text-retro-400">
+										<div class="flex items-center space-x-2 text-sm text-orange-600 dark:text-orange-400">
 											<span>{article.date}</span>
 											<span>•</span>
 											<span>{article.readTime}</span>
@@ -164,12 +164,12 @@
 								
 								<div class="flex flex-wrap gap-2">
 									{#each article.tags.slice(0, 2) as tag}
-										<span class="px-2 py-1 bg-retro-100 text-retro-700 dark:bg-retro-800 dark:text-retro-300 text-xs rounded-full">
+										<span class="px-2 py-1 bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-300 text-xs rounded-full">
 											{tag}
 										</span>
 									{/each}
 									{#if article.tags.length > 2}
-										<span class="px-2 py-1 bg-retro-100 text-retro-700 dark:bg-retro-800 dark:text-retro-300 text-xs rounded-full">
+										<span class="px-2 py-1 bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-300 text-xs rounded-full">
 											+{article.tags.length - 2} more
 										</span>
 									{/if}
