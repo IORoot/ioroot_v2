@@ -40,13 +40,13 @@
 						<span>Visit Site</span>
 					</a>
 					<a 
-						href="/websites" 
+						href="/showcase" 
 						class="inline-flex items-center justify-center space-x-2 bg-[#EAE6D8] text-[#434840] px-8 py-4 rounded-lg hover:bg-[#E7A97F] hover:text-white transition-colors duration-200 font-bold text-xl"
 					>
 						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
 						</svg>
-						<span>Back to Websites</span>
+						<span>Back to Showcase</span>
 					</a>
 				</div>
 			</div>
@@ -117,13 +117,13 @@
 					</a>
 					
 					<a 
-						href="/websites" 
+						href="/showcase" 
 						class="inline-flex items-center justify-center space-x-2 bg-[#EAE6D8] text-[#434840] px-8 py-4 rounded-lg hover:bg-[#E7A97F] hover:text-white transition-colors duration-200 font-bold text-xl"
 					>
 						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
 						</svg>
-						<span>Back to Websites</span>
+						<span>Back to Showcase</span>
 					</a>
 				</div>
 			</div>

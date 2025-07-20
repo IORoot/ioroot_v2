@@ -5,6 +5,30 @@
 	export let data: PageData;
 	
 	$: ({ websites } = data);
+	
+	// Categories for filtering
+	const categories = ['website', 'design', 'app', 'parkour', 'maker'];
+	let selectedCategory = 'all';
+	
+	// Filter websites based on selected category
+	$: filteredWebsites = selectedCategory === 'all' 
+		? websites 
+		: websites.filter(website => website.category === selectedCategory);
+	
+	// Count items in each category
+	$: categoryCounts = {
+		all: websites.length,
+		website: websites.filter(w => w.category === 'website').length,
+		design: websites.filter(w => w.category === 'design').length,
+		app: websites.filter(w => w.category === 'app').length,
+		parkour: websites.filter(w => w.category === 'parkour').length,
+		maker: websites.filter(w => w.category === 'maker').length
+	};
+	
+	// Helper function to get category count
+	function getCategoryCount(category: string): number {
+		return categoryCounts[category as keyof typeof categoryCounts] || 0;
+	}
 </script>
 
 <svelte:head>
@@ -12,117 +36,81 @@
 	<meta name="description" content="Explore the showcase of websites built and maintained by Andy Pearson, including community platforms and web applications." />
 </svelte:head>
 
-<div class="min-h-screen bg-[#677A67] pt-20">
+<div class="min-h-screen bg-[#677A67] pt-20 relative">
+	<!-- Grid Column Lines SVG -->
+	<svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 1000" preserveAspectRatio="none">
+		<!-- Column Lines (12 lines for 4 columns) -->
+		<line x1="8.33%" y1="0" x2="8.33%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="16.67%" y1="0" x2="16.67%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="25%" y1="0" x2="25%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="33.33%" y1="0" x2="33.33%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="41.67%" y1="0" x2="41.67%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="50%" y1="0" x2="50%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="58.33%" y1="0" x2="58.33%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="66.67%" y1="0" x2="66.67%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="75%" y1="0" x2="75%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="83.33%" y1="0" x2="83.33%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+		<line x1="91.67%" y1="0" x2="91.67%" y2="100%" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+	</svg>
 	<Navigation />
 	
-
+	<!-- Category Filter -->
+	<div class="p-4 md:p-8 pb-8">
+		<div class="flex flex-wrap gap-4 justify-center">
+			<button 
+				class="px-6 py-3 text-lg font-bold transition-all duration-200 {selectedCategory === 'all' 
+					? 'text-white' 
+					: 'text-white/70 hover:text-white'}"
+				on:click={() => selectedCategory = 'all'}
+			>
+				All <sup class="font-normal text-sm">{categoryCounts.all}</sup>
+			</button>
+			{#each categories as category}
+				<button 
+					class="px-6 py-3 text-lg font-bold transition-all duration-200 {selectedCategory === category 
+						? 'text-white' 
+						: 'text-white/70 hover:text-white'}"
+					on:click={() => selectedCategory = category}
+				>
+					{category.charAt(0).toUpperCase() + category.slice(1)} <sup class="font-normal text-sm">{getCategoryCount(category)}</sup>
+				</button>
+			{/each}
+		</div>
+	</div>
 	
-	<!-- Showcase List -->
-	<section class="py-20 bg-white">
-		<div class="container-custom">
-			<div class="space-y-32">
-				{#each websites as website, index}
-											<div class="card overflow-hidden">
-						<div class="flex flex-col lg:flex-row">
-							<!-- Image Section -->
-							<div class="lg:w-1/2 {index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}">
-								<div class="h-64 lg:h-full bg-gradient-to-br from-[#EAE6D8] to-[#E4EDEE] flex items-center justify-center">
-									{#if website.image}
-										<img 
-											src={website.image} 
-											alt="{website.title}" 
-											class="w-full h-full object-cover"
-										/>
-									{:else}
-										<div class="text-center">
-											<span class="text-6xl mb-4 block">{website.icon}</span>
-											<h3 class="text-3xl font-black text-[#434840] mb-2">
-												{website.title}
-											</h3>
-											<span class="inline-block px-4 py-2 bg-[#677A67] text-white text-lg font-bold rounded-full">
-												{website.status}
-											</span>
-										</div>
-									{/if}
-								</div>
+	<!-- Bento Box Layout -->
+	<div class="p-4 md:p-8 pt-0">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-24 md:gap-y-32">
+			{#each filteredWebsites as website}
+				<a href="/showcase/{website.slug}" class="group block">
+					<!-- Title Above Image -->
+					<h3 class="text-6xl md:text-7xl font-black text-white mb-4 drop-shadow-lg">
+						{website.title}
+					</h3>
+					
+					<div class="aspect-video rounded-lg shadow-xl overflow-hidden relative">
+						<!-- Background Image -->
+						{#if website.image}
+							<img 
+								src={website.image} 
+								alt="{website.title}" 
+								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+							/>
+						{:else}
+							<div class="w-full h-full bg-gradient-to-br from-[#EAE6D8] to-[#E4EDEE] flex items-center justify-center">
+								<span class="text-6xl">{website.icon}</span>
 							</div>
-							
-							<!-- Content Section -->
-							<div class="lg:w-1/2 p-8 {index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}">
-								<div class="h-full flex flex-col justify-center">
-									<h3 class="text-4xl font-black text-[#434840] mb-4">
-										{website.title}
-									</h3>
-									
-									<p class="text-xl text-[#434840] mb-6 font-semibold">
-										{website.description}
-									</p>
-									
-									<!-- Tech Stack -->
-									<div class="flex flex-wrap gap-2 mb-6">
-										{#each website.tech as tech}
-											<span class="px-4 py-2 bg-[#E4EDEE] text-[#434840] text-lg font-bold rounded-full font-mono">
-												{tech}
-											</span>
-										{/each}
-									</div>
-									
-									<!-- Action Buttons -->
-									<div class="flex flex-col sm:flex-row gap-4">
-										<a 
-											href={website.url} 
-											target="_blank" 
-											rel="noopener noreferrer"
-											class="inline-flex items-center justify-center space-x-2 bg-[#677A67] text-white px-8 py-4 rounded-lg hover:bg-[#87A7AC] transition-colors duration-200 font-bold text-xl"
-										>
-											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-											</svg>
-											<span>Visit Site</span>
-										</a>
-										
-										<a 
-											href="/showcase/{website.slug}" 
-											class="inline-flex items-center justify-center space-x-2 bg-[#EAE6D8] text-[#434840] px-8 py-4 rounded-lg hover:bg-[#E7A97F] hover:text-white transition-colors duration-200 font-bold text-xl"
-										>
-											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-											</svg>
-											<span>Learn More</span>
-										</a>
-									</div>
-								</div>
-							</div>
+						{/if}
+						
+						<!-- Category Tag -->
+						<div class="absolute top-4 right-4">
+							<span class="px-3 py-1 bg-white/90 backdrop-blur-sm text-[#677A67] text-sm font-bold rounded-full">
+								{website.category || 'website'}
+							</span>
 						</div>
 					</div>
-				{/each}
-			</div>
+				</a>
+			{/each}
 		</div>
-	</section>
-	
-	<!-- Stats Section -->
-	<section class="py-20 bg-[#E4EDEE]">
-		<div class="container-custom">
-			<div class="max-w-4xl mx-auto text-center">
-				<h2 class="text-5xl font-black text-[#434840] mb-12">
-					Showcase Stats
-				</h2>
-				
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-					<div class="card text-center p-6 bg-white">
-						<div class="text-5xl font-black text-[#677A67] mb-2">5</div>
-						<div class="text-xl text-[#434840] font-bold">Active Websites</div>
-					</div>
-					<div class="card text-center p-6 bg-white">
-						<div class="text-5xl font-black text-[#677A67] mb-2">10K+</div>
-						<div class="text-xl text-[#434840] font-bold">Monthly Visitors</div>
-					</div>
-					<div class="card text-center p-6 bg-white">
-						<div class="text-5xl font-black text-[#677A67] mb-2">99.9%</div>
-						<div class="text-xl text-[#434840] font-bold">Uptime</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+	</div>
 </div> 

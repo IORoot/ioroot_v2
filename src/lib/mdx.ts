@@ -13,10 +13,11 @@ export interface WebsiteData {
 	slug: string;
 	features: string[];
 	content: string;
+	category?: string;
 }
 
 export function loadWebsites(): WebsiteData[] {
-	const websitesDir = path.join(process.cwd(), 'src', 'content', 'websites');
+	const websitesDir = path.join(process.cwd(), 'src', 'content', 'showcase');
 	const files = fs.readdirSync(websitesDir);
 	
 	const websites: WebsiteData[] = [];
