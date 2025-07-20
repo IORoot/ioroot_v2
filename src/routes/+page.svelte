@@ -26,7 +26,11 @@
 		<div class="h-full grid grid-cols-12 grid-rows-8 gap-4 md:gap-6 w-full" style="grid-template-rows: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr;">
 			
 			<!-- Company Logo Box - Spans 4 columns, 4 rows (square) -->
-			<div class="col-span-6 md:col-span-4 row-span-4 bg-gradient-to-br from-[#87A7AC] to-[#87A7AC] rounded-3xl shadow-xl p-8 flex flex-col justify-center relative overflow-hidden" style="background-image: url('/images/bento/logo-bg.jpg'), url('/images/bento/logo-bg.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+			<div class="col-span-6 md:col-span-4 row-span-4 rounded-3xl shadow-xl p-8 flex flex-col justify-center relative overflow-hidden" style="background-color: #1a1a1a;">
+				<!-- Film Grain Overlay -->
+				<div class="absolute inset-0 opacity-20">
+					<img src="/images/bento/film-grain.svg" alt="" class="w-full h-full object-cover" />
+				</div>
 				<div class="text-center relative z-10">
 					<img src="/images/logo/logo.svg" alt="Company Logo" class="w-4/5 h-auto mx-auto filter brightness-0 invert" style="aspect-ratio: 1/1;" />
 				</div>
@@ -34,6 +38,12 @@
 			
 			<!-- Hero Section - Spans 8 columns, 4 rows -->
 			<div class="col-span-6 md:col-span-8 row-span-4 bg-gradient-to-br from-white to-[#EAE6D8] rounded-3xl shadow-xl p-8 flex flex-col justify-center relative overflow-hidden" style="background-image: url('/images/bento/hero-bg.jpg'), url('/images/bento/hero-bg.svg'); background-size: cover; background-position: center;">
+				<!-- Film Grain Overlay -->
+				<div class="absolute inset-0 opacity-25" style="background-image: url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;100&quot; height=&quot;100&quot;><filter id=&quot;noise&quot;><feTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;1.2&quot; numOctaves=&quot;3&quot; stitchTiles=&quot;stitch&quot;/></filter><rect width=&quot;100%&quot; height=&quot;100%&quot; filter=&quot;url(%23noise)&quot; opacity=&quot;0.8&quot;/></svg>'); background-size: 100px 100px; background-repeat: repeat;">
+				</div>
+				<!-- Golden Ratio Grid Overlay -->
+				<div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(184, 134, 11, 0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(184, 134, 11, 0.6) 1px, transparent 1px); background-size: 61.8px 61.8px, 61.8px 61.8px;">
+				</div>
 				<div class="text-center relative z-10">
 					<h1 class="text-6xl md:text-9xl font-black text-[#434840] mb-8">
 						Andy Pearson
