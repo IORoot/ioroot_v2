@@ -352,7 +352,7 @@
 				<!-- Image Overlay -->
 				<div class="text-left relative z-10">
 					<h2 class="text-3xl md:text-9xl font-black mb-4 text-white">Showcase</h2>
-					<p class="text-lg md:text-xl font-bold text-white">Sites I've built & maintain</p>
+					<p class="text-lg md:text-xl font-bold text-white">Sites, Builds, Articles & Designs</p>
 				</div>
 			</a>
 			

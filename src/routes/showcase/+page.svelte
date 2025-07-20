@@ -95,7 +95,7 @@
 							<img 
 								src={website.image} 
 								alt="{website.title}" 
-								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+								class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
 							/>
 						{:else}
 							<div class="w-full h-full bg-gradient-to-br from-[#EAE6D8] to-[#E4EDEE] flex items-center justify-center">
