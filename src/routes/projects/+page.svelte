@@ -113,8 +113,8 @@
 	<meta name="description" content="Explore Andy Pearson's coding projects, web applications, and technical work." />
 </svelte:head>
 
-<div class="min-h-screen bg-[#EAE6D8]">
-	<Navigation theme="peach" />
+<div class="min-h-screen bg-[#EAE6D8] pt-20">
+	<Navigation />
 	
 
 	

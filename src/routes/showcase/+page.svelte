@@ -8,16 +8,16 @@
 </script>
 
 <svelte:head>
-	<title>Websites - Andy Pearson</title>
-	<meta name="description" content="Explore the websites built and maintained by Andy Pearson, including community platforms and web applications." />
+	<title>Showcase - Andy Pearson</title>
+	<meta name="description" content="Explore the showcase of websites built and maintained by Andy Pearson, including community platforms and web applications." />
 </svelte:head>
 
-<div class="min-h-screen bg-[#EAE6D8]">
-	<Navigation theme="neutral" />
+<div class="min-h-screen bg-[#677A67] pt-20">
+	<Navigation />
 	
 
 	
-	<!-- Websites List -->
+	<!-- Showcase List -->
 	<section class="py-20 bg-white">
 		<div class="container-custom">
 			<div class="space-y-32">
@@ -82,7 +82,7 @@
 										</a>
 										
 										<a 
-											href="/websites/{website.slug}" 
+											href="/showcase/{website.slug}" 
 											class="inline-flex items-center justify-center space-x-2 bg-[#EAE6D8] text-[#434840] px-8 py-4 rounded-lg hover:bg-[#E7A97F] hover:text-white transition-colors duration-200 font-bold text-xl"
 										>
 											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +105,7 @@
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
 				<h2 class="text-5xl font-black text-[#434840] mb-12">
-					Website Stats
+					Showcase Stats
 				</h2>
 				
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">

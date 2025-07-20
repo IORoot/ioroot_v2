@@ -250,13 +250,13 @@
 
 <svelte:head>
 	<title>Andy Pearson - Full-Stack Developer & Parkour Enthusiast</title>
-	<meta name="description" content="Personal portfolio of Andy Pearson, showcasing web development projects, websites, and articles about technology and parkour." />
+	<meta name="description" content="Personal portfolio of Andy Pearson, showcasing web development projects and case studies about technology and parkour." />
 </svelte:head>
 
 <div class="min-h-screen bg-[#EAE6D8]">
 	
 	<!-- Full Screen Bento Box Layout -->
-	<div class="h-screen p-4 md:p-8">
+	<div class="h-screen p-4 md:p-8 pt-20">
 		<div class="h-full grid grid-cols-12 grid-rows-8 gap-4 md:gap-6 w-full" style="grid-template-rows: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr;">
 			
 			<!-- Company Logo Box - Spans 4 columns, 4 rows (square) -->
@@ -343,28 +343,16 @@
 				</div>
 			</a>
 			
-			<!-- Websites - Spans 4 columns, 2 rows -->
-			<a href="/websites" class="col-span-6 md:col-span-4 row-span-2 bg-gradient-to-br from-[#EAE6D8] to-[#EAE6D8] rounded-3xl shadow-xl p-6 flex flex-col justify-start text-[#434840] relative overflow-hidden" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
+			<!-- Showcase - Spans 4 columns, 2 rows -->
+			<a href="/showcase" class="col-span-6 md:col-span-4 row-span-2 bg-gradient-to-br from-[#EAE6D8] to-[#EAE6D8] rounded-3xl shadow-xl p-6 flex flex-col justify-start text-[#434840] relative overflow-hidden" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
 				<!-- Video Background -->
 				<video class="absolute bottom-0 left-0 w-full h-full object-cover rounded-3xl transition-transform duration-500 ease-out" muted loop playsinline style="min-width: 100%; min-height: 100%; width: auto; height: auto;">
 					<source src="/video/smoke.mp4" type="video/mp4">
 				</video>
 				<!-- Image Overlay -->
 				<div class="text-left relative z-10">
-					<h2 class="text-3xl md:text-9xl font-black mb-4 text-white">Websites</h2>
+					<h2 class="text-3xl md:text-9xl font-black mb-4 text-white">Showcase</h2>
 					<p class="text-lg md:text-xl font-bold text-white">Sites I've built & maintain</p>
-				</div>
-			</a>
-			
-			<!-- Articles - Spans 6 columns, 2 rows -->
-			<a href="/articles" class="col-span-6 md:col-span-6 row-span-2 bg-gradient-to-br from-[#E4EDEE] to-[#E4EDEE] rounded-3xl shadow-xl p-6 flex flex-col justify-center text-white relative overflow-hidden" on:mouseenter={(e) => { const video = e.currentTarget.querySelector('video'); if (video) video.play(); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { const video = e.currentTarget.querySelector('video'); if (video) video.pause(); if (video) video.style.transform = 'scale(1)'; }}>
-				<video class="absolute bottom-0 left-0 w-full h-full object-cover rounded-3xl transition-transform duration-500 ease-out" muted loop playsinline>
-					<source src="/video/library.mp4" type="video/mp4" />
-				</video>
-				<div class="absolute inset-0 bg-black bg-opacity-30"></div>
-				<div class="text-center relative z-10">
-					<h2 class="text-3xl md:text-5xl font-black mb-4">Articles</h2>
-					<p class="text-lg md:text-xl font-bold">Tech, parkour & insights</p>
 				</div>
 			</a>
 			

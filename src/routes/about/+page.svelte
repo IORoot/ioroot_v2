@@ -298,8 +298,8 @@
 	<meta name="description" content="Learn about Andy Pearson's background, skills, and experience in web development and parkour." />
 </svelte:head>
 
-<div class="min-h-screen">
-	<Navigation theme="blue" />
+<div class="min-h-screen pt-20">
+	<Navigation />
 	
 
 	
