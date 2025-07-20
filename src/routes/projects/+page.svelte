@@ -295,11 +295,11 @@
 		
 		<!-- Projects Grid - Full Width -->
 		<div class="px-4 sm:px-6 lg:px-8">
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 w-full">
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16 w-full">
 				{#each filteredRepos as repo}
 					{@const firstImage = repo.readme_content ? extractFirstImage(repo.readme_content, repo.name) : null}
 					<a href="/projects/{repo.name}" class="group block">
-						<div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+						<div class="rounded-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden" style="background:#fcfcfc">
 							<!-- Project Image Container -->
 							<div class="aspect-video bg-[#E4EDEE] relative">
 								{#if firstImage}
@@ -404,11 +404,11 @@
 								
 								<!-- Description -->
 								{#if repo.description}
-									<p class="text-lg text-[#434840] line-clamp-2 h-12 leading-6 font-semibold">
+									<p class="text-lg text-[#434840] line-clamp-2 h-12 leading-6 font-normal">
 										{repo.description}
 									</p>
 								{:else}
-									<p class="text-lg text-[#434840] line-clamp-2 h-12 leading-6 font-semibold">
+									<p class="text-lg text-[#434840] line-clamp-2 h-12 leading-6 font-normal">
 										&nbsp;
 									</p>
 								{/if}
