@@ -14,17 +14,17 @@
 	<meta name="description" content="{website.description}" />
 </svelte:head>
 
-<div class="min-h-screen bg-[#EAE6D8]">
+<div class="min-h-screen bg-[#677A67]">
 	<Navigation theme="neutral" />
 	
 	<!-- Hero Section -->
-	<section class="pt-32 pb-20 bg-gradient-to-br from-[#EAE6D8] to-[#E4EDEE]">
+	<section class="pt-32 pb-20 bg-gradient-to-br from-[#677A67] to-[#87A7AC]">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-6xl md:text-7xl font-black text-[#434840] mb-6">
+				<h1 class="text-6xl md:text-7xl font-black text-white mb-6">
 					{website.title}
 				</h1>
-				<p class="text-2xl text-[#434840] mb-8 font-semibold">
+				<p class="text-2xl text-white mb-8 font-semibold">
 					{website.description}
 				</p>
 				<div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -54,7 +54,7 @@
 	</section>
 	
 	<!-- Website Details -->
-	<section class="py-20 bg-white">
+	<section class="py-20 bg-[#EAE6D8]">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto">
 				<!-- Image Section -->

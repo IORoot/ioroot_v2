@@ -85,7 +85,7 @@
 			{#each filteredWebsites as website}
 				<a href="/showcase/{website.slug}" class="group block">
 					<!-- Title Above Image -->
-					<h3 class="text-6xl md:text-7xl font-black text-white mb-4 drop-shadow-lg">
+					<h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-black text-white mb-4 drop-shadow-lg whitespace-nowrap overflow-hidden text-ellipsis">
 						{website.title}
 					</h3>
 					

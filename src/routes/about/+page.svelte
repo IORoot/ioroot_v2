@@ -127,7 +127,7 @@
 											<img 
 												src={page.icon} 
 												alt="{page.title} logo" 
-												class="w-24 h-24 mx-auto"
+												class="w-24 h-24 mx-auto logo-grey transition-all duration-200"
 											/>
 										{:else}
 											<div class="text-white text-2xl font-bold text-center">
@@ -236,5 +236,14 @@
 	}
 	.scrollbar-hide::-webkit-scrollbar {
 		display: none;  /* Safari and Chrome */
+	}
+	
+	/* Logo styling */
+	.logo-grey {
+		filter: brightness(0.5) contrast(1.2);
+	}
+	
+	.group:hover .logo-grey {
+		filter: brightness(1) contrast(1);
 	}
 </style> 

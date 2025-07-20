@@ -325,9 +325,9 @@
 				<video class="absolute bottom-0 left-0 w-full h-full object-cover rounded-3xl transition-transform duration-500 ease-out" muted loop playsinline style="min-width: 100%; min-height: 100%; width: auto; height: auto;">
 					<source src="/video/mobieus.mp4" type="video/mp4">
 				</video>
-				<div class="text-left relative z-10">
-					<h2 class="text-3xl md:text-9xl font-black mb-4 text-white">About Me</h2>
-					<p class="text-lg md:text-xl font-bold text-white">Background, experience & skills</p>
+				<div class="text-left relative z-10 h-full flex flex-col justify-start">
+					<h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black mb-2 text-white leading-tight">About Me</h2>
+					<p class="text-sm sm:text-base md:text-lg font-bold text-white">Background, experience & skills</p>
 				</div>
 			</a>
 			
@@ -337,9 +337,9 @@
 				<video class="absolute bottom-0 left-0 w-full h-full object-cover rounded-3xl transition-transform duration-500 ease-out" muted loop playsinline style="min-width: 100%; min-height: 100%; width: auto; height: auto;">
 					<source src="/video/system.mp4" type="video/mp4">
 				</video>
-				<div class="text-left relative z-10">
-					<h2 class="text-3xl md:text-9xl font-black mb-4 text-white">Projects</h2>
-					<p class="text-lg md:text-xl font-bold text-white">Coding projects & technical work</p>
+				<div class="text-left relative z-10 h-full flex flex-col justify-start">
+					<h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black mb-2 text-white leading-tight">Projects</h2>
+					<p class="text-sm sm:text-base md:text-lg font-bold text-white">Coding projects & technical work</p>
 				</div>
 			</a>
 			
@@ -350,9 +350,9 @@
 					<source src="/video/smoke.mp4" type="video/mp4">
 				</video>
 				<!-- Image Overlay -->
-				<div class="text-left relative z-10">
-					<h2 class="text-3xl md:text-9xl font-black mb-4 text-white">Showcase</h2>
-					<p class="text-lg md:text-xl font-bold text-white">Sites, Builds, Articles & Designs</p>
+				<div class="text-left relative z-10 h-full flex flex-col justify-start">
+					<h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black mb-2 text-white leading-tight">Showcase</h2>
+					<p class="text-sm sm:text-base md:text-lg font-bold text-white">Sites, Builds, Articles & Designs</p>
 				</div>
 			</a>
 			
