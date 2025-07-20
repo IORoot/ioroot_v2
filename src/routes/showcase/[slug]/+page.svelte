@@ -18,7 +18,7 @@
 	<Navigation theme="neutral" />
 	
 	<!-- Hero Section -->
-	<section class="py-20 bg-gradient-to-br from-[#EAE6D8] to-[#E4EDEE]">
+	<section class="pt-32 pb-20 bg-gradient-to-br from-[#EAE6D8] to-[#E4EDEE]">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
 				<h1 class="text-6xl md:text-7xl font-black text-[#434840] mb-6">
