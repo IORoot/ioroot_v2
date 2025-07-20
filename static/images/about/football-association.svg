@@ -1,0 +1,7 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="8" fill="none"/>
+  <text x="32" y="18" font-family="Arial, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" fill="white">THE FA</text>
+  <circle cx="32" cy="30" r="8" stroke="white" stroke-width="2" fill="none"/>
+  <path d="M28 26 L36 34 M36 26 L28 34" stroke="white" stroke-width="1" fill="none"/>
+  <text x="32" y="45" font-family="Arial, sans-serif" font-size="6" text-anchor="middle" fill="white">FOOTBALL</text>
+</svg> 
