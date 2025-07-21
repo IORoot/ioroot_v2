@@ -16,14 +16,15 @@
 	
 	$: filters = [
 		{ id: 'all', label: 'All', count: aboutPages?.length || 0 },
-		{ id: 'me', label: 'Me', count: aboutPages?.filter(p => p.category === 'me').length || 0 },
-		{ id: 'experience', label: 'Experience', count: aboutPages?.filter(p => p.category === 'experience').length || 0 },
+		{ id: 'employment', label: 'Employment', count: aboutPages?.filter(p => p.category === 'experience').length || 0 },
 		{ id: 'parkour', label: 'Parkour', count: aboutPages?.filter(p => p.category === 'parkour').length || 0 },
 		{ id: 'education', label: 'Education', count: aboutPages?.filter(p => p.category === 'education').length || 0 }
 	];
 	
 	$: filteredPages = selectedFilter === 'all' 
 		? aboutPages || []
+		: selectedFilter === 'employment'
+		? (aboutPages || []).filter(page => page.category === 'experience')
 		: (aboutPages || []).filter(page => page.category === selectedFilter);
 	
 	function navigateToPage(slug: string) {
@@ -111,9 +112,16 @@
 								>
 									<!-- Header with title and date -->
 									<div class="flex justify-between items-start mb-4">
-										<h3 class="text-white font-semibold text-lg">
-											{page.title}
-										</h3>
+										<div class="flex-1">
+											<h3 class="text-white font-semibold text-lg">
+												{page.title}
+											</h3>
+											{#if page.contract}
+												<p class="text-orange-400 text-xs font-medium mt-1">
+													contract
+												</p>
+											{/if}
+										</div>
 										{#if page.period}
 											<p class="text-green-400 text-xs">
 												{getStartDate(page.period)}

@@ -73,6 +73,22 @@ export default {
 			fontFamily: {
 				'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
 				'display': ['Inter', 'system-ui', 'sans-serif']
+			},
+			fontSize: {
+				// Responsive font sizes based on viewport height
+				'xs-vh': ['clamp(0.75rem, 2vh, 0.875rem)', { lineHeight: '1.5' }],
+				'sm-vh': ['clamp(0.875rem, 2.5vh, 1rem)', { lineHeight: '1.5' }],
+				'base-vh': ['clamp(1rem, 3vh, 1.125rem)', { lineHeight: '1.6' }],
+				'lg-vh': ['clamp(1.125rem, 3.5vh, 1.25rem)', { lineHeight: '1.6' }],
+				'xl-vh': ['clamp(1.25rem, 4vh, 1.5rem)', { lineHeight: '1.5' }],
+				'2xl-vh': ['clamp(1.5rem, 5vh, 1.875rem)', { lineHeight: '1.4' }],
+				'3xl-vh': ['clamp(1.875rem, 6vh, 2.25rem)', { lineHeight: '1.3' }],
+				'4xl-vh': ['clamp(2.25rem, 7vh, 3rem)', { lineHeight: '1.2' }],
+				'5xl-vh': ['clamp(3rem, 8vh, 4rem)', { lineHeight: '1.1' }],
+				'6xl-vh': ['clamp(4rem, 10vh, 5rem)', { lineHeight: '1' }],
+				'7xl-vh': ['clamp(5rem, 12vh, 6rem)', { lineHeight: '1' }],
+				'8xl-vh': ['clamp(6rem, 15vh, 8rem)', { lineHeight: '1' }],
+				'9xl-vh': ['clamp(8rem, 20vh, 12rem)', { lineHeight: '1' }]
 			}
 		}
 	},

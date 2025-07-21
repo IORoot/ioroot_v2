@@ -1,9 +1,7 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="8" fill="none"/>
-  <text x="32" y="20" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="white">CHANNEL</text>
-  <text x="32" y="32" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">5</text>
-  <rect x="20" y="35" width="24" height="12" stroke="white" stroke-width="1" fill="none"/>
-  <circle cx="26" cy="41" r="1" fill="white"/>
-  <circle cx="32" cy="41" r="1" fill="white"/>
-  <circle cx="38" cy="41" r="1" fill="white"/>
-</svg> 
+<svg width="263" height="381" viewBox="0 0 263 381" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M87.0799 109.454H8.53381L41.523 9.69823C43.4264 4.00615 46.3082 1.31274 51.9173 1.31274H122.906L87.0799 109.454Z" fill="white"/>
+<path d="M134.848 1.31274H227.512C233.204 1.31274 238.175 4.70955 238.013 11.4822V63.6766C238.013 69.6109 233.561 73.6282 227.73 73.6282H110.86L134.848 1.31274Z" fill="white"/>
+<path d="M8.38953 120.733L37.7259 180.674C40.1914 186.373 44.8801 192.716 54.7889 192.716H131.531C211.303 192.716 250.051 267.647 244.316 313.132C244.316 313.132 261.267 286.755 261.267 248.467C261.267 178.906 201.348 120.733 133.521 120.733H8.38953Z" fill="white"/>
+<path d="M137.502 379.476V299.199C164.61 295.417 181.072 274.172 181.072 249.703C181.072 230.747 170.79 216.359 155.892 207.351C193.526 215.059 232.396 253.151 232.396 298.265C232.396 335.262 206.063 375.089 137.502 379.476Z" fill="white"/>
+<path d="M124.896 299.199V379.476C45.6089 374.581 1.34607 309.772 1.34607 251.059C1.34607 244.224 5.48528 239.821 11.4472 239.821H71.1456C76.9214 239.821 80.615 244.252 80.8885 249.882C81.3143 272.04 95.1897 293.558 124.896 299.199Z" fill="white"/>
+</svg>

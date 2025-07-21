@@ -25,6 +25,7 @@ export interface AboutData {
 	category: string;
 	slug: string;
 	content: string;
+	contract?: boolean;
 }
 
 export function loadWebsites(): WebsiteData[] {
@@ -89,24 +90,26 @@ export function loadAboutPages(): AboutData[] {
 	// Custom order for about pages
 	const orderMap: { [key: string]: number } = {
 		'bio': 1,
-		'thirtythree': 2,
-		'londonparkour': 3,
-		'herdl': 4,
-		'parkour-generations': 5,
-		'mblox': 6,
-		'schroders': 7,
-		'ge': 8,
-		'img-media': 9,
-		'sky': 10,
-		'football-association': 11,
-		'john-lewis': 12,
-		'channel-5': 13,
-		'ernest-jones': 14,
-		'tui': 15,
-		'watchmark': 16,
-		'adc-telecommunications': 17,
-		'university-hertfordshire-bsc': 18,
-		'university-hertfordshire-hnd': 19
+		'bio_developer': 2,
+		'bio_parkour': 3,
+		'thirtythree': 4,
+		'londonparkour': 5,
+		'herdl': 6,
+		'parkour-generations': 7,
+		'mblox': 8,
+		'schroders': 9,
+		'ge': 10,
+		'img-media': 11,
+		'sky': 12,
+		'football-association': 13,
+		'john-lewis': 14,
+		'channel-5': 15,
+		'ernest-jones': 16,
+		'tui': 17,
+		'watchmark': 18,
+		'adc-telecommunications': 19,
+		'university-hertfordshire-bsc': 20,
+		'university-hertfordshire-hnd': 21
 	};
 	
 	return aboutPages.sort((a, b) => {
