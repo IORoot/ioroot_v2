@@ -14,6 +14,7 @@ export interface WebsiteData {
 	features: string[];
 	content: string;
 	category?: string;
+	order?: number;
 }
 
 export interface AboutData {
@@ -45,18 +46,16 @@ export function loadWebsites(): WebsiteData[] {
 		}
 	}
 	
-	// Custom order for websites
-	const orderMap: { [key: string]: number } = {
-		'LondonParkour.com': 1,
-		'IORoot.com': 2,
-		'RF-1.com': 3,
-		'SVGEncode.com': 4,
-		'HouseQuests.com': 5
-	};
-	
+	// Sort by order field from frontmatter, then by title
 	return websites.sort((a, b) => {
-		const orderA = orderMap[a.title] || 999;
-		const orderB = orderMap[b.title] || 999;
+		const orderA = a.order || 999;
+		const orderB = b.order || 999;
+		
+		// If orders are equal, sort alphabetically by title
+		if (orderA === orderB) {
+			return a.title.localeCompare(b.title);
+		}
+		
 		return orderA - orderB;
 	});
 }
