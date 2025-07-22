@@ -83,6 +83,9 @@ class GitHubCache {
 
   async cacheRepos(repos: CachedRepo[]): Promise<void> {
     try {
+      // Ensure cache directory exists before writing files
+      this.ensureCacheDirectory();
+      
       // Save each repo individually
       for (const repo of repos) {
         const filePath = this.getRepoFilePath(repo.name);
