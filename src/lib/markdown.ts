@@ -1,5 +1,4 @@
 export function markdownToHtml(markdown: string): string {
-	console.log('Input markdown:', markdown);
 	// Extract code blocks to preserve them
 	const codeBlocks: string[] = [];
 	let codeBlockIndex = 0;
@@ -30,7 +29,6 @@ export function markdownToHtml(markdown: string): string {
 		
 		// Images (must come BEFORE links to avoid conflicts)
 		.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
-			console.log('Image match:', match, 'alt:', alt, 'src:', src);
 			return `<img src="${src}" alt="${alt}" class="w-full h-auto rounded-lg shadow-lg mb-6" />`;
 		})
 		
@@ -93,6 +91,5 @@ export function markdownToHtml(markdown: string): string {
 	// 	return `src="${githubRawUrl}"`;
 	// });
 	
-	console.log('Output HTML:', html);
 	return html;
 } 

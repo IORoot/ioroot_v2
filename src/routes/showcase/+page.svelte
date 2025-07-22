@@ -7,7 +7,7 @@
 	$: ({ websites } = data);
 	
 	// Categories for filtering
-	const categories = ['website', 'design', 'app', 'parkour', 'maker', 'work'];
+	const categories = ['website', 'design', 'app', 'parkour', 'articles', 'work'];
 	let selectedCategory = 'all';
 	
 	// Filter websites based on selected category
@@ -22,7 +22,7 @@
 		design: websites.filter(w => w.category === 'design').length,
 		app: websites.filter(w => w.category === 'app').length,
 		parkour: websites.filter(w => w.category === 'parkour').length,
-		maker: websites.filter(w => w.category === 'maker').length,
+		articles: websites.filter(w => w.category === 'articles').length,
 		work: websites.filter(w => w.category === 'work').length
 	};
 	

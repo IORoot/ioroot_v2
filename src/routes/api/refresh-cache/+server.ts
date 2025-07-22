@@ -9,12 +9,25 @@ export async function POST() {
     // Force fetch fresh data
     const repos = await fetchGitHubRepos('IORoot');
     
+    // Extract and log tag information
+    const { extractTagsFromRepo } = await import('$lib/github');
+    const allTags = new Set<string>();
+    
+    repos.forEach(repo => {
+      const tags = extractTagsFromRepo(repo);
+      tags.forEach(tag => allTags.add(tag));
+    });
+    
+    console.log(`🏷️ Tags refreshed: ${Array.from(allTags).sort().join(', ')}`);
+    
     const metadata = await githubCache.getCacheMetadata();
     
     return json({
       success: true,
-      message: `Cache refreshed successfully`,
+      message: `Cache and tags refreshed successfully`,
       repos_count: repos.length,
+      tags_count: allTags.size,
+      tags: Array.from(allTags).sort(),
       last_updated: metadata?.last_updated || new Date().toISOString()
     });
   } catch (error) {

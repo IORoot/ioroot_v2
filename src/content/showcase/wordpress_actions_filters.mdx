@@ -1,0 +1,113 @@
+---
+title: "WP Actions & Filters"
+description: "Wordpress Actions & Filters."
+url: ""
+image: ""
+tech: ["Puppet", "Terraform", "GitLab", "CI/CD"]
+status: "Live"
+icon: "🏃‍♂️"
+slug: "wp_actions_filters"
+category: "articles"
+order: 8
+---
+
+
+# Wordpress Simple Actions & Filters
+
+
+Curse the gods, this simple functionality can seem complicated. I think its a combination of the terminology and word choice being so unhelpful. Do I `add` , `apply` or `do` a filter or action? What is a hook here? Or maybe I need to register it? It's all very vague, and I constantly forget.
+
+Anyway, here's some pretty pictures instead. I've made it as basic as possible, more for remembering which one to use and where.
+
+## 🧗🏻‍♀️ Basic Actions (does a task, returns nothing)
+
+Plug in new code at a specific point.
+
+
+```mermaid
+flowchart TB
+
+    subgraph callback["Registered Callback Function"]
+        callback_function["run_this_function($args)"]
+    end
+
+    subgraph codeflow["Normal code flow"]
+        direction TB
+        code1["code"]
+        do_action["do_action( 'my_action_name', $arguments )"]
+        code2["code"]
+
+        code1 --> do_action
+        do_action --> code2
+    end
+
+    subgraph register["Registered Action"]
+        add_action["add_action( 'my_action_name', 'run_this_function', $priority, $number_of_args)"]
+    end
+
+    do_action --> register
+    register --> callback
+
+```
+
+
+1.  Once you've registered your action with a `my_action_name` in functions.php or a plugin, you can now call it. 
+    
+2.  Whenever the code gets to a `do_action('my_action_name')`, it'll  run the associated callback function `run_this_function`.  
+    
+3.  No need to return anything.
+
+
+🔗 Action Links:
+
+[](https://developer.wordpress.org/reference/functions/do_action/)[https://developer.wordpress.org/reference/functions/do_action/](https://developer.wordpress.org/reference/functions/do_action/)
+
+[](https://developer.wordpress.org/reference/functions/add_action/)[https://developer.wordpress.org/reference/functions/add_action/](https://developer.wordpress.org/reference/functions/add_action/)
+
+
+
+## 🔍 Basic Filters (returns filtered data)
+
+Pass in a value, change the value, pass new value back.
+
+```mermaid
+flowchart TB
+
+    subgraph register["Registered Filter"]
+        add_filter["add_filter( 'my_filter_name', 'run_this_function', $priority, $number_of_args)"]
+    end
+
+    subgraph codeflow["Normal code flow"]
+        direction TB
+        code1["$value_to_be_filtered = 'Andrew'"]
+        apply_filters["$new_value = apply_filters( 'my_filter_name', $value_to_be_filtered, $arguments )"]
+        code2["echo $new_value"]
+
+        code1 --> apply_filters
+        apply_filters --> code2
+    end
+    
+
+    subgraph callback["Registered Callback Function"]
+        callback_function["run_this_function($value, $arguments){ return 'hi! '. $value; }"]
+    end
+
+
+    apply_filters --> register
+    register --> callback
+    callback --> apply_filters 
+
+```
+
+1. Registered your filter with an `add_filter` referencing a callback function.
+2. Run the filter with the `apply_filter` function.
+3. The callback function will take the passed value, change it and return it back. (filtering it)
+4. MUST return something (the new value).
+
+
+#### 🔗 Filter Links:
+
+[](https://developer.wordpress.org/reference/functions/apply_filters/)[https://developer.wordpress.org/reference/functions/apply_filters/](https://developer.wordpress.org/reference/functions/apply_filters/)
+
+[](https://developer.wordpress.org/reference/functions/add_filter/)[https://developer.wordpress.org/reference/functions/add_filter/](https://developer.wordpress.org/reference/functions/add_filter/)
+

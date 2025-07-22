@@ -34,17 +34,40 @@
 	let filterMode: 'AND' | 'OR' = 'OR';
 	let showFilters = false;
 	
+	// Status filtering state
+	let statusFilter: 'public' | 'archived' = 'public';
+	
 	// Sorting state
 	let sortBy: 'default' | 'default-reverse' | 'alphabetical' | 'alphabetical-reverse' | 'stars' | 'age' | 'age-reverse' = 'age-reverse';
 	let showSortDropdown = false;
 	
-	// Get all unique tags from all repos
-	$: allTags = [...new Set(repos.flatMap(repo => repo.tags))].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+	// Get all unique tags from repos based on current status filter
+	$: allTags = [...new Set(
+		repos
+			.filter(repo => {
+				if (statusFilter === 'public') {
+					return !repo.archived;
+				} else {
+					return repo.archived;
+				}
+			})
+			.flatMap(repo => repo.tags)
+	)].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 	
-	// Filter repos based on selected tags
-	$: filteredRepos = selectedTags.length === 0 
-		? sortedRepos 
-		: sortedRepos.filter(repo => {
+	// Filter repos based on status and selected tags
+	$: filteredRepos = sortedRepos
+		.filter(repo => {
+			// Apply status filter
+			if (statusFilter === 'public') {
+				return !repo.archived;
+			} else {
+				return repo.archived;
+			}
+		})
+		.filter(repo => {
+			// Apply tag filter if tags are selected
+			if (selectedTags.length === 0) return true;
+			
 			if (filterMode === 'AND') {
 				// All selected tags must be present
 				return selectedTags.every(tag => repo.tags.includes(tag));
@@ -66,6 +89,7 @@
 	// Clear all filters
 	function clearFilters() {
 		selectedTags = [];
+		statusFilter = 'public';
 	}
 	
 	// Extract first image from markdown content and convert local references to GitHub URLs
@@ -147,10 +171,10 @@
 					<!-- Project Count -->
 					<div>
 						<h2 class="text-4xl font-black text-[#434840]">
-							{totalRepos} Projects
+							{filteredRepos.length} Projects
 						</h2>
 						<p class="text-xl text-[#677A67] font-semibold">
-							From GitHub repositories
+							{statusFilter === 'public' ? 'Public' : 'Archived'} repositories
 						</p>
 					</div>
 					
@@ -232,70 +256,94 @@
 							</svg>
 							<span>{showFilters ? 'Hide' : 'Show'} Filters</span>
 						</button>
+						
+						<!-- Status Filter Switch -->
+						<div class="flex items-center space-x-2 bg-[#EAE6D8] rounded-lg p-1">
+							<button
+								on:click={() => statusFilter = 'public'}
+								class="flex items-center space-x-2 px-3 py-2 rounded-md transition-all duration-200 {statusFilter === 'public' ? 'bg-[#E7A97F] text-white shadow-md' : 'text-[#434840] hover:bg-[#E4EDEE]'}"
+								title="Public repositories"
+							>
+								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+									<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+								</svg>
+								<span class="text-sm font-bold">Public</span>
+							</button>
+							<button
+								on:click={() => statusFilter = 'archived'}
+								class="flex items-center space-x-2 px-3 py-2 rounded-md transition-all duration-200 {statusFilter === 'archived' ? 'bg-[#E7A97F] text-white shadow-md' : 'text-[#434840] hover:bg-[#E4EDEE]'}"
+								title="Archived repositories"
+							>
+								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+									<path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5l-4-4h2.5V12h3v1.5H16l-4 4z"/>
+								</svg>
+								<span class="text-sm font-bold">Archived</span>
+							</button>
+						</div>
 					</div>
 				</div>
-
-				<!-- Tag Filter -->
-				{#if showFilters}
-					<div class="mb-8 p-6 bg-[#E4EDEE] rounded-lg">
-						<div class="flex flex-wrap items-center gap-4 mb-4">
-							<h3 class="text-2xl font-black text-[#434840]">
-								Filter by tags:
-							</h3>
-							
-							<!-- Filter Mode Toggle -->
-							<div class="flex items-center space-x-2">
-								<span class="text-lg text-[#677A67] font-semibold">Mode:</span>
-								<button
-									on:click={() => filterMode = filterMode === 'OR' ? 'AND' : 'OR'}
-									class="px-4 py-2 text-lg font-bold rounded-md transition-colors {filterMode === 'OR' ? 'bg-[#EAE6D8] text-[#434840]' : 'bg-[#E7A97F] text-white'}"
-								>
-									{filterMode}
-								</button>
-							</div>
-							
-							<!-- Clear Filters -->
-							{#if selectedTags.length > 0}
-								<button
-									on:click={clearFilters}
-									class="px-4 py-2 text-lg text-[#677A67] hover:text-[#434840] transition-colors font-bold"
-								>
-									Clear filters
-								</button>
-							{/if}
-						</div>
-						
-						<!-- Tag List -->
-						<div class="flex flex-wrap gap-2">
-							{#each allTags as tag}
-								<button
-									on:click={() => toggleTag(tag)}
-									class="px-4 py-2 text-lg rounded-full transition-all duration-200 font-bold {selectedTags.includes(tag) 
-										? 'bg-[#E7A97F] text-white shadow-md' 
-										: 'bg-[#EAE6D8] text-[#434840] hover:bg-[#E4EDEE]'}"
-								>
-									{tag}
-								</button>
-							{/each}
-						</div>
-						
-						<!-- Results Count -->
-						{#if selectedTags.length > 0}
-							<div class="mt-4 text-lg text-[#677A67] font-semibold">
-								Showing {filteredRepos.length} of {totalRepos} projects
-								{#if selectedTags.length > 1}
-									({filterMode === 'AND' ? 'all tags' : 'any tag'})
-								{/if}
-							</div>
-						{/if}
-					</div>
-				{/if}
 			{/if}
 		</div>
+
+		<!-- Tag Filter - Full Width -->
+		{#if showFilters && !data.error}
+			<div class="w-full bg-[#E4EDEE] py-6">
+				<div class="px-4 sm:px-6 lg:px-8">
+					<div class="flex flex-wrap items-center gap-4 mb-4">
+						<h3 class="text-2xl font-black text-[#434840]">
+							Filter by tags:
+						</h3>
+						
+						<!-- Filter Mode Toggle -->
+						<div class="flex items-center space-x-2">
+							<span class="text-lg text-[#677A67] font-semibold">Mode:</span>
+							<button
+								on:click={() => filterMode = filterMode === 'OR' ? 'AND' : 'OR'}
+								class="px-4 py-2 text-lg font-bold rounded-md transition-colors {filterMode === 'OR' ? 'bg-[#EAE6D8] text-[#434840]' : 'bg-[#E7A97F] text-white'}"
+							>
+								{filterMode}
+							</button>
+						</div>
+						
+						<!-- Clear Filters -->
+						{#if selectedTags.length > 0}
+							<button
+								on:click={clearFilters}
+								class="px-4 py-2 text-lg text-[#677A67] hover:text-[#434840] transition-colors font-bold"
+							>
+								Clear filters
+							</button>
+						{/if}
+					</div>
+					
+					<!-- Tag List -->
+					<div class="flex flex-wrap gap-2">
+						{#each allTags as tag}
+							<button
+								on:click={() => toggleTag(tag)}
+								class="px-3 py-1.5 text-sm rounded-full transition-all duration-200 font-normal font-mono {selectedTags.includes(tag) 
+									? 'bg-[#E7A97F] text-white shadow-md' 
+									: 'bg-white text-[#434840] hover:bg-gray-100 border border-gray-200'}"
+							>
+								{tag}
+							</button>
+						{/each}
+					</div>
+					
+					<!-- Results Count -->
+					<div class="mt-4 text-lg text-[#677A67] font-semibold">
+						Showing {filteredRepos.length} of {repos.filter(r => statusFilter === 'public' ? !r.archived : r.archived).length} {statusFilter} projects
+						{#if selectedTags.length > 0}
+							with {selectedTags.length > 1 ? (filterMode === 'AND' ? 'all tags' : 'any tag') : 'selected tag'}
+						{/if}
+					</div>
+				</div>
+			</div>
+		{/if}
 		
 		<!-- Projects Grid - Full Width -->
-		<div class="px-4 sm:px-6 lg:px-8">
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16 w-full">
+		<div class="px-4 sm:px-6 lg:px-8 bg-stone-100">
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16 w-full py-8">
 				{#each filteredRepos as repo}
 					{@const firstImage = repo.readme_content ? extractFirstImage(repo.readme_content, repo.name) : null}
 					<a href="/projects/{repo.name}" class="group block">

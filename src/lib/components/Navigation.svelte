@@ -16,7 +16,7 @@
 	<div class="bg-white/90 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg px-6 py-3">
 		<div class="flex items-center space-x-8">
 			<!-- Logo -->
-			<a href="/" class="flex items-center">
+			<a href="/" class="flex items-center px-3 py-2 rounded-lg transition-all duration-200 hover:bg-gray-100 hover:shadow-md">
 				<img src="/images/logo/logo_full.svg" alt="Andy Pearson" class="h-6 w-auto" />
 			</a>
 			

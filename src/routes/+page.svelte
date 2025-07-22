@@ -1,25 +1,19 @@
-<script>
+<script lang="ts">
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { onMount } from 'svelte';
 	
-	let gridContainer;
+	let gridContainer: HTMLElement;
 	let isShortScreen = false;
 	
 	function updateGridLayout() {
-		console.log('updateGridLayout called, window height:', window.innerHeight);
 		if (gridContainer) {
-			console.log('gridContainer found, applying styles');
 			if (window.innerHeight <= 900) {
-				console.log('Short screen detected, applying short layout');
 				gridContainer.style.gridTemplateRows = '0.1fr 0.1fr 1.8fr 1.8fr 1.8fr 1.8fr 1.8fr 0.8fr';
 				isShortScreen = true;
 			} else {
-				console.log('Tall screen detected, applying tall layout');
 				gridContainer.style.gridTemplateRows = '0.7fr 0.7fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.5fr';
 				isShortScreen = false;
 			}
-		} else {
-			console.log('gridContainer not found');
 		}
 	}
 	
@@ -46,32 +40,26 @@
 		londonparkour_web: 'https://www.google.com/search?q=londonparkour'
 	};
 
-	let logoContainer;
-	let emailIcon;
-	let githubIcon;
-	let linkedinIcon;
+	let logoContainer: HTMLElement;
+	let emailIcon: HTMLElement;
+	let githubIcon: HTMLElement;
+	let linkedinIcon: HTMLElement;
 
 	function animateLogo() {
-		console.log('animateLogo called');		
 		if (!logoContainer) {
-			console.log('logoContainer not found');
 			return;
 		}
 
 		// Try to import GSAP dynamically
 		import('gsap').then(gsapModule => {
 			const gsap = gsapModule.gsap;
-			console.log('GSAP loaded:', gsap);
 
 			// Get the logo elements
 			const iElement = logoContainer.querySelector('#I');
 			const oElement = logoContainer.querySelector('#O');
 			const slashElement = logoContainer.querySelector('#Line');
 
-			console.log('Elements found:', { iElement, oElement, slashElement });
-
 			if (!iElement || !oElement || !slashElement) {
-				console.log('Some logo elements not found');
 				return;
 			}
 
@@ -79,8 +67,6 @@
 			const originalIPos = iElement.getAttribute('x');
 			const originalOPos = oElement.getAttribute('x');
 			const originalSlashPos = slashElement.getAttribute('x1');
-
-			console.log('Original positions:', { originalIPos, originalOPos, originalSlashPos });
 
 			// Create timeline
 			const tl = gsap.timeline();
@@ -150,7 +136,7 @@
 				ease: "power2.out"
 			});
 
-			console.log('Animation timeline created');
+			// Animation timeline created
 		}).catch(error => {
 			console.error('Failed to load GSAP:', error);
 		});

@@ -18,6 +18,7 @@ export interface CachedRepo {
   created_at: string;
   stargazers_count: number;
   forks_count: number;
+  archived: boolean;
   readme_content?: string;
   readme_html?: string;
   last_cached: string;

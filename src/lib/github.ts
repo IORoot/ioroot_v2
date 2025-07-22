@@ -11,6 +11,7 @@ export interface GitHubRepo {
   created_at: string;
   stargazers_count: number;
   forks_count: number;
+  archived: boolean;
   readme_content?: string;
   readme_html?: string;
 }
@@ -86,6 +87,7 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
         created_at: repo.created_at,
         stargazers_count: repo.stargazers_count,
         forks_count: repo.forks_count,
+        archived: repo.archived || false,
         readme_content: repo.readme_content,
         readme_html: repo.readme_html
       }));
@@ -140,6 +142,7 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
             created_at: repo.created_at,
             stargazers_count: repo.stargazers_count,
             forks_count: repo.forks_count,
+            archived: repo.archived || false,
             readme_content: repo.readme_content,
             readme_html: repo.readme_html
           }));
@@ -172,7 +175,6 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
     console.log(`📦 Total repos fetched: ${allRepos.length}`);
     
     // Fetch README content for each repo
-    console.log(`📖 Fetching README content for ${allRepos.length} repos...`);
     const reposWithReadme = await Promise.all(
       allRepos.map(async (repo) => {
         try {
@@ -182,7 +184,6 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
           
           if (readmeResponse.ok) {
             const readmeContent = await readmeResponse.text();
-            console.log(`✅ README fetched for ${repo.name} (${readmeContent.length} chars)`);
             return {
               ...repo,
               readme_content: readmeContent,
@@ -190,7 +191,6 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
             };
           } else {
             // Fallback to GitHub API if raw URL doesn't work
-            console.log(`⚠️ Raw README not found for ${repo.name}, trying API...`);
             const apiReadmeResponse = await fetch(`https://api.github.com/repos/${username}/${repo.name}/readme`, {
               headers
             });
@@ -201,14 +201,11 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
               // Decode the base64 content
               readmeContent = atob(readmeData.content);
               
-              console.log(`✅ README fetched via API for ${repo.name} (${readmeContent.length} chars)`);
               return {
                 ...repo,
                 readme_content: readmeContent,
                 readme_html: readmeData.html_url
               };
-            } else {
-              console.log(`❌ No README for ${repo.name} (${apiReadmeResponse.status})`);
             }
           }
         } catch (error) {
@@ -247,6 +244,7 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
         created_at: repo.created_at,
         stargazers_count: repo.stargazers_count,
         forks_count: repo.forks_count,
+        archived: repo.archived || false,
         readme_content: repo.readme_content,
         readme_html: repo.readme_html
       }));

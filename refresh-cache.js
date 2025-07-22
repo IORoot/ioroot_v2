@@ -23,6 +23,16 @@ async function refreshCache() {
         try {
           const result = JSON.parse(data);
           console.log('✅ Cache refresh result:', result);
+          
+          if (result.success) {
+            console.log(`📦 Repos refreshed: ${result.repos_count}`);
+            console.log(`🏷️ Tags refreshed: ${result.tags_count}`);
+            if (result.tags && result.tags.length > 0) {
+              console.log(`📋 Available tags: ${result.tags.join(', ')}`);
+            }
+            console.log(`🕒 Last updated: ${result.last_updated}`);
+          }
+          
           resolve(result);
         } catch (error) {
           reject(error);

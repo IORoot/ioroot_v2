@@ -25,11 +25,7 @@ export const load: PageServerLoad = async ({ params }) => {
       formattedDate: formatDate(repo.updated_at)
     };
     
-    // Debug: Check if README content exists
-    console.log(`📖 Project ${slug}: README content length: ${repo.readme_content?.length || 0}`);
-    if (!repo.readme_content) {
-      console.log(`⚠️ No README content for ${slug}`);
-    }
+    // Process the repo data
     
     return {
       repo: processedRepo
