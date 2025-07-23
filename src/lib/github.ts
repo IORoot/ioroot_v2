@@ -308,12 +308,12 @@ export function formatDate(dateString: string): string {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   
   if (diffDays === 1) {
-    return 'Updated today';
+    return 'today';
   } else if (diffDays < 7) {
-    return `Updated ${diffDays} days ago`;
+    return `${diffDays} days ago`;
   } else if (diffDays < 30) {
     const weeks = Math.floor(diffDays / 7);
-    return `Updated ${weeks} week${weeks > 1 ? 's' : ''} ago`;
+    return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
   } else {
     return date.toLocaleDateString('en-US', { 
       year: 'numeric', 

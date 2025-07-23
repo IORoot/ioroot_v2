@@ -281,7 +281,7 @@
 	
 	/* Logo styling with accent color */
 	.logo-accent {
-		filter: brightness(0.8) contrast(1.2) saturate(0.8);
+		filter: brightness(0.4) contrast(1.3) saturate(0.7);
 		transition: all 0.3s ease;
 		transform: scale(1);
 	}
