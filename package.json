@@ -36,7 +36,10 @@
   "dependencies": {
     "@mdx-js/esbuild": "^3.1.0",
     "@mdx-js/rollup": "^3.1.0",
+    "@types/prismjs": "^1.26.5",
     "gray-matter": "^4.0.3",
-    "gsap": "^3.13.0"
+    "gsap": "^3.13.0",
+    "highlight.js": "^11.11.1",
+    "prismjs": "^1.30.0"
   }
 }

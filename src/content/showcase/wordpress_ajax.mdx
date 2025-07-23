@@ -1,8 +1,14 @@
 ---
-slug: "/posts/wordpress-ajax"
-date: "2022-06-22"
 title: "Wordpress AJAX"
-icon:  "wordpress"
+description: "Wordpress AJAX Explained."
+url: ""
+image: ""
+tech: ["Wordpress", "AJAX"]
+status: "Live"
+icon: "🖥️"
+slug: "wp_ajax"
+category: "articles"
+order: 8
 ---
 
 # Wordpress AJAX
@@ -15,7 +21,7 @@ These are simple diagrams of the descriptions made on the official wordpress pag
 
 ## **1. Using inline JS within PHP.**
 
-![](./AJAX.jpg)
+![AJAX](/images/articles/AJAX.jpg)
 
 ### **1.1 Declare the Javascript in PHP**
 
@@ -26,20 +32,20 @@ add_action( 'admin_footer', 'my_action_javascript' );
 
 function my_action_javascript() { ?>
 	<script type="text/javascript" >
-    jQuery(document).ready(function($) {
+		jQuery(document).ready(function($) {
 
-  	var data = {
-    	'action': 'my_action',
-    	'whatever': 1234
-  	};
-  
-  	// jQuery.post( url [,data ] [,success ] [,dataType ] )
-  	jQuery.post(ajaxurl, data, function(response) {
-    	alert('Got this from the server: ' + response);
-  	});
+		var data = {
+			'action': 'my_action',
+			'whatever': 1234
+		};
+	
+		// jQuery.post( url [,data ] [,success ] [,dataType ] )
+		jQuery.post(ajaxurl, data, function(response) {
+			alert('Got this from the server: ' + response);
+		});
 
-	});
-	</script> <?php
+		});
+	</script>
 }
 ```
 
@@ -74,7 +80,7 @@ function my_action() {
 
 ## **2. Using Javascript Files.**
 
-![](./AJAX2.jpg)
+![AJAX](/images/articles/AJAX2.jpg)
 
 Using this method we can pass values TO the javascript file first.
 
@@ -137,4 +143,3 @@ The `ajax_object.we_value` and `ajax_object.ajax_url` contains the data pass
 5.  The JS data array is sent to the callback url ALSO sent via php.
 6.  the callback processes as before and passes response back.
 7.  Alert is made on response.
-

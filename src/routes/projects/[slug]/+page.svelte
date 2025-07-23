@@ -2,6 +2,8 @@
   import Navigation from '$lib/components/Navigation.svelte';
   import MarkdownTable from '$lib/components/MarkdownTable.svelte';
   import type { PageData } from './$types';
+  import hljs from 'highlight.js';
+  import 'highlight.js/styles/atom-one-dark.css';
 	
 	export let data: PageData;
 	
@@ -24,7 +26,22 @@
 		// Replace code blocks with placeholders
 		let processedMarkdown = markdown.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
 			const placeholder = `__CODE_BLOCK_${codeBlockIndex}__`;
-			codeBlocks[codeBlockIndex] = `<pre class="bg-[#E4EDEE] p-4 rounded-lg overflow-x-auto my-4 font-mono text-sm whitespace-pre-wrap"><code>${code}</code></pre>`;
+			
+			// Use highlight.js for syntax highlighting
+			let highlightedCode = code;
+			if (lang) {
+				try {
+					highlightedCode = hljs.highlight(code, { language: lang }).value;
+				} catch (e) {
+					// Fallback to auto-detection if language is not supported
+					highlightedCode = hljs.highlightAuto(code).value;
+				}
+			} else {
+				// Auto-detect language if none specified
+				highlightedCode = hljs.highlightAuto(code).value;
+			}
+			
+			codeBlocks[codeBlockIndex] = `<pre class="bg-[#282C34] p-4 rounded-lg overflow-x-auto my-4 font-mono text-sm border border-[#3E4451]"><code class="hljs">${highlightedCode}</code></pre>`;
 			codeBlockIndex++;
 			return placeholder;
 		});

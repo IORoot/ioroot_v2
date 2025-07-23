@@ -77,4 +77,122 @@
 
 ::-webkit-scrollbar-thumb:hover {
 	@apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* Highlight.js atom-one-dark theme integration */
+.hljs {
+	@apply font-mono text-sm;
+}
+
+/* Override atom-one-dark theme to better match site colors */
+.hljs-comment,
+.hljs-quote {
+	@apply text-[#87A7AC] italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-title,
+.hljs-section,
+.hljs-doctag,
+.hljs-type,
+.hljs-name,
+.hljs-strong {
+	@apply text-[#E7A97F] font-bold;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+	@apply text-[#87A7AC];
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-hex,
+.hljs-link {
+	@apply text-[#E7A97F];
+}
+
+.hljs-meta,
+.hljs-deletion {
+	@apply text-[#677A67];
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-title,
+.hljs-section,
+.hljs-type,
+.hljs-name,
+.hljs-strong {
+	@apply font-bold;
+}
+
+.hljs-emphasis {
+	@apply italic;
+}
+
+/* Additional atom-one-dark theme elements */
+.hljs-built_in,
+.hljs-builtin-name {
+	@apply text-[#87A7AC];
+}
+
+.hljs-params {
+	@apply text-[#E4EDEE];
+}
+
+.hljs-punctuation {
+	@apply text-[#677A67];
+}
+
+.hljs-operator {
+	@apply text-[#E7A97F];
+}
+
+.hljs-function {
+	@apply text-[#87A7AC];
+}
+
+.hljs-class .hljs-title {
+	@apply text-[#87A7AC];
+}
+
+.hljs-property {
+	@apply text-[#E7A97F];
+}
+
+.hljs-attr {
+	@apply text-[#87A7AC];
+}
+
+.hljs-attr-value {
+	@apply text-[#E7A97F];
+}
+
+.hljs-tag {
+	@apply text-[#E7A97F];
+}
+
+.hljs-tag .hljs-name {
+	@apply text-[#E7A97F];
+}
+
+.hljs-tag .hljs-attr {
+	@apply text-[#87A7AC];
+}
+
+.hljs-tag .hljs-string {
+	@apply text-[#E7A97F];
 } 

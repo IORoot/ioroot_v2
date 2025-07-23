@@ -2,6 +2,7 @@
 	import Navigation from '$lib/components/Navigation.svelte';
 	import type { PageData } from './$types';
 	import { markdownToHtml } from '$lib/markdown';
+	import 'highlight.js/styles/atom-one-dark.css';
 	
 	export let data: PageData;
 	

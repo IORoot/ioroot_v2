@@ -1,15 +1,22 @@
 ---
-slug:  "/posts/ffmpeg"
-date:  "2022-06-21"
-title: "Automating Videos with FFMpeg"
-icon:  "ffmpeg"
+title: "FFMPEG Automation"
+description: "Automating Videos with FFMpeg."
+url: ""
+image: ""
+tech: ["FFMPEG", "Bash"]
+status: "Live"
+icon: "🎥"
+slug: "ffmpeg"
+category: "article"
+order: 6
 ---
+
 
 # 🎥 Auto-Editing, Converting, Colour Correcting and Grading Videos with FFMpeg
 
-## Video.m4v + BASH + FFMpeg
-
 Not just converting, but automated editing, watermarking, encoding and colour-grading.
+
+## Summary
 
 The ideal situation would be a fully automated video-editing step that did all the hard work for me. I looked into using `aerender` (After Effects CLI) to run templates, but it seemed way too complicated and too OTT for the simple types of things I want to do... Enter `FFMpeg`.
 
@@ -81,7 +88,7 @@ Take a second input `-i watermark_image.png` ,which is an image, and loop that
 
 This is filter one. FFMpeg gives each input an ID (starting with `0`). Each input has an audio `:a` and video `:v` channel too. So `1:v` would represent the second input's video channel (That's the watermark, remember). Easy, right?
 
-Then the magic of the filter happens. `` `fade=out:st=3:d=1:alpha=1` `` says use the `fade` filter and fade `out`. `st`art at time position 3 (three seconds in), and run that filter for the `d`uration of 1 second. Also, apply any alpha channels (transparencies). Check the FFMpeg 'filter' section for more details on the flags available for the 'fade' filter.
+Then the magic of the filter happens. `fade=out:st=3:d=1:alpha=1` says use the `fade` filter and fade `out`. `st`art at time position 3 (three seconds in), and run that filter for the `d`uration of 1 second. Also, apply any alpha channels (transparencies). Check the FFMpeg 'filter' section for more details on the flags available for the 'fade' filter.
 
 Lastly, label the output of this filter (to be used in the next filter) with `[ov]`. you can call it what you like here... `[mywatermarkedvideo]` is equally OK.
 
@@ -281,7 +288,7 @@ ffmpeg -hide_banner \
 exit 0
 ```
 
-Make sure the file is executable: `` chmod +x `convert_video.sh` ``
+Make sure the file is executable: ` chmod +x convert_video.sh`
 
 Then run it with the variables on the command line:
 

@@ -1,20 +1,23 @@
 ---
-slug: "/posts/svg-effects-for-instagram-like-filters"
-date: "2022-06-21"
-title: "SVG effects for Instagram-like photo editing adjustments"
-icon:  "svg"
+title: "SVG Effects?"
+description: "SVG effects for Instagram-like photo editing adjustments."
+url: ""
+image: ""
+tech: ["SVG", "Effects", "Instagram"]
+status: "draft"
+icon: "🏞️"
+slug: "svgeffects"
+category: "articles"
+order: 11
 ---
-
-import bigben from "./bigben.jpg"
 
 # 👨🏻‍🎨 SVG effects for Instagram-like photo editing adjustments
 
-Note, this article is going to try to be as simple as possible. I'm not going into the depths of SVG functions and elements... more just a reference on how to do specific things. It's a cobbled collection of information I've found from other people rather than any critical-thinking on my part. Check out the links for more in-depth info on each topic.
+Note, this article is going to try to be as simple as possible. I'm not going into the depths of SVG functions and elements... more just a reference on how to do specific things. 
+It's a cobbled collection of information I've found from other people rather than any critical-thinking on my part. Check out the links for more in-depth info on each topic.
 
-```toc
-```
 
-![](bigben.jpg)
+![](/images/articles/bigben.jpg)
 
 ## Just some background info...
 
@@ -66,11 +69,11 @@ Our base SVG will be this:
 
 ```xml
 <svg viewBox="0 0 1500 1000">
-  <image xlink:href="bigben.jpg" width="1500" height="1000"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
-  <image xlinkHref={bigben} width="1500" height="1000"></image>
+  <image xlinkHref={/images/articles/bigben.jpg} width="1500" height="1000"></image>
 </svg>
 
 I'm not going to bother with the `xmlns="http://www.w3.org/2000/svg"` and the `xmlns:xlink="http://www.w3.org/1999/xlink"` for now. I want to make this all as easy to read as possible.
@@ -113,7 +116,7 @@ So the code becomes:
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#overSaturateThis)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#overSaturateThis)"></image>
 </svg>
 ```
 
@@ -164,7 +167,7 @@ Let's bring the brightness down by half (0.5) in this example.
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#lowerTheBrightness)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#lowerTheBrightness)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -221,7 +224,7 @@ Plug it into the full code to effect the image and you've got this.
    		</filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#enhanceTheContrast)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#enhanceTheContrast)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -267,7 +270,7 @@ Playing with the `-1` up and down can increase or decrease the sharpness. Play
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#sharpenTheImage)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#sharpenTheImage)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -360,7 +363,7 @@ So the full code would be:
           </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blendingTest)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blendingTest)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -453,7 +456,7 @@ This gives us the code:
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#epicTriple)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#epicTriple)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -488,7 +491,7 @@ First, just desaturate the image completely to `0`. Easy-as. We've done this ab
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhite)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhite)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -522,7 +525,7 @@ Secondly, we can use the more complex colourMatrix to control the RGB values tha
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteRed)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteRed)"></image>
 </svg>
 ```
 
@@ -558,7 +561,7 @@ We have the green channel:
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteGreen)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteGreen)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -593,7 +596,7 @@ And the Blue Channel:
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteBlue)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteBlue)"></image>
 </svg>
 ```
 <svg viewBox="0 0 1500 1000">
@@ -727,7 +730,7 @@ Chaining the filters together is now as easy as pie:
   </filter>
   </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#aden)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#aden)"></image>
 </svg>
 ```
 
@@ -851,7 +854,7 @@ Flood & Blend Mode Filter
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhite)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhite)"></image>
 </svg>
 ```
 
@@ -870,7 +873,7 @@ Simple Black & White Filter
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteGreen)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteGreen)"></image>
 </svg>
 ```
 
@@ -889,7 +892,7 @@ Green Channel B&W
         </filter>
     </defs>
     
-  <image xlink:href="bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteBlue)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteBlue)"></image>
 </svg>
 ```
 

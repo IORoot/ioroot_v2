@@ -1,4 +1,5 @@
 import { processMdxContent } from './mdx-processor.js';
+import hljs from 'highlight.js';
 
 export function markdownToHtml(markdown: string): string {
 	// Process MDX components first
@@ -9,9 +10,24 @@ export function markdownToHtml(markdown: string): string {
 	let codeBlockIndex = 0;
 	
 	// Replace code blocks with placeholders
-	let processedMarkdown = processedContent.replace(/```[\s\S]*?```/g, (match) => {
-		codeBlocks.push(match);
-		return `__CODE_BLOCK_${codeBlockIndex++}__`;
+	let processedMarkdown = processedContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+		// Use highlight.js for syntax highlighting
+		let highlightedCode = code;
+		if (lang) {
+			try {
+				highlightedCode = hljs.highlight(code, { language: lang }).value;
+			} catch (e) {
+				// Fallback to auto-detection if language is not supported
+				highlightedCode = hljs.highlightAuto(code).value;
+			}
+		} else {
+			// Auto-detect language if none specified
+			highlightedCode = hljs.highlightAuto(code).value;
+		}
+		
+		codeBlocks[codeBlockIndex] = `<pre class="bg-[#282C34] p-4 rounded-lg overflow-x-auto my-4 font-mono text-sm border border-[#3E4451]"><code class="hljs">${highlightedCode}</code></pre>`;
+		codeBlockIndex++;
+		return `__CODE_BLOCK_${codeBlockIndex - 1}__`;
 	});
 	
 	// Replace inline code
@@ -77,7 +93,7 @@ export function markdownToHtml(markdown: string): string {
 	
 	// Restore code blocks
 	codeBlocks.forEach((block, index) => {
-		html = html.replace(`__CODE_BLOCK_${index}__`, `<pre class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto mb-4"><code class="text-sm">${block.replace(/```/g, '')}</code></pre>`);
+		html = html.replace(`__CODE_BLOCK_${index}__`, block);
 	});
 	
 	// Restore inline code
