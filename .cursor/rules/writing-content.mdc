@@ -1,0 +1,163 @@
+---
+globs: *.md,*.mdx,*.doc,*.txt,*.mdc
+alwaysApply: false
+---
+[writing]
+Treat readers like hunters
+Understand that web visitors are actively seeking quick solutions—make your content easy to locate and clearly relevant from the start.
+
+Lead with your most important information
+Follow the inverted-pyramid structure: put key points, benefits, or conclusions upfront instead of building suspense.
+
+Keep it simple—don’t be clever
+Avoid clever turns of phrase or complex language; aim for clarity and ease of understanding.
+
+Write for scanners
+Use descriptive headlines, subheads, bullet lists, captions—so readers can grasp meaning by glancing.
+
+Use familiar, care‑triggering words
+Choose terms and phrases your audience uses and searches for—this creates relevance and connection.
+
+Write as if the reader is “lazy”
+Keep sentences short (≈12 words) and paragraphs minimal (≤4 lines), avoid jargon, unnecessary words, and passive voice.
+
+Ensure every page stands alone
+Because readers can land anywhere, include context, a clear purpose statement, and a call-to-action on every page.
+
+Optimize for SEO and discovery
+Focus each page on a single topic, include relevant keywords, and link to related content to help users—and search engines—find you.
+
+Combine copy with visual clarity
+Use images, headlines, bullet points, whitespace, and layout to enhance readability and visual focus.
+
+Declutter and reduce noise
+Strip away distractions—ads, sidebars, unnecessary widgets—and leave plenty of white space for trust and clarity.
+
+
+[heirarchy]
+These are rules to adhere by when writing content and establishing heirarchy in the content (what is most important vs least important)
+
+- Contrast
+Establish a clear base style
+Define your primary text style (e.g. body copy at 11 pt regular or 14 px medium) — all other styles must visibly distinguish from this baseline 
+
+- Use weight for emphasis
+Prefer bold or medium weight over all-caps or color shifts when highlighting headings—it offers the strongest contrast 
+
+- Size can compensate
+If weight variation is limited, increase font size for headings to enhance their visual priority 
+Prioritize color contrast
+Ensure accessible (≥4.5:1) contrast for text on colored backgrounds—especially buttons—to improve visibility and hierarchy 
+
+- Spacing & Grouping
+Group related elements tightly
+Reduce vertical spacing between items in the same group (e.g. transaction rows) to visually connect them 
+
+- Separate distinct sections intentionally
+Add extra space before headings or section titles, and less after — this clarifies structure and guides reading 
+
+- Use background or subtle shading
+Optionally use light backgrounds (e.g. grey behind income entries) to visually lift certain elements 
+
+- Structure & Planning
+Plan hierarchy levels beforehand
+Before adjusting type, decide on actual content structure (goal, relevance, number of heading levels) to avoid over-styling 
+
+- Simplify heading depth
+Limit to ~4–5 heading levels—too many make typography unreliable for hierarchy indication 
+
+- Implementation Strategy
+Contrast first, then space
+First establish hierarchy via size/weight/color contrast. Then refine grouping and relationships using spacing adjustments 
+
+
+
+[content]
+Rules for Writing Content People Will Actually Read
+
+- Write for a Niche Audience
+Focus each piece on a specific topic that aligns with your reader's interests—don’t try to please everyone.
+
+- Make the Value Clear Immediately
+Start with a hook or takeaway that tells the reader why they should care — front-load the benefit.
+
+- Respect the Reader’s Time
+Keep it concise, cut fluff, and avoid filler. People are scanning, not studying.
+
+- Use Clear Structure & Headings
+Break text into scannable chunks with clear subheadings so readers can skim or dive in selectively.
+
+- Make it Easy to Save & Share
+Provide value that’s worth bookmarking or sharing (e.g. summaries, lists, insights, templates).
+
+- Avoid Information Overload
+Focus on one core idea per post. If you have more, make it a series or link out to deeper content.
+
+- Be Intentional About Links
+Use internal or external links sparingly—only if they enhance, not distract from, the core message.
+
+- Support Reading Later
+Format your writing so it’s clean when saved in “Read Later” apps (no popups, minimal cruft, clear metadata).
+
+- Build a Content Backlog
+Plan ahead by keeping a running list of topic ideas and writing drafts gradually—don’t always publish reactively.
+
+
+
+[seo]
+- Research Thoroughly Before Writing
+Conduct in-depth research using credible sources such as industry reports, expert interviews, or academic studies to ensure accuracy and originality.
+
+- Identify & Satisfy Search Intent
+Choose a primary keyword and align the content with the reader’s search intent (informational, transactional, or navigational).
+
+- Focus on Audience Needs & Persona
+Understand the audience's goals, questions, and pain points. Write content that is relevant, helpful, and tailored to them.
+
+- Structure Clearly with Headings & TOC
+Use a clear hierarchy of headings (H1, H2, H3) and include a table of contents if the article is long, so readers can navigate easily.
+
+- Write Concisely with Short Paragraphs
+Use short sentences and paragraphs. Aim for clarity and avoid unnecessary filler or overly complex language.
+
+- Use Formatting to Highlight Key Points
+Use bold text for important terms, bullet points for lists, and blockquotes for notable insights to increase scannability.
+
+- Enrich with Visuals & Multimedia
+Include relevant images, charts, or videos to support the text and explain complex concepts. Use alt text for accessibility.
+
+- Provide Original Value & Expertise
+Offer unique analysis, opinions, examples, or case studies. Don’t just rehash what’s already out there.
+
+- Include Clear Intro & Actionable Conclusion
+Start with a hook that outlines the benefit of reading, and end with a summary or call-to-action that tells the reader what to do next.
+
+- Optimize & Iterate Post-Publish
+Update and improve content over time based on performance data. Refresh content that underperforms and optimize what performs well.
+
+
+[microcopy]
+Plan Microcopy from the Start
+Don’t treat UI text as an afterthought. Microcopy should be considered during the design phase and integrated with layout and functionality.
+
+Write Contextually Based on User Intent
+Anticipate what the user needs or worries about at each step, and write microcopy that directly addresses those needs.
+
+Reassure Users Where Necessary
+Help users feel confident by reassuring them—e.g. “You can change this later” or “No credit card required”.
+
+Explain Why You’re Asking for Information
+Add context for form fields or permissions—e.g. “We need your phone number in case your delivery is delayed”.
+
+Mention Data Safety and Autosave When Relevant
+Let users know their input is safe—e.g. “Your draft is saved automatically” or “We never share your data”.
+
+Use Clear, Human-Friendly Language
+Avoid technical jargon or robotic tone. Use natural, empathetic language that feels like a conversation.
+
+Be Concise and Specific
+Make microcopy short and purposeful—every word should guide, reassure, or clarify.
+
+Use Microcopy to Improve Conversions
+Small bits of helpful text can reduce friction and increase conversions—especially around forms, buttons, or signup flows.
+

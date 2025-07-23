@@ -343,7 +343,7 @@
 		
 		<!-- Projects Grid - Full Width -->
 		<div class="px-4 sm:px-6 lg:px-8 bg-stone-100">
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16 w-full py-8">
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 w-full py-8">
 				{#each filteredRepos as repo}
 					{@const firstImage = repo.readme_content ? extractFirstImage(repo.readme_content, repo.name) : null}
 					<a href="/projects/{repo.name}" class="group block">

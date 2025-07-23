@@ -38,6 +38,9 @@
 </svelte:head>
 
 <div class="min-h-screen bg-[#677A67] pt-20 relative">
+	<!-- Top Padding Bar for Navigation Background -->
+	<div class="fixed top-0 left-0 right-0 h-20 bg-[#434840] z-40"></div>
+	
 	<!-- Grid Column Lines SVG -->
 	<svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 1000" preserveAspectRatio="none">
 		<!-- Column Lines (12 lines for 4 columns) -->
