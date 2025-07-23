@@ -1,10 +1,15 @@
+import { processMdxContent } from './mdx-processor.js';
+
 export function markdownToHtml(markdown: string): string {
+	// Process MDX components first
+	let processedContent = processMdxContent(markdown);
+	
 	// Extract code blocks to preserve them
 	const codeBlocks: string[] = [];
 	let codeBlockIndex = 0;
 	
 	// Replace code blocks with placeholders
-	let processedMarkdown = markdown.replace(/```[\s\S]*?```/g, (match) => {
+	let processedMarkdown = processedContent.replace(/```[\s\S]*?```/g, (match) => {
 		codeBlocks.push(match);
 		return `__CODE_BLOCK_${codeBlockIndex++}__`;
 	});
@@ -46,7 +51,7 @@ export function markdownToHtml(markdown: string): string {
 		.replace(/^(?!<[a-z]).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
 		
 		// Make first paragraph bigger font size with custom color
-		.replace(/<p class="mb-8 text-xl leading-relaxed">([^<]+)<\/p>/, '<p class="mb-8 text-4xl leading-relaxed" style="color: #E7A97F;">$1</p>')
+		.replace(/<p class="mb-8 text-xl leading-relaxed">([^<]+)<\/p>/, '<p class="mb-8 text-4xl leading-relaxed" style="color: #E7A97F; line-height:3.4rem;">$1</p>')
 		
 		// Clean up empty paragraphs
 		.replace(/<p class="mb-8 text-xl leading-relaxed"><\/p>/g, '')
