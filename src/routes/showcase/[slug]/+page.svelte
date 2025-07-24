@@ -18,8 +18,23 @@
 <div class="min-h-screen bg-[#677A67]">
 	<Navigation theme="neutral" />
 	
+	<!-- Fullscreen Image Section -->
+	{#if website.image}
+		<section class="w-full">
+			<div class="w-full aspect-video bg-[#E4EDEE] overflow-hidden">
+				<div class="w-full h-20 bg-[#434840]"></div>
+				<img 
+					src={website.image} 
+					alt="{website.title} preview" 
+					class="w-full h-full object-cover object-top"
+					loading="lazy"
+				/>
+			</div>
+		</section>
+	{/if}
+	
 	<!-- Hero Section -->
-	<section class="pt-32 pb-20 bg-gradient-to-br from-[#677A67] to-[#87A7AC]">
+	<section class="pt-12 pb-20 bg-gradient-to-br from-[#677A67] to-[#87A7AC]">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto text-center">
 				<h1 class="text-6xl md:text-7xl font-black text-white mb-6">
@@ -58,7 +73,7 @@
 	<section class="py-20 bg-[#EAE6D8]">
 		<div class="container-custom">
 			<div class="max-w-4xl mx-auto">
-				<!-- Image Section -->
+				<!-- Full Image Section -->
 				{#if website.image}
 					<div class="mb-12">
 						<img 

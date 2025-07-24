@@ -9,6 +9,10 @@ export function markdownToHtml(markdown: string): string {
 	const codeBlocks: string[] = [];
 	let codeBlockIndex = 0;
 	
+	// Extract list blocks to preserve them
+	const listBlocks: string[] = [];
+	let listBlockIndex = 0;
+	
 	// Replace code blocks with placeholders
 	let processedMarkdown = processedContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
 		// Use highlight.js for syntax highlighting
@@ -37,7 +41,7 @@ export function markdownToHtml(markdown: string): string {
 		return `__INLINE_CODE_${inlineCodeBlocks.length - 1}__`;
 	});
 	
-	// Convert markdown to HTML
+		// Convert markdown to HTML - process lists FIRST before paragraphs
 	let html = processedMarkdown
 		// Headers
 		.replace(/^### (.*$)/gim, '<h3 class="text-2xl font-bold text-green-800 dark:text-green-200 mb-6 mt-8">$1</h3>')
@@ -54,17 +58,83 @@ export function markdownToHtml(markdown: string): string {
 		})
 		
 		// Links
-		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200 underline" target="_blank" rel="noopener noreferrer">$1</a>')
+		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200 underline" target="_blank" rel="noopener noreferrer">$1</a>');
+	
+	// Process lists BEFORE paragraphs to avoid conflicts
+	// First, let's process the markdown to identify list items and their nesting levels
+	const lines = html.split('\n');
+	const processedLines: string[] = [];
+	let currentListLevel = 0;
+	let inList = false;
+	
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
 		
-		// Lists
-		.replace(/^\* (.*$)/gim, '<li class="mb-3 text-lg">$1</li>')
-		.replace(/^- (.*$)/gim, '<li class="mb-3 text-lg">$1</li>')
+		// Check for unordered list items
+		const unorderedMatch = line.match(/^(\s*)(\*|\-)\s+(.+)$/);
+		// Check for ordered list items
+		const orderedMatch = line.match(/^(\s*)(\d+)\.\s+(.+)$/);
 		
-		// Wrap lists
-		.replace(/(<li.*<\/li>)/s, '<ul class="list-disc list-inside mb-8 space-y-3 text-lg">$1</ul>')
-		
-		// Paragraphs
-		.replace(/^(?!<[a-z]).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
+		if (unorderedMatch || orderedMatch) {
+			const match = unorderedMatch || orderedMatch!;
+			const indent = match[1];
+			const marker = match[2];
+			const content = match[3];
+			
+			// Calculate nesting level based on indentation
+			const level = Math.floor(indent.length / 2); // Assuming 2 spaces per level
+			
+			// Create list item with appropriate nesting
+			const listItem = `<li class="mb-3 text-lg">${content}</li>`;
+			
+			if (!inList) {
+				// Start a new list
+				processedLines.push('<ul class="list-disc list-inside mb-8 space-y-3 text-lg">');
+				inList = true;
+				currentListLevel = 0;
+			}
+			
+			// Handle nesting
+			if (level > currentListLevel) {
+				// Start new nested list
+				processedLines.push('<ul class="list-disc list-inside ml-6 space-y-2 text-lg">');
+				currentListLevel = level;
+			} else if (level < currentListLevel) {
+				// Close nested lists
+				for (let j = 0; j < currentListLevel - level; j++) {
+					processedLines.push('</ul>');
+				}
+				currentListLevel = level;
+			}
+			
+			processedLines.push(listItem);
+		} else {
+			// Non-list line
+			if (inList) {
+				// Close all open lists
+				for (let j = 0; j <= currentListLevel; j++) {
+					processedLines.push('</ul>');
+				}
+				inList = false;
+				currentListLevel = 0;
+			}
+			processedLines.push(line);
+		}
+	}
+	
+	// Close any remaining open lists
+	if (inList) {
+		for (let j = 0; j <= currentListLevel; j++) {
+			processedLines.push('</ul>');
+		}
+	}
+	
+	html = processedLines.join('\n');
+	
+	// Now process paragraphs (but exclude list items)
+	html = html
+		// Paragraphs (but not list items)
+		.replace(/^(?!<[a-z]|__LIST_ITEM_).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
 		
 		// Make first paragraph bigger font size with custom color
 		.replace(/<p class="mb-8 text-xl leading-relaxed">([^<]+)<\/p>/, '<p class="mb-8 text-4xl leading-relaxed" style="color: #E7A97F; line-height:3.4rem;">$1</p>')
