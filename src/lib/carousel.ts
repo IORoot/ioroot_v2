@@ -92,16 +92,67 @@ export function initializeCarousels() {
 	
 	// Handle logo strips
 	logoStrips.forEach(strip => {
-		const container = strip.querySelector('.logo-container') as HTMLElement;
+		const topContainer = strip.querySelector('.logo-container-top') as HTMLElement;
+		const bottomContainer = strip.querySelector('.logo-container-bottom') as HTMLElement;
+		const oldContainer = strip.querySelector('.logo-container') as HTMLElement;
 		const autoplay = (strip as HTMLElement).dataset.autoplay === 'true';
 		
-		if (!container) return;
-		
-		// Start the continuous animation
-		if (autoplay) {
-			// Move to the right continuously
-			container.style.transform = 'translateX(-50%)';
-			container.style.transition = 'transform 20s linear infinite';
+		// Handle two-row format
+		if (topContainer && bottomContainer) {
+			// Start the continuous animation for both rows
+			if (autoplay) {
+				// Top row - faster speed
+				let topPosition = 0;
+				const animateTop = () => {
+					topPosition -= 2; // Move 2px per frame (faster)
+					topContainer.style.transform = `translateX(${topPosition}px)`;
+					
+					// Reset position when we've moved the full width
+					if (Math.abs(topPosition) >= topContainer.scrollWidth / 2) {
+						topPosition = 0;
+					}
+					
+					requestAnimationFrame(animateTop);
+				};
+				
+				// Bottom row - slower speed
+				let bottomPosition = 0;
+				const animateBottom = () => {
+					bottomPosition -= 1; // Move 1px per frame (slower)
+					bottomContainer.style.transform = `translateX(${bottomPosition}px)`;
+					
+					// Reset position when we've moved the full width
+					if (Math.abs(bottomPosition) >= bottomContainer.scrollWidth / 2) {
+						bottomPosition = 0;
+					}
+					
+					requestAnimationFrame(animateBottom);
+				};
+				
+				// Start both animations
+				requestAnimationFrame(animateTop);
+				requestAnimationFrame(animateBottom);
+			}
+		}
+		// Handle single-row format (fallback)
+		else if (oldContainer) {
+			if (autoplay) {
+				let position = 0;
+				const animate = () => {
+					position -= 1; // Move 1px per frame
+					oldContainer.style.transform = `translateX(${position}px)`;
+					
+					// Reset position when we've moved the full width
+					if (Math.abs(position) >= oldContainer.scrollWidth / 2) {
+						position = 0;
+					}
+					
+					requestAnimationFrame(animate);
+				};
+				
+				// Start the animation
+				requestAnimationFrame(animate);
+			}
 		}
 	});
 } 
