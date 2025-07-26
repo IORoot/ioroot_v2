@@ -1,6 +1,5 @@
 ---
-globs: *.md,*.mdx,*.doc,*.txt,*.mdc
-alwaysApply: false
+alwaysApply: true
 ---
 [writing]
 Treat readers like hunters

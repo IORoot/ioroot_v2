@@ -48,9 +48,13 @@ export function markdownToHtml(markdown: string): string {
 		.replace(/^## (.*$)/gim, '<h2 class="text-3xl font-bold text-green-800 dark:text-green-200 mb-8 mt-12">$1</h2>')
 		.replace(/^# (.*$)/gim, '<h1 class="text-4xl font-bold text-green-800 dark:text-green-200 mb-10 mt-16">$1</h1>')
 		
-		// Bold and italic
+		// Horizontal rule
+		.replace(/^---$/gm, '<hr class="my-8 border-gray-300">')
+		
+		// Bold, italic, and underline
 		.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>')
 		.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+		.replace(/__(.*?)__/g, '<u class="underline">$1</u>')
 		
 		// Images (must come BEFORE links to avoid conflicts)
 		.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {

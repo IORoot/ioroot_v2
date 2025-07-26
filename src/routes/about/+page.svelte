@@ -75,7 +75,7 @@
 	<meta name="description" content="Learn more about Andy Pearson's background, experience, and journey in technology." />
 </svelte:head>
 
-<div class="min-h-screen bg-white pt-20">
+<div class="min-h-screen bg-stone-50 pt-20">
 	<!-- Film Grain Overlay -->
 	<div class="absolute inset-0 opacity-5">
 		<img src="/images/bento/film-grain.svg" alt="" class="w-full h-full object-cover" />
@@ -91,7 +91,7 @@
 		<div class="max-w-[1600px] mx-auto px-8">
 			<div class="flex min-h-screen">
 				<!-- Filter Sidebar -->
-				<div class="w-64 bg-transparent border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
+				<div class="w-64 bg-white border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
 					<!-- 8px Grid Overlay for Background -->
 					<div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px); background-size: 8px 8px, 8px 8px;">
 					</div>
@@ -118,7 +118,7 @@
 				</div>
 
 				<!-- Sidebar -->
-				<div class="w-96 bg-transparent border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
+				<div class="w-96 bg-white border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
 					<!-- 8px Grid Overlay for Background -->
 					<div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px); background-size: 8px 8px, 8px 8px;">
 					</div>
@@ -232,6 +232,16 @@
 		margin-top: 0.5rem;
 	}
 	
+	/* First paragraph styling - large and original orange */
+	:global(.prose p:first-of-type) {
+		font-size: 2.25rem; /* 4xl */
+		color: #E7A97F;
+		line-height: 1.8;
+		margin-bottom: 2rem;
+		margin-top: 0;
+		font-weight: 500;
+	}
+	
 	:global(.prose p:nth-child(-n+2)) {
 		line-height: 1.6;
 		margin-bottom: 1rem;
@@ -254,12 +264,44 @@
 		color: rgb(135 167 172);
 	}
 	
+	/* Strong text styling - transparent background with border and gradient text */
+	:global(.prose strong) {
+		font-weight: 700;
+		background: transparent;
+		border: 2px solid #87A7AC;
+		background: linear-gradient(135deg, #87A7AC, #677A67, #4A5D5F);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		padding: 2px 6px;
+		border-radius: 4px;
+	}
+	
+	/* Underlined text styling - heavier font, underlined with gradient */
+	:global(.prose u) {
+		font-weight: 700;
+		text-decoration: underline;
+		text-decoration-color: #87A7AC;
+		text-decoration-thickness: 8px;
+		background: linear-gradient(135deg, #87A7AC, #677A67, #4A5D5F);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+	
 	:global(.prose a) {
-		color: rgb(135 167 172);
+		font-weight: 700;
+		background: linear-gradient(135deg, #87A7AC, #677A67, #4A5D5F);
+		color: white;
+		padding: 2px 6px;
+		border-radius: 4px;
+		text-decoration: none;
+		transition: background 0.3s ease;
 	}
 	
 	:global(.prose a:hover) {
-		color: rgb(115 147 152);
+		background: linear-gradient(135deg, #E7A97F, #D4946A, #C17F55);
+		color: white;
 	}
 	
 	:global(.prose ul) {
