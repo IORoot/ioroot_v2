@@ -135,10 +135,10 @@ export function markdownToHtml(markdown: string): string {
 	
 	html = processedLines.join('\n');
 	
-	// Now process paragraphs (but exclude list items)
+	// Now process paragraphs (but exclude list items and existing HTML)
 	html = html
-		// Paragraphs (but not list items)
-		.replace(/^(?!<[a-z]|__LIST_ITEM_).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
+		// Paragraphs (but not list items or existing HTML tags)
+		.replace(/^(?!<[a-z]|__LIST_ITEM_|<\/).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
 		
 		// Make first paragraph bigger font size with custom color
 		.replace(/<p class="mb-8 text-xl leading-relaxed">([^<]+)<\/p>/, '<p class="mb-8 text-4xl leading-relaxed" style="color: #E7A97F; line-height:3.4rem;">$1</p>')
@@ -163,7 +163,11 @@ export function markdownToHtml(markdown: string): string {
 		.replace(/<p class="mb-8 text-xl leading-relaxed">(__INLINE_CODE_\d+__)<\/p>/g, '$1')
 		
 		// Clean up p tags around images
-		.replace(/<p class="mb-8 text-xl leading-relaxed">(<img.*?\/>)<\/p>/g, '$1');
+		.replace(/<p class="mb-8 text-xl leading-relaxed">(<img.*?\/>)<\/p>/g, '$1')
+		
+		// Clean up any <br> tags that were added to HTML content
+		.replace(/<br>\s*<br>/g, '')
+		.replace(/<br>/g, '');
 	
 	// Restore code blocks
 	codeBlocks.forEach((block, index) => {

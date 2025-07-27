@@ -4,6 +4,9 @@ export function processMdxContent(content: string): string {
 	// Process carousel components
 	content = processCarouselComponents(content);
 	
+	// Process video components
+	content = processVideoComponents(content);
+	
 	return content;
 }
 
@@ -120,14 +123,60 @@ function generateTwoRowCarouselHtml(topImages: string[], bottomImages: string[],
 	const duplicatedBottomImagesHtml = bottomImagesHtml + bottomImagesHtml;
 	
 	return `
-		<div class="logo-strip relative w-full overflow-hidden bg-white" style="height: 300px;" data-autoplay="${autoplay}" data-interval="30">
+		<div class="logo-strip relative w-full overflow-hidden bg-white" style="height: 180px;" data-autoplay="${autoplay}" data-interval="30">
 			<!-- Top row - faster speed -->
 			<div class="logo-container-top flex" style="width: 200%;">
 				${duplicatedTopImagesHtml}
 			</div>
 			<!-- Bottom row - slower speed -->
-			<div class="logo-container-bottom flex" style="width: 200%; margin-top: 1rem;">
+			<div class="logo-container-bottom flex" style="width: 200%; margin-top: 3rem;">
 				${duplicatedBottomImagesHtml}
+			</div>
+		</div>
+	`;
+}
+
+function processVideoComponents(content: string): string {
+	// Match video components in the format:
+	// <Video videoId="dQw4w9WgXcQ" />
+	// or
+	// <Video videoId="dQw4w9WgXcQ" title="My Video" width="800px" height="450px" />
+	
+	const videoRegex = /<Video\s+videoId="([^"]+)"\s*(?:(\w+)="([^"]+)"\s*)*\/?>/g;
+	
+	return content.replace(videoRegex, (match, videoId, ...props) => {
+		// Parse additional props
+		const propsObj: any = {};
+		for (let i = 0; i < props.length; i += 2) {
+			if (props[i] && props[i + 1]) {
+				const key = props[i];
+				const value = props[i + 1];
+				propsObj[key] = value;
+			}
+		}
+		
+		return generateVideoHtml(videoId, propsObj);
+	});
+}
+
+function generateVideoHtml(videoId: string, props: any = {}): string {
+	const {
+		title = 'YouTube video',
+		width = '100%',
+		height = '400px'
+	} = props;
+	
+	return `
+		<div class="video-container my-8">
+			<div class="relative w-full" style="max-width: ${width}; height: ${height};">
+				<iframe
+					src="https://www.youtube.com/embed/${videoId}"
+					title="${title}"
+					class="w-full h-full rounded-lg shadow-lg"
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen
+				></iframe>
 			</div>
 		</div>
 	`;

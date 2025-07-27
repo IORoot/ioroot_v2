@@ -26,6 +26,7 @@ export interface AboutData {
 	slug: string;
 	content: string;
 	contract?: boolean;
+	url?: string;
 }
 
 export function loadWebsites(): WebsiteData[] {
@@ -103,13 +104,14 @@ export function loadAboutPages(): AboutData[] {
 		'sky': 12,
 		'football-association': 13,
 		'john-lewis': 14,
-		'channel-5': 15,
-		'ernest-jones': 16,
-		'tui': 17,
-		'watchmark': 18,
-		'adc-telecommunications': 19,
-		'university-hertfordshire-bsc': 20,
-		'university-hertfordshire-hnd': 21
+		'matchesfashion': 15,
+		'channel-5': 16,
+		'ernest-jones': 17,
+		'tui': 18,
+		'watchmark': 19,
+		'adc-telecommunications': 20,
+		'university-hertfordshire-bsc': 21,
+		'university-hertfordshire-hnd': 22
 	};
 	
 	return aboutPages.sort((a, b) => {

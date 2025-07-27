@@ -182,13 +182,34 @@
 								<div class="mb-8">
 									<div class="flex items-start space-x-6 mb-4">
 										<div class="flex-shrink-0">
-											<img src={currentPage.icon} alt="{currentPage.title} logo" class="w-40 h-40 logo-accent" />
+											{#if currentPage.url}
+												<a 
+													href={currentPage.url} 
+													target="_blank" 
+													rel="noopener noreferrer"
+													class="block transition-transform duration-200 hover:scale-105"
+												>
+													<img src={currentPage.icon} alt="{currentPage.title} logo" class="w-40 h-40 logo-accent" />
+												</a>
+											{:else}
+												<img src={currentPage.icon} alt="{currentPage.title} logo" class="w-40 h-40 logo-accent" />
+											{/if}
 										</div>
 										<div class="flex-1 min-w-0">
 											<h1 class="text-gray-900 text-4xl font-bold mb-2">
 												{currentPage.title}
 											</h1>
-											<p class="text-gray-600 text-xl">
+											{#if currentPage.url}
+												<a 
+													href={currentPage.url} 
+													target="_blank" 
+													rel="noopener noreferrer"
+													class="text-[#87A7AC] hover:text-[#E7A97F] text-lg font-medium transition-colors duration-200 underline"
+												>
+													{currentPage.url}
+												</a>
+											{/if}
+											<p class="text-gray-600 text-xl mt-2">
 												{currentPage.description}
 											</p>
 											{#if currentPage.period}
@@ -232,14 +253,27 @@
 		margin-top: 0.5rem;
 	}
 	
-	/* First paragraph styling - large and original orange */
-	:global(.prose p:first-of-type) {
+	/* First paragraph styling - large and original orange (only the very first paragraph) */
+	:global(.prose > p:first-of-type) {
 		font-size: 2.25rem; /* 4xl */
 		color: #E7A97F;
 		line-height: 1.8;
 		margin-bottom: 2rem;
 		margin-top: 0;
 		font-weight: 500;
+	}
+	
+	/* Override for paragraphs that come after h3+ headers */
+	:global(.prose h3 + p),
+	:global(.prose h4 + p),
+	:global(.prose h5 + p),
+	:global(.prose h6 + p) {
+		font-size: 1.125rem !important; /* text-lg */
+		color: rgb(55 65 81) !important;
+		line-height: 2 !important;
+		margin-bottom: 1.5rem !important;
+		margin-top: 0.5rem !important;
+		font-weight: 400 !important;
 	}
 	
 	:global(.prose p:nth-child(-n+2)) {
@@ -264,11 +298,10 @@
 		color: rgb(135 167 172);
 	}
 	
-	/* Strong text styling - transparent background with border and gradient text */
+	/* Strong text styling - transparent background with gradient text */
 	:global(.prose strong) {
 		font-weight: 700;
 		background: transparent;
-		border: 2px solid #87A7AC;
 		background: linear-gradient(135deg, #87A7AC, #677A67, #4A5D5F);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
