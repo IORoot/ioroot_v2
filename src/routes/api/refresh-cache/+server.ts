@@ -7,9 +7,11 @@ export async function POST() {
     console.log('🔄 Manual cache refresh requested...');
     
     // Clear existing cache to force fresh fetch
+    console.log('🗑️ Clearing existing cache...');
     await githubCache.clearCache();
     
     // Force fetch fresh data (this will bypass cache check since cache is empty)
+    console.log('📡 Fetching fresh data from GitHub...');
     const repos = await fetchGitHubRepos('IORoot');
     
     // Extract and log tag information

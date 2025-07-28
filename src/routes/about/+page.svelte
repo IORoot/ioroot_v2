@@ -113,6 +113,20 @@
 									</div>
 								</button>
 							{/each}
+							
+							<!-- Download CV Button -->
+							<div class="pt-4 border-t border-gray-200">
+								<a 
+									href="/docs/cv.md" 
+									download="Andy_Pearson_CV.md"
+									class="cv-download-btn w-full p-4 text-center transition-all duration-200 rounded-lg group text-white border border-[#E7A97F]/20 flex items-center justify-center space-x-2"
+								>
+									<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+									</svg>
+									<span class="font-medium">Download CV</span>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -378,5 +392,14 @@
 		filter: none;
 		transform: scale(1.1);
 		border-radius: 0.5rem;
+	}
+	
+	/* CV Download Button */
+	.cv-download-btn {
+		background: linear-gradient(to right, #E7A97F, #D4946A);
+	}
+	
+	.cv-download-btn:hover {
+		background: #87A7AC !important;
 	}
 </style> 

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const https = require('https');
+const http = require('http');
 
 async function refreshCache() {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: 5173,
+      port: 5175,
       path: '/api/refresh-cache',
       method: 'POST',
       headers: {
@@ -14,7 +14,7 @@ async function refreshCache() {
       }
     };
 
-    const req = https.request(options, (res) => {
+    const req = http.request(options, (res) => {
       let data = '';
       res.on('data', (chunk) => {
         data += chunk;

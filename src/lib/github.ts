@@ -109,7 +109,10 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
     
     // Add authorization if token is available
     if (token) {
-      headers['Authorization'] = `token ${token}`;
+      headers['Authorization'] = `Bearer ${token}`;
+      console.log('🔑 Using GitHub token for API requests');
+    } else {
+      console.log('⚠️ No GitHub token found, using unauthenticated requests (rate limited)');
     }
     
     // Fetch all repos using pagination
@@ -126,6 +129,9 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
       });
       
       if (!response.ok) {
+        console.error(`GitHub API error: ${response.status} - ${response.statusText}`);
+        console.error(`Rate limit info: ${response.headers.get('x-ratelimit-remaining')}/${response.headers.get('x-ratelimit-limit')}`);
+        
         if (response.status === 403) {
           console.warn('GitHub API rate limited, using cached data or empty fallback');
           const cachedRepos = await githubCache.getCachedRepos();
@@ -147,7 +153,7 @@ export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<Git
             readme_html: repo.readme_html
           }));
         }
-        throw new Error(`GitHub API error: ${response.status}`);
+        throw new Error(`GitHub API error: ${response.status} - ${response.statusText}`);
       }
       
       const repos: GitHubRepo[] = await response.json();
