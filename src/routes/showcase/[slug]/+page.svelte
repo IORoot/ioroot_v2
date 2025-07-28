@@ -18,11 +18,13 @@
 <div class="min-h-screen bg-[#677A67]">
 	<Navigation theme="neutral" />
 	
+	<!-- Background Bar - Always visible -->
+	<div class="w-full h-20 bg-[#434840]"></div>
+	
 	<!-- Fullscreen Image Section -->
 	{#if website.image}
 		<section class="w-full">
 			<div class="w-full aspect-video bg-[#E4EDEE] overflow-hidden">
-				<div class="w-full h-20 bg-[#434840]"></div>
 				<img 
 					src={website.image} 
 					alt="{website.title} preview" 
@@ -145,4 +147,22 @@
 			</div>
 		</div>
 	</section>
-</div> 
+</div>
+
+<style>
+	/* Link styling for showcase pages - similar to about pages */
+	:global(.prose a) {
+		font-weight: 700;
+		background: linear-gradient(135deg, #87A7AC, #677A67, #4A5D5F);
+		color: white;
+		padding: 2px 6px;
+		border-radius: 4px;
+		text-decoration: none;
+		transition: background 0.3s ease;
+	}
+	
+	:global(.prose a:hover) {
+		background: linear-gradient(135deg, #E7A97F, #D4946A, #C17F55);
+		color: white;
+	}
+</style> 

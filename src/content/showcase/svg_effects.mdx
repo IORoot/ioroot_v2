@@ -74,7 +74,7 @@ Our base SVG will be this:
 ```
 
 <svg viewBox="0 0 1500 1000">
-  <image xlinkHref={/images/articles/bigben.jpg} width="1500" height="1000"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000"></image>
 </svg>
 
 I'm not going to bother with the `xmlns="http://www.w3.org/2000/svg"` and the `xmlns:xlink="http://www.w3.org/1999/xlink"` for now. I want to make this all as easy to read as possible.
@@ -132,7 +132,7 @@ So the code becomes:
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#overSaturateThis)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#overSaturateThis)"></image>
 </svg>
 
 
@@ -182,7 +182,7 @@ Let's bring the brightness down by half (0.5) in this example.
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#lowerTheBrightness)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#lowerTheBrightness)"></image>
 </svg>
 
 ---
@@ -239,7 +239,7 @@ Plug it into the full code to effect the image and you've got this.
    		</filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#enhanceTheContrast)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#enhanceTheContrast)"></image>
 </svg>
 
 ---
@@ -286,7 +286,7 @@ Playing with the `-1` up and down can increase or decrease the sharpness. Play
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#sharpenTheImage)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#sharpenTheImage)"></image>
 </svg>
 
 ---
@@ -379,7 +379,7 @@ So the full code would be:
           </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#blendingTest)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blendingTest)"></image>
 </svg>
 
 ---
@@ -469,7 +469,7 @@ This gives us the code:
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#epicTriple)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#epicTriple)"></image>
 </svg>
 
 ---
@@ -506,7 +506,7 @@ First, just desaturate the image completely to `0`. Easy-as. We've done this ab
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#blackAndWhite)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhite)"></image>
 </svg>
 
 Simple Black & White Filter
@@ -542,7 +542,7 @@ Secondly, we can use the more complex colourMatrix to control the RGB values tha
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#blackAndWhiteRed)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteRed)"></image>
 </svg>
 
 Red-Channel B&W
@@ -577,7 +577,7 @@ We have the green channel:
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#blackAndWhiteGreen)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteGreen)"></image>
 </svg>
 
 Green Channel B&W
@@ -612,7 +612,7 @@ And the Blue Channel:
         </filter>
     </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#blackAndWhiteBlue)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#blackAndWhiteBlue)"></image>
 </svg>
 
 Blue Channel B&W
@@ -767,7 +767,7 @@ Which gives us this wonderful result:
   </filter>
   </defs>
     
-  <image xlinkHref={bigben} width="1500" height="1000" filter="url(#aden)"></image>
+  <image xlink:href="/images/articles/bigben.jpg" width="1500" height="1000" filter="url(#aden)"></image>
 </svg>
 
 Just for reference, all of her effects are here: [https://github.com/una/CSSgram/tree/master/source/scss](https://github.com/una/CSSgram/tree/master/source/scss)

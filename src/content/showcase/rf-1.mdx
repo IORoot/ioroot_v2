@@ -1,81 +1,102 @@
 ---
-title: "RF-1.com"
-description: "Racing game website with leaderboards, track information, and community features."
+title: "RF-1 - AI Video Reframing"
+description: "AI-powered video reframing that automatically detects and follows important content, creating perfectly framed shots for any aspect ratio."
 url: "https://rf-1.com"
 image: "/images/showcase/rf-1.jpg"
-tech: ["Vue.js", "Node.js", "PostgreSQL"]
+tech: ["Python", "YOLOv8", "OpenCV", "FFmpeg", "AI/ML"]
 status: "Live"
-icon: "🏎️"
+icon: "🎬"
 slug: "rf-1"
 category: "app"
 order: 3
 features: [
-  "Real-time leaderboards",
-  "Track information and maps",
-  "Community features",
-  "Race scheduling",
-  "Performance analytics"
+  "AI-powered content detection",
+  "Smart cropping and framing",
+  "Multiple output formats",
+  "Batch processing",
+  "Quality preservation",
+  "Time-saving automation"
 ]
 ---
 
-# RF-1.com
+# RF-1 - AI Video Reframing
 
-A comprehensive racing game platform featuring real-time leaderboards, detailed track information, and a thriving community of racing enthusiasts.
+Transform your videos with AI-powered reframing. RF-1 automatically detects and follows the most important content in your videos, creating perfectly framed shots for any aspect ratio.
 
-## About the Project
 
-RF-1.com serves as the central hub for a popular racing simulation game, providing players with essential tools for tracking performance, discovering new tracks, and connecting with the racing community.
+<Video videoId="MPbL4X79Ls0" title="RF-1 Demo Video" />
+
+## What It Does
+
+RF-1 uses advanced AI algorithms to analyze video content and intelligently crop it while maintaining focus on key subjects. Whether you need to convert landscape videos to portrait for social media, or create multiple versions of the same content for different platforms, RF-1 handles it automatically.
+
+The core technology uses YOLOv8 for object detection, tracking people, faces, and important objects throughout your video. The system maintains focus on key subjects as they move, creating smooth transitions between different focal points.
+
 
 ## Key Features
 
-### Real-Time Leaderboards
-- **Live Rankings**: Up-to-the-minute leaderboard updates
-- **Multiple Categories**: Different ranking systems for various racing classes
-- **Historical Data**: Track performance over time
-- **Personal Stats**: Individual player statistics and progress
+### AI-Powered Content Detection
 
-### Track Information System
-- **Track Database**: Comprehensive information about all racing circuits
-- **Interactive Maps**: Detailed track layouts and corner information
-- **Difficulty Ratings**: User-generated difficulty assessments
-- **Best Times**: Record lap times and optimal racing lines
+RF-1 uses state-of-the-art YOLOv8 object detection to identify people, faces, and important objects in your videos. The system tracks these subjects as they move through the frame, ensuring they remain the focus of your reframed content.
 
-### Community Features
-- **Player Profiles**: Detailed profiles with racing history
-- **Forum Discussions**: Community discussions about racing techniques
-- **Event Organization**: Race scheduling and event management
-- **Photo Sharing**: Screenshots and replay sharing
+The AI adapts to changing scenes with multiple subjects, automatically determining which elements are most important based on size, position, and movement patterns.
 
-### Performance Analytics
-- **Lap Analysis**: Detailed breakdown of lap times and sectors
-- **Progress Tracking**: Monitor improvement over time
-- **Comparison Tools**: Compare performance with other players
-- **Statistics Dashboard**: Comprehensive performance metrics
+### Intelligent Framing
 
-## Technical Implementation
+Dynamic cropping follows the action while maintaining visual composition. The system creates fluid movements between different focal points, ensuring your reframed video looks natural and professional.
 
-Built with modern web technologies to handle real-time data and provide excellent user experience:
+You can customize detection sensitivity and transition speed to match your specific needs. This gives you control over how aggressively the system tracks subjects and how smoothly it transitions between them.
 
-- **Vue.js**: Reactive frontend framework for dynamic updates
-- **Node.js**: Scalable backend for real-time features
-- **PostgreSQL**: Robust database for complex racing data
-- **WebSocket**: Real-time leaderboard updates
-- **Redis**: Caching for optimal performance
+### Multiple Output Formats
 
-## Game Integration
+Support for any aspect ratio - from 16:9 landscape to 9:16 portrait, square 1:1, or custom ratios. The system maintains original video quality while improving framing, ensuring your content looks great on any platform.
 
-The website seamlessly integrates with the racing game:
-- **API Integration**: Direct connection to game servers
-- **Data Synchronization**: Automatic updates from game sessions
-- **Cross-Platform**: Works across PC, console, and mobile
-- **Real-Time Updates**: Live data from active racing sessions
+Batch processing lets you convert multiple videos simultaneously, saving hours of manual work.
 
-## Community Impact
+### Performance Optimized
 
-RF-1.com has become essential for the racing community:
-- **Skill Development**: Players use leaderboards to improve
-- **Community Building**: Forums foster discussion and friendship
-- **Event Organization**: Centralized race scheduling
-- **Knowledge Sharing**: Track guides and racing tips
+The system processes every Nth frame instead of all frames for speed. Multi-threaded analysis delivers faster results, while temporal smoothing ensures stable transitions between detected frames.
 
-Visit the site to join the racing community and track your performance! 
+## Use Cases
+
+### Content Creators
+
+Convert landscape videos to portrait for TikTok and Instagram. Create multiple versions of the same content for different platforms. Maintain focus on speakers during interviews. Optimize vlogs for different social media platforms.
+
+### Businesses
+
+Repurpose marketing videos for different platforms. Create consistent branding across all social media. Optimize product videos for different display formats. Convert webinar recordings for social media sharing.
+
+### Educational Content
+
+Reframe lecture recordings for mobile viewing. Optimize tutorial videos for different platforms. Maintain focus on important visual elements. Create consistent formatting across course materials.
+
+## Technical Specifications
+
+### System Requirements
+
+RF-1 requires macOS 11.0 or later with Apple Silicon or Intel Core i5 processor. Minimum 8GB RAM (16GB recommended) with 1GB free disk space. Metal-capable graphics card required.
+
+### Supported Formats
+
+Input formats include MP4, MOV, AVI, and MKV. Output available in MP4 and MOV formats using H.264 or H.265 codecs. Maximum resolution 4K (3840x2160) with 10GB file size limit.
+
+## Performance Options
+
+### Speed vs Quality Trade-offs
+
+**High Accuracy (Slow Processing)**: Process every frame with AI detection using the largest YOLOv8 model with maximum CPU utilization.
+
+**Balanced Performance**: Process every 3rd frame with medium YOLOv8 model at 75% CPU utilization.
+
+**Fast Processing**: Process 1 frame per second with small YOLOv8 model - ideal for low-movement content.
+
+## Why Choose RF-1
+
+Save hours of manual editing time. Get consistent, professional-looking results every time. Create content optimized for any platform. Eliminate the need for expensive editing software. No technical expertise required. Process multiple videos simultaneously.
+
+## Technology Stack
+
+YOLOv8 handles object detection and tracking. OpenCV processes frame analysis and manipulation. FFmpeg preserves audio and handles format conversion. Multi-threading and keyframe optimization deliver performance. Simple command-line interface with batch processing capabilities.
+
+RF-1 transforms the tedious process of video reframing into an automated, intelligent workflow that delivers professional results in minutes rather than hours.

@@ -9,10 +9,6 @@ export function markdownToHtml(markdown: string): string {
 	const codeBlocks: string[] = [];
 	let codeBlockIndex = 0;
 	
-	// Extract list blocks to preserve them
-	const listBlocks: string[] = [];
-	let listBlockIndex = 0;
-	
 	// Replace code blocks with placeholders
 	let processedMarkdown = processedContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
 		// Use highlight.js for syntax highlighting
@@ -21,27 +17,55 @@ export function markdownToHtml(markdown: string): string {
 			try {
 				highlightedCode = hljs.highlight(code, { language: lang }).value;
 			} catch (e) {
-				// Fallback to auto-detection if language is not supported
 				highlightedCode = hljs.highlightAuto(code).value;
 			}
 		} else {
-			// Auto-detect language if none specified
 			highlightedCode = hljs.highlightAuto(code).value;
 		}
 		
 		codeBlocks[codeBlockIndex] = `<pre class="bg-[#282C34] p-4 rounded-lg overflow-x-auto my-4 font-mono text-sm border border-[#3E4451]"><code class="hljs">${highlightedCode}</code></pre>`;
 		codeBlockIndex++;
-		return `__CODE_BLOCK_${codeBlockIndex - 1}__`;
+		return `<!--CODE_BLOCK_${codeBlockIndex - 1}-->`;
 	});
 	
 	// Replace inline code
 	const inlineCodeBlocks: string[] = [];
 	processedMarkdown = processedMarkdown.replace(/`([^`]+)`/g, (match, code) => {
 		inlineCodeBlocks.push(match);
-		return `__INLINE_CODE_${inlineCodeBlocks.length - 1}__`;
+		return `<!--INLINE_CODE_${inlineCodeBlocks.length - 1}-->`;
 	});
 	
-		// Convert markdown to HTML - process lists FIRST before paragraphs
+	// Extract HTML blocks to preserve them (including video components)
+	const htmlBlocks: string[] = [];
+	let htmlBlockIndex = 0;
+	
+	// Replace HTML blocks with placeholders (including div, iframe, etc.)
+	processedMarkdown = processedMarkdown.replace(/(<div[\s\S]*?<\/div>|<iframe[\s\S]*?<\/iframe>|<video[\s\S]*?<\/video>)/g, (match, html) => {
+		htmlBlocks[htmlBlockIndex] = html;
+		htmlBlockIndex++;
+		return `<!--HTML_BLOCK_${htmlBlockIndex - 1}-->`;
+	});
+	
+	// Extract SVG blocks to preserve them
+	const svgBlocks: string[] = [];
+	let svgBlockIndex = 0;
+	
+	// Replace SVG blocks with placeholders
+	processedMarkdown = processedMarkdown.replace(/(<svg[\s\S]*?<\/svg>)/g, (match, svg) => {
+		// Convert JSX-style attributes to proper SVG attributes
+		let processedSvg = svg
+			.replace(/xlinkHref=\{([^}]+)\}/g, 'xlink:href="$1"')
+			.replace(/xlinkHref="([^"]+)"/g, 'xlink:href="$1"')
+			.replace(/xlinkHref='([^']+)'/g, "xlink:href='$1'")
+			// Convert specific JSX variables to actual paths
+			.replace(/\{bigben\}/g, '/images/articles/bigben.jpg');
+		
+		svgBlocks[svgBlockIndex] = processedSvg;
+		svgBlockIndex++;
+		return `<!--SVG_BLOCK_${svgBlockIndex - 1}-->`;
+	});
+	
+	// Convert markdown to HTML using a simpler approach
 	let html = processedMarkdown
 		// Headers
 		.replace(/^### (.*$)/gim, '<h3 class="text-2xl font-bold text-green-800 dark:text-green-200 mb-6 mt-8">$1</h3>')
@@ -62,90 +86,22 @@ export function markdownToHtml(markdown: string): string {
 		})
 		
 		// Links
-		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200 underline" target="_blank" rel="noopener noreferrer">$1</a>');
-	
-	// Process lists BEFORE paragraphs to avoid conflicts
-	// First, let's process the markdown to identify list items and their nesting levels
-	const lines = html.split('\n');
-	const processedLines: string[] = [];
-	let currentListLevel = 0;
-	let inList = false;
-	
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i];
+		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200 underline" target="_blank" rel="noopener noreferrer">$1</a>')
 		
-		// Check for unordered list items
-		const unorderedMatch = line.match(/^(\s*)(\*|\-)\s+(.+)$/);
-		// Check for ordered list items
-		const orderedMatch = line.match(/^(\s*)(\d+)\.\s+(.+)$/);
+		// Process lists properly
+		.replace(/^\* (.*$)/gim, '<li class="mb-3 text-lg">$1</li>')
+		.replace(/^- (.*$)/gim, '<li class="mb-3 text-lg">$1</li>')
 		
-		if (unorderedMatch || orderedMatch) {
-			const match = unorderedMatch || orderedMatch!;
-			const indent = match[1];
-			const marker = match[2];
-			const content = match[3];
-			
-			// Calculate nesting level based on indentation
-			const level = Math.floor(indent.length / 2); // Assuming 2 spaces per level
-			
-			// Create list item with appropriate nesting
-			const listItem = `<li class="mb-3 text-lg">${content}</li>`;
-			
-			if (!inList) {
-				// Start a new list
-				processedLines.push('<ul class="list-disc list-inside mb-8 space-y-3 text-lg">');
-				inList = true;
-				currentListLevel = 0;
-			}
-			
-			// Handle nesting
-			if (level > currentListLevel) {
-				// Start new nested list
-				processedLines.push('<ul class="list-disc list-inside ml-6 space-y-2 text-lg">');
-				currentListLevel = level;
-			} else if (level < currentListLevel) {
-				// Close nested lists
-				for (let j = 0; j < currentListLevel - level; j++) {
-					processedLines.push('</ul>');
-				}
-				currentListLevel = level;
-			}
-			
-			processedLines.push(listItem);
-		} else {
-			// Non-list line
-			if (inList) {
-				// Close all open lists
-				for (let j = 0; j <= currentListLevel; j++) {
-					processedLines.push('</ul>');
-				}
-				inList = false;
-				currentListLevel = 0;
-			}
-			processedLines.push(line);
-		}
-	}
-	
-	// Close any remaining open lists
-	if (inList) {
-		for (let j = 0; j <= currentListLevel; j++) {
-			processedLines.push('</ul>');
-		}
-	}
-	
-	html = processedLines.join('\n');
-	
-	// Now process paragraphs (but exclude list items and existing HTML)
-	html = html
-		// Paragraphs (but not list items or existing HTML tags)
-		.replace(/^(?!<[a-z]|__LIST_ITEM_|<\/).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
+		// Group consecutive list items into a single ul
+		.replace(/(<li class="mb-3 text-lg">.*<\/li>)(\s*<li class="mb-3 text-lg">.*<\/li>)*/g, (match) => {
+			return `<ul class="list-disc list-inside mb-8 space-y-3 text-lg">${match}</ul>`;
+		})
+		
+		// Paragraphs (but exclude existing HTML tags and code blocks)
+		.replace(/^(?!<[a-z]|<!--CODE_BLOCK_|<!--INLINE_CODE_|<!--SVG_BLOCK_|<!--HTML_BLOCK_).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
 		
 		// Clean up empty paragraphs
 		.replace(/<p class="mb-8 text-xl leading-relaxed"><\/p>/g, '')
-		.replace(/<p class="mb-8 text-xl leading-relaxed"><\/p>/g, '')
-		
-		// Clean up multiple consecutive p tags
-		.replace(/<\/p>\s*<p class="mb-8 text-xl leading-relaxed">/g, '<br>')
 		
 		// Clean up p tags around headers
 		.replace(/<p class="mb-8 text-xl leading-relaxed">(<h[1-6].*<\/h[1-6]>)<\/p>/g, '$1')
@@ -154,38 +110,43 @@ export function markdownToHtml(markdown: string): string {
 		.replace(/<p class="mb-8 text-xl leading-relaxed">(<ul.*<\/ul>)<\/p>/g, '$1')
 		
 		// Clean up p tags around code blocks
-		.replace(/<p class="mb-8 text-xl leading-relaxed">(__CODE_BLOCK_\d+__)<\/p>/g, '$1')
+		.replace(/<p class="mb-8 text-xl leading-relaxed">(<!--CODE_BLOCK_\d+-->)\s*<\/p>/g, '$1')
 		
 		// Clean up p tags around inline code
-		.replace(/<p class="mb-8 text-xl leading-relaxed">(__INLINE_CODE_\d+__)<\/p>/g, '$1')
+		.replace(/<p class="mb-8 text-xl leading-relaxed">(<!--INLINE_CODE_\d+-->)\s*<\/p>/g, '$1')
 		
 		// Clean up p tags around images
 		.replace(/<p class="mb-8 text-xl leading-relaxed">(<img.*?\/>)<\/p>/g, '$1')
 		
-		// Clean up any <br> tags that were added to HTML content
-		.replace(/<br>\s*<br>/g, '')
-		.replace(/<br>/g, '');
+		// Clean up p tags around SVG blocks
+		.replace(/<p class="mb-8 text-xl leading-relaxed">(<!--SVG_BLOCK_\d+-->)\s*<\/p>/g, '$1')
+		
+		// Clean up p tags around HTML blocks
+		.replace(/<p class="mb-8 text-xl leading-relaxed">(<!--HTML_BLOCK_\d+-->)\s*<\/p>/g, '$1')
+		
+		// Clean up p tags around any HTML tags
+		.replace(/<p class="mb-8 text-xl leading-relaxed">(<[^>]+>.*?<\/[^>]+>)<\/p>/g, '$1')
+		.replace(/<p class="mb-8 text-xl leading-relaxed">(<[^>]+\/>)<\/p>/g, '$1');
 	
 	// Restore code blocks
 	codeBlocks.forEach((block, index) => {
-		html = html.replace(`__CODE_BLOCK_${index}__`, block);
+		html = html.replace(`<!--CODE_BLOCK_${index}-->`, block);
 	});
 	
 	// Restore inline code
 	inlineCodeBlocks.forEach((block, index) => {
-		html = html.replace(`__INLINE_CODE_${index}__`, `<code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">${block.replace(/`/g, '')}</code>`);
+		html = html.replace(`<!--INLINE_CODE_${index}-->`, `<code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">${block.replace(/`/g, '')}</code>`);
 	});
 	
-	// Keep local image paths for now
-	// html = html.replace(/src="([^"]+\.(png|jpg|jpeg|gif|svg))"/g, (match, imagePath) => {
-	// 	// If it's already a full URL, keep it
-	// 	if (imagePath.startsWith('http')) {
-	// 		return match;
-	// 	}
-	// 	// Convert local paths to GitHub raw URLs
-	// 	const githubRawUrl = `https://raw.githubusercontent.com/IORoot/ioroot_v2/refs/heads/master/${imagePath}`;
-	// 	return `src="${githubRawUrl}"`;
-	// });
+	// Restore SVG blocks
+	svgBlocks.forEach((block, index) => {
+		html = html.replace(`<!--SVG_BLOCK_${index}-->`, block);
+	});
+	
+	// Restore HTML blocks
+	htmlBlocks.forEach((block, index) => {
+		html = html.replace(`<!--HTML_BLOCK_${index}-->`, block);
+	});
 	
 	return html;
 } 
