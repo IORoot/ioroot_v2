@@ -1,9 +1,9 @@
 ---
 title: "LondonParkour.com"
-description: "Community website for London parkour scene with event listings, training spots, and community features."
+description: "Classes, Tutorials, Community, Private Tuition website for Parkour in London."
 url: "https://londonparkour.com"
 image: "/images/showcase/londonparkour.jpg"
-tech: ["React", "Next.js", "MongoDB", "Vercel"]
+tech: ["Wordpress", "PHP", "TailwindCSS", "VanillaJS"]
 status: "Live"
 icon: "🏃‍♂️"
 slug: "londonparkour"
@@ -11,55 +11,44 @@ category: "website"
 order: 1
 features: [
   "Event listings and management",
-  "Training spot directory", 
-  "Community forum and discussions",
-  "Photo and video galleries",
+  "Training Tutorials", 
+  "Community Video Hub",
   "Mobile-responsive design"
 ]
 ---
 
 # LondonParkour.com
 
-A comprehensive community platform for the London parkour scene, bringing together practitioners, events, and training spots in one centralized location.
+Currently on version 7 of the website, this is my main pride-and-joy website. Hand-built wordpress theme and plugins alongside full stripe.com integration for class payments, mailchimp newsletters, seo, performance tuning and mobile-enhanced responsive design.
 
-## About the Project
+It uses ACF, slider-revolution, rank-math and stripe-payments plugins as well as the many custom-written plugins for everything from automated YouTube scraping, Social-Media Posting, Node Metrics and Custom-Post-Types with very complex heirarchies.
 
-LondonParkour.com serves as the digital hub for London's vibrant parkour community. The platform connects practitioners, organizes events, and provides essential resources for both beginners and experienced traceurs.
+---
 
-## Key Features
+There are three stand-out technical solutions custom built for LondonParkour.com:
 
-### Event Management
-- **Event Listings**: Comprehensive calendar of parkour events, jams, and workshops
-- **Registration System**: Easy sign-up and RSVP functionality for events
-- **Event Updates**: Real-time notifications and updates for registered users
+## 1. Classes and Booking
 
-### Training Spot Directory
-- **Spot Database**: Extensive collection of training spots across London
-- **Spot Reviews**: User-generated reviews and difficulty ratings
-- **Safety Information**: Important safety notes and access information
-- **Interactive Map**: Visual map interface for discovering new spots
+This is built around a plugin I wrote for scheduling and constructing a calendar of specific class posts on a regular basis with the correct details from a template for the specific class type.
+From just writing a new class template with a schedule I can create a whole new booking system for a new class at speed. With stripe payments, google-maps, attached media, and detailed information tabs, this makes it very easy to manage the class booking system.
+It also means that it can be left on auto-pilot to generate new classes and remove old classes as time passes. The integration with the stripe functionality, coupon purchases and hooking into an existing plugin proved difficult but ultimately worth it for the result.
 
-### Community Features
-- **Forum Discussions**: Active community forum for technique sharing and advice
-- **Photo Galleries**: User-uploaded photos and videos from sessions
-- **User Profiles**: Individual profiles with progress tracking
-- **Community Guidelines**: Clear rules and etiquette for the community
+<Video videoId="YaZH2bzwN04" title="My Video" />
 
-## Technical Implementation
+## 2. Tutorials & Social-Media Posting
 
-Built with modern web technologies to ensure fast performance and excellent user experience:
+The social-media post plugin was built to help me automate my social media for LondonParkour. It utilises [make.com](https://make.com) to publish those videos with the help of my plugin sending a webhook JSON request to it.
 
-- **React/Next.js**: Server-side rendering for optimal SEO and performance
-- **MongoDB**: Flexible database for user data and content management
-- **Vercel**: Reliable hosting with automatic deployments
-- **Responsive Design**: Mobile-first approach for on-the-go access
+<Video videoId="zWQ41asm6PY" title="My Video" />
 
-## Impact
+## 3. Parkour Pulse API Scraping
 
-The platform has become an essential tool for London's parkour community, helping to:
-- Connect practitioners across different skill levels
-- Organize and promote community events
-- Document and preserve training spots
-- Build a stronger, more organized community
+The last main plugin was the API Scraper for YouTube/iTunes to generate curated video lists on the website for specific searches, playlists, groups of accounts and more. This was a major plugin for me at the time and really helped me delve deep into OOP with Wordpress and PHPUnit testing.
 
-Visit the site to explore London's parkour scene and connect with fellow practitioners! 
+<Video videoId="T7c-xa6PSMQ" title="My Video" />
+
+## LondonParkour Theme
+
+
+## Other Plugins
+

@@ -140,9 +140,6 @@ export function markdownToHtml(markdown: string): string {
 		// Paragraphs (but not list items or existing HTML tags)
 		.replace(/^(?!<[a-z]|__LIST_ITEM_|<\/).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
 		
-		// Make first paragraph bigger font size with custom color
-		.replace(/<p class="mb-8 text-xl leading-relaxed">([^<]+)<\/p>/, '<p class="mb-8 text-4xl leading-relaxed" style="color: #E7A97F; line-height:3.4rem;">$1</p>')
-		
 		// Clean up empty paragraphs
 		.replace(/<p class="mb-8 text-xl leading-relaxed"><\/p>/g, '')
 		.replace(/<p class="mb-8 text-xl leading-relaxed"><\/p>/g, '')

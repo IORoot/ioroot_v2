@@ -325,13 +325,13 @@
 					</p>
 					<div class="flex flex-wrap gap-4 justify-center">
 						<span class="px-6 py-3 bg-[#677A67] text-white rounded-full {isShortScreen ? 'text-sm-vh' : 'text-base-vh md:text-lg-vh'} font-medium">
-							DevOps Expert
+							DevOps Engineer
 						</span>
 						<span class="px-6 py-3 bg-[#E7A97F] text-white rounded-full {isShortScreen ? 'text-sm-vh' : 'text-base-vh md:text-lg-vh'} font-medium">
 							Parkour Coach
 						</span>
 						<span class="px-6 py-3 bg-[#87A7AC] text-white rounded-full {isShortScreen ? 'text-sm-vh' : 'text-base-vh md:text-lg-vh'} font-medium">
-							Full-Stack Dev
+							Project Developer
 						</span>
 					</div>
 				</div>
