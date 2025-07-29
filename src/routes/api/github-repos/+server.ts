@@ -1,11 +1,13 @@
 import { json } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 
 export async function GET() {
   try {
     console.log('📡 Fetching GitHub repos...');
     
-    // Get GitHub token from environment
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
+    // Get GitHub token from environment (server-side)
+    const token = env.GITHUB_TOKEN || import.meta.env.VITE_GITHUB_TOKEN;
+    console.log('🔑 Token available:', !!token);
     
     // Prepare headers
     const headers: Record<string, string> = {
@@ -26,8 +28,10 @@ export async function GET() {
     });
     
     if (!response.ok) {
+      const errorText = await response.text();
       console.error(`GitHub API error: ${response.status} - ${response.statusText}`);
-      throw new Error(`GitHub API error: ${response.status}`);
+      console.error('Response body:', errorText);
+      throw new Error(`GitHub API error: ${response.status} - ${response.statusText}`);
     }
     
     const repos = await response.json();
