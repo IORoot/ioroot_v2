@@ -42,17 +42,31 @@ export async function GET() {
       repos.map(async (repo: any) => {
         console.log(`📖 Fetching README for: ${repo.name}`);
         try {
-          // Try to fetch README from the main branch
+          // Try to fetch README from the main branch with timeout
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+          
           const readmeResponse = await fetch(`https://api.github.com/repos/IORoot/${repo.name}/readme`, {
-            headers
+            headers,
+            signal: controller.signal
           });
+          
+          clearTimeout(timeoutId);
           
           if (readmeResponse.ok) {
             const readmeData = await readmeResponse.json();
             
             // Use the raw content endpoint which should handle encoding properly
             try {
-              const rawResponse = await fetch(`https://raw.githubusercontent.com/IORoot/${repo.name}/main/README.md`);
+              const rawController = new AbortController();
+              const rawTimeoutId = setTimeout(() => rawController.abort(), 10000);
+              
+              const rawResponse = await fetch(`https://raw.githubusercontent.com/IORoot/${repo.name}/main/README.md`, {
+                signal: rawController.signal
+              });
+              
+              clearTimeout(rawTimeoutId);
+              
               if (rawResponse.ok) {
                 const rawContent = await rawResponse.text();
                 console.log('📄 Using raw content for:', repo.name);
@@ -89,15 +103,30 @@ export async function GET() {
             const branches = ['main', 'master', 'develop'];
             for (const branch of branches) {
               try {
+                const branchController = new AbortController();
+                const branchTimeoutId = setTimeout(() => branchController.abort(), 10000);
+                
                 const branchReadmeResponse = await fetch(`https://api.github.com/repos/IORoot/${repo.name}/readme?ref=${branch}`, {
-                  headers
+                  headers,
+                  signal: branchController.signal
                 });
+                
+                clearTimeout(branchTimeoutId);
+                
                 if (branchReadmeResponse.ok) {
                   const readmeData = await branchReadmeResponse.json();
                   
                   // Try raw content for this branch
                   try {
-                    const rawResponse = await fetch(`https://raw.githubusercontent.com/IORoot/${repo.name}/${branch}/README.md`);
+                    const rawController = new AbortController();
+                    const rawTimeoutId = setTimeout(() => rawController.abort(), 10000);
+                    
+                    const rawResponse = await fetch(`https://raw.githubusercontent.com/IORoot/${repo.name}/${branch}/README.md`, {
+                      signal: rawController.signal
+                    });
+                    
+                    clearTimeout(rawTimeoutId);
+                    
                     if (rawResponse.ok) {
                       const rawContent = await rawResponse.text();
                       console.log(`📄 Using raw content for ${repo.name} (${branch})`);
@@ -132,6 +161,9 @@ export async function GET() {
           }
         } catch (error) {
           console.warn(`Could not fetch README for ${repo.name}:`, error);
+          if (error instanceof Error) {
+            console.warn(`Error details for ${repo.name}:`, error.message);
+          }
         }
         
         // Return repo without README if all attempts failed
