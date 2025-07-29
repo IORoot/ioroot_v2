@@ -40,6 +40,7 @@ export async function GET() {
     // Fetch README content for each repo
     const reposWithReadme = await Promise.all(
       repos.map(async (repo: any) => {
+        console.log(`📖 Fetching README for: ${repo.name}`);
         try {
           // Try to fetch README from the main branch
           const readmeResponse = await fetch(`https://api.github.com/repos/IORoot/${repo.name}/readme`, {
@@ -83,6 +84,7 @@ export async function GET() {
               readme_html: readmeData.html_url
             };
           } else {
+            console.log(`⚠️ No README found in main branch for: ${repo.name}, trying other branches...`);
             // Try alternative branch names
             const branches = ['main', 'master', 'develop'];
             for (const branch of branches) {
@@ -116,6 +118,7 @@ export async function GET() {
                     bytes[i] = binaryString.charCodeAt(i);
                   }
                   const readmeContent = new TextDecoder('utf-8').decode(bytes);
+                  console.log(`✅ Found README in ${branch} branch for: ${repo.name}`);
                   return {
                     ...repo,
                     readme_content: readmeContent,
@@ -132,6 +135,7 @@ export async function GET() {
         }
         
         // Return repo without README if all attempts failed
+        console.log(`❌ No README found for: ${repo.name}`);
         return {
           ...repo,
           readme_content: null,
@@ -140,7 +144,8 @@ export async function GET() {
       })
     );
     
-    console.log(`📚 Added README content for repos`);
+    const reposWithReadmeCount = reposWithReadme.filter(repo => repo.readme_content).length;
+    console.log(`📚 Added README content for ${reposWithReadmeCount}/${reposWithReadme.length} repos`);
     
     return json({
       success: true,
