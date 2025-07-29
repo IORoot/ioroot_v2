@@ -2,7 +2,7 @@
   import Navigation from '$lib/components/Navigation.svelte';
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
-  import { extractTagsFromRepo, formatDate, type GitHubRepo } from '$lib/github';
+  import { extractTagsFromRepo, formatDate, type GitHubRepo } from '$lib/github-client';
 	
 	export let data: PageData;
 	
@@ -15,14 +15,60 @@
 	onMount(async () => {
 		try {
 			loading = true;
-			const response = await fetch('/api/github-repos');
-			if (response.ok) {
-				const data = await response.json();
-				repos = data.repos || [];
-				totalRepos = data.totalRepos || 0;
-			} else {
-				error = 'Failed to load projects';
+			
+			// Check for refresh cache query parameter
+			const urlParams = new URLSearchParams(window.location.search);
+			const shouldRefreshCache = urlParams.get('refreshcache') === 'true';
+			
+			if (shouldRefreshCache) {
+				console.log('🔄 Force refreshing cache due to query parameter');
+				localStorage.removeItem('github-repos-cache');
+				localStorage.removeItem('github-repos-timestamp');
+				// Remove the query parameter from URL
+				const newUrl = window.location.pathname;
+				window.history.replaceState({}, '', newUrl);
 			}
+			
+			// Check for cached data first
+			const cachedData = localStorage.getItem('github-repos-cache');
+			const cacheTimestamp = localStorage.getItem('github-repos-timestamp');
+			const now = Date.now();
+			const cacheAge = now - (parseInt(cacheTimestamp || '0'));
+			const cacheValid = cacheAge < 24 * 60 * 60 * 1000; // 24 hours
+			
+			let rawRepos: GitHubRepo[] = [];
+			
+			if (cachedData && cacheValid && !shouldRefreshCache) {
+				console.log('📦 Using cached data (age:', Math.round(cacheAge / 1000 / 60), 'minutes)');
+				const parsedData = JSON.parse(cachedData);
+				rawRepos = parsedData.repos || [];
+			} else {
+				console.log('🔄 Fetching fresh data from API');
+				const response = await fetch('/api/github-repos');
+				if (response.ok) {
+					const data = await response.json();
+					console.log('📦 API data received, repos count:', data.repos?.length || 0);
+					
+					// Cache the data
+					localStorage.setItem('github-repos-cache', JSON.stringify(data));
+					localStorage.setItem('github-repos-timestamp', now.toString());
+					console.log('💾 Cached data for 24 hours');
+					
+					rawRepos = data.repos || [];
+				} else {
+					error = 'Failed to load projects';
+					return;
+				}
+			}
+			
+			// Process repos to add tags and formatted dates
+			repos = rawRepos.map((repo: GitHubRepo) => ({
+				...repo,
+				tags: extractTagsFromRepo(repo),
+				formattedDate: formatDate(repo.updated_at)
+			}));
+			
+			totalRepos = repos.length;
 		} catch (err) {
 			error = 'Failed to load projects';
 			console.error('Error loading projects:', err);
@@ -33,6 +79,7 @@
 	
 	// Sort repos based on selected sort option
 	$: sortedRepos = repos.sort((a, b) => {
+		if (!a || !b) return 0;
 		switch (sortBy) {
 			case 'default':
 				return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
@@ -76,7 +123,7 @@
 					return repo.archived;
 				}
 			})
-			.flatMap(repo => repo.tags)
+			.flatMap(repo => repo.tags || [])
 	)].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 	
 	// Filter repos based on status and selected tags
@@ -93,12 +140,13 @@
 			// Apply tag filter if tags are selected
 			if (selectedTags.length === 0) return true;
 			
+			const repoTags = repo.tags || [];
 			if (filterMode === 'AND') {
 				// All selected tags must be present
-				return selectedTags.every(tag => repo.tags.includes(tag));
+				return selectedTags.every(tag => repoTags.includes(tag));
 			} else {
 				// At least one selected tag must be present
-				return selectedTags.some(tag => repo.tags.includes(tag));
+				return selectedTags.some(tag => repoTags.includes(tag));
 			}
 		});
 	
@@ -378,8 +426,36 @@
 		
 		<!-- Projects Grid - Full Width -->
 		<div class="px-4 sm:px-6 lg:px-8 bg-stone-100">
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 w-full py-8">
-				{#each filteredRepos as repo}
+			{#if loading}
+				<!-- Loading State with Skeleton -->
+				<div class="text-center py-12">
+					<div class="flex items-center justify-center mb-6">
+						<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#677A67]"></div>
+					</div>
+					<p class="text-lg text-[#677A67] mb-8">Loading projects...</p>
+					
+					<!-- Skeleton Grid -->
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 w-full">
+						{#each Array(12) as _, i}
+							<div class="rounded-lg overflow-hidden animate-pulse">
+								<!-- Skeleton Image -->
+								<div class="aspect-video bg-gray-200"></div>
+								<!-- Skeleton Content -->
+								<div class="p-4 bg-white">
+									<div class="h-4 bg-gray-200 rounded mb-2"></div>
+									<div class="h-3 bg-gray-200 rounded w-3/4"></div>
+								</div>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{:else if error}
+				<div class="text-center py-12">
+					<p class="text-lg text-red-600">{error}</p>
+				</div>
+			{:else}
+				<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 w-full py-8">
+					{#each filteredRepos as repo}
 					{@const firstImage = repo.readme_content ? extractFirstImage(repo.readme_content, repo.name) : null}
 					<a href="/projects/{repo.name}" class="group block">
 						<div class="rounded-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden" style="background:#fcfcfc">
@@ -500,6 +576,7 @@
 					</a>
 				{/each}
 			</div>
+		{/if}
 		</div>
 	</section>
 </div> 

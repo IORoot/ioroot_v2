@@ -5,7 +5,7 @@
   import hljs from 'highlight.js';
   import 'highlight.js/styles/atom-one-dark.css';
   import { onMount } from 'svelte';
-  import { categorizeRepo, extractTagsFromRepo, formatDate, type GitHubRepo } from '$lib/github';
+  import { categorizeRepo, extractTagsFromRepo, formatDate, type GitHubRepo } from '$lib/github-client';
 	
 	export let data: PageData;
 	
@@ -17,28 +17,101 @@
 	onMount(async () => {
 		try {
 			loading = true;
-			const response = await fetch('/api/github-repos');
-			if (response.ok) {
-				const data = await response.json();
-				const repos = data.repos || [];
-				const foundRepo = repos.find((r: GitHubRepo) => r.name === data.slug);
-				
-				if (foundRepo) {
-					repo = {
-						...foundRepo,
-						category: categorizeRepo(foundRepo),
-						tags: extractTagsFromRepo(foundRepo),
-						formattedDate: formatDate(foundRepo.updated_at)
-					};
-				} else {
-					error = 'Project not found';
-				}
+			console.log('🔍 Loading project:', data.slug);
+			
+			// Check for refresh cache query parameter
+			const urlParams = new URLSearchParams(window.location.search);
+			const shouldRefreshCache = urlParams.get('refreshcache') === 'true';
+			
+			if (shouldRefreshCache) {
+				console.log('🔄 Force refreshing cache due to query parameter');
+				localStorage.removeItem('github-repos-cache');
+				localStorage.removeItem('github-repos-timestamp');
+				// Remove the query parameter from URL
+				const newUrl = window.location.pathname;
+				window.history.replaceState({}, '', newUrl);
+			}
+			
+			// Check for cached data first
+			const cachedData = localStorage.getItem('github-repos-cache');
+			const cacheTimestamp = localStorage.getItem('github-repos-timestamp');
+			const now = Date.now();
+			const cacheAge = now - (parseInt(cacheTimestamp || '0'));
+			const cacheValid = cacheAge < 24 * 60 * 60 * 1000; // 24 hours
+			
+			let repos: GitHubRepo[] = [];
+			
+			if (cachedData && cacheValid && !shouldRefreshCache) {
+				console.log('📦 Using cached data (age:', Math.round(cacheAge / 1000 / 60), 'minutes)');
+				const parsedData = JSON.parse(cachedData);
+				repos = parsedData.repos || [];
 			} else {
-				error = 'Failed to load project';
+				console.log('🔄 Fetching fresh data from API');
+				const response = await fetch('/api/github-repos');
+				console.log('📡 API response status:', response.status);
+				
+				if (response.ok) {
+					const apiData = await response.json();
+					console.log('📦 API data received, repos count:', apiData.repos?.length || 0);
+					
+					// Cache the data
+					localStorage.setItem('github-repos-cache', JSON.stringify(apiData));
+					localStorage.setItem('github-repos-timestamp', now.toString());
+					console.log('💾 Cached data for 24 hours');
+					
+					repos = apiData.repos || [];
+				} else {
+					error = 'Failed to load project';
+					console.log('❌ API failed:', response.status, response.statusText);
+					return;
+				}
+			}
+			
+			const foundRepo = repos.find((r: GitHubRepo) => r.name === data.slug);
+			console.log('🎯 Found repo:', foundRepo ? foundRepo.name : 'not found');
+			
+			if (foundRepo) {
+				repo = {
+					...foundRepo,
+					category: categorizeRepo(foundRepo),
+					tags: extractTagsFromRepo(foundRepo),
+					formattedDate: formatDate(foundRepo.updated_at)
+				};
+				console.log('✅ Processed repo:', repo.name);
+				console.log('📚 README content length:', repo.readme_content?.length || 0);
+				console.log('📚 README HTML URL:', repo.readme_html);
+			} else {
+				// If repo not found, create a fallback with basic info
+				repo = {
+					id: 1,
+					name: data.slug,
+					full_name: `IORoot/${data.slug}`,
+					description: `Project ${data.slug}`,
+					html_url: `https://github.com/IORoot/${data.slug}`,
+					clone_url: `https://github.com/IORoot/${data.slug}.git`,
+					ssh_url: `git@github.com:IORoot/${data.slug}.git`,
+					stargazers_count: 0,
+					watchers_count: 0,
+					forks_count: 0,
+					language: 'Unknown',
+					default_branch: 'main',
+					created_at: '2024-01-01T00:00:00Z',
+					updated_at: '2024-01-01T00:00:00Z',
+					pushed_at: '2024-01-01T00:00:00Z',
+					archived: false,
+					disabled: false,
+					private: false,
+					fork: false,
+					topics: [],
+					category: 'Other',
+					tags: [],
+					formattedDate: 'Unknown'
+				};
+				console.log('⚠️ Using fallback repo for:', data.slug);
 			}
 		} catch (err) {
 			error = 'Failed to load project';
-			console.error('Error loading project:', err);
+			console.error('💥 Error loading project:', err);
 		} finally {
 			loading = false;
 		}
@@ -48,10 +121,10 @@
 	
 	// Get the raw README content and convert to HTML
 	$: rawContent = repo?.readme_content || '';
-	$: htmlContent = rawContent ? convertMarkdownToHtml(rawContent, repo.name) : '';
+	$: htmlContent = rawContent && repo?.name ? convertMarkdownToHtml(rawContent, repo.name) : '';
 	
 	// Convert markdown to HTML with proper image URL conversion
-	function convertMarkdownToHtml(markdown: string, repoName: string): string {
+	function convertMarkdownToHtml(markdown: string, repoName: string | undefined): string {
 		if (!markdown) return '';
 		
 		// First, extract and preserve code blocks
@@ -209,12 +282,32 @@
 </script>
 
 <svelte:head>
-	<title>{repo.name} - Andy Pearson</title>
-	<meta name="description" content="{repo.description || `View ${repo.name} project details and documentation`}" />
+	<title>{repo?.name || 'Project'} - Andy Pearson</title>
+	<meta name="description" content="{repo?.description || `View ${repo?.name || 'project'} details and documentation`}" />
 </svelte:head>
 
 <div class="min-h-screen bg-[#EAE6D8]">
 	<Navigation theme="peach" />
+	
+	{#if loading}
+		<div class="container-custom py-12">
+			<div class="max-w-4xl mx-auto text-center">
+				<div class="flex items-center justify-center mb-4">
+					<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#677A67]"></div>
+				</div>
+				<div class="text-2xl text-[#434840] font-bold">Loading project...</div>
+			</div>
+		</div>
+	{:else if error}
+		<div class="container-custom py-12">
+			<div class="max-w-4xl mx-auto text-center">
+				<div class="text-2xl text-[#434840] font-bold">Error: {error}</div>
+				<a href="/projects" class="text-[#E7A97F] hover:text-[#87A7AC] font-bold text-xl mt-4 inline-block">
+					← Back to Projects
+				</a>
+			</div>
+		</div>
+	{:else if repo}
 	
 	<!-- Main Image Section -->
 	{#if repo.readme_content}
@@ -255,9 +348,11 @@
 					
 					<!-- Project Meta -->
 					<div class="flex flex-wrap items-center gap-6 text-lg text-[#677A67] mb-6 font-semibold">
-						<span class="flex items-center">
-							{repo.category.icon} {repo.category.name}
-						</span>
+						{#if repo.category}
+							<span class="flex items-center">
+								{repo.category}
+							</span>
+						{/if}
 						<span class="flex items-center">
 							⭐ {repo.stargazers_count} stars
 						</span>
@@ -270,7 +365,7 @@
 					</div>
 					
 					<!-- Tags -->
-					{#if repo.tags.length > 0}
+					{#if repo.tags && repo.tags.length > 0}
 						<div class="flex flex-wrap gap-2 mb-6">
 							{#each repo.tags as tag}
 								<span class="px-4 py-2 bg-[#EAE6D8] text-[#434840] text-lg rounded-full font-bold">
@@ -348,5 +443,6 @@
 				</div>
 			</div>
 		</section>
+	{/if}
 	{/if}
 </div> 

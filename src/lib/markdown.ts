@@ -2,6 +2,11 @@ import { processMdxContent } from './mdx-processor.js';
 import hljs from 'highlight.js';
 
 export function markdownToHtml(markdown: string): string {
+	// Debug: Check if markdown contains emojis
+	if (markdown.includes('🚀') || markdown.includes('🎨') || markdown.includes('⚡')) {
+		console.log('🎯 Found emojis in markdown input');
+	}
+	
 	// Process MDX components first
 	let processedContent = processMdxContent(markdown);
 	
@@ -65,7 +70,7 @@ export function markdownToHtml(markdown: string): string {
 		return `<!--SVG_BLOCK_${svgBlockIndex - 1}-->`;
 	});
 	
-	// Convert markdown to HTML using a simpler approach
+	// Convert markdown to HTML using a simpler approach with emoji support
 	let html = processedMarkdown
 		// Headers
 		.replace(/^### (.*$)/gim, '<h3 class="text-2xl font-bold text-green-800 dark:text-green-200 mb-6 mt-8">$1</h3>')
@@ -75,10 +80,10 @@ export function markdownToHtml(markdown: string): string {
 		// Horizontal rule
 		.replace(/^---$/gm, '<hr class="my-8 border-gray-300">')
 		
-		// Bold, italic, and underline
-		.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>')
-		.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-		.replace(/__(.*?)__/g, '<u class="underline">$1</u>')
+			// Bold, italic, and underline (using Unicode-aware matching for emoji support)
+	.replace(/\*\*([^*]+?)\*\*/gu, '<strong class="font-bold">$1</strong>')
+	.replace(/\*([^*]+?)\*/gu, '<em class="italic">$1</em>')
+	.replace(/__([^_]+?)__/gu, '<u class="underline">$1</u>')
 		
 		// Images (must come BEFORE links to avoid conflicts)
 		.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {

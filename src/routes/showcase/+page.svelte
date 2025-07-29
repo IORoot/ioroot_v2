@@ -6,24 +6,25 @@
 	
 	$: ({ websites } = data);
 	
-	// Categories for filtering
-	const categories = ['website', 'design', 'app', 'parkour', 'articles', 'work'];
+	// Dynamic categories based on actual content
+	$: availableCategories = [...new Set(websites.map(website => website.category || 'website'))];
+	$: categories = ['all', ...availableCategories];
 	let selectedCategory = 'all';
 	
 	// Filter websites based on selected category
 	$: filteredWebsites = selectedCategory === 'all' 
 		? websites 
-		: websites.filter(website => website.category === selectedCategory);
+		: websites.filter(website => (website.category || 'website') === selectedCategory);
 	
 	// Count items in each category
 	$: categoryCounts = {
 		all: websites.length,
-		website: websites.filter(w => w.category === 'website').length,
-		design: websites.filter(w => w.category === 'design').length,
-		app: websites.filter(w => w.category === 'app').length,
-		parkour: websites.filter(w => w.category === 'parkour').length,
-		articles: websites.filter(w => w.category === 'articles').length,
-		work: websites.filter(w => w.category === 'work').length
+		...Object.fromEntries(
+			availableCategories.map(category => [
+				category, 
+				websites.filter(w => (w.category || 'website') === category).length
+			])
+		)
 	};
 	
 	// Helper function to get category count
@@ -78,14 +79,6 @@
 	<!-- Category Filter -->
 	<div class="p-4 md:p-8 pb-8">
 		<div class="flex flex-wrap gap-4 justify-center items-center">
-			<button 
-				class="px-6 py-3 text-lg font-bold transition-all duration-200 {selectedCategory === 'all' 
-					? 'text-white' 
-					: 'text-white/70 hover:text-white'}"
-				on:click={() => selectedCategory = 'all'}
-			>
-				All <sup class="font-normal text-sm">{categoryCounts.all}</sup>
-			</button>
 			{#each categories as category}
 				<button 
 					class="px-6 py-3 text-lg font-bold transition-all duration-200 {selectedCategory === category 
@@ -93,7 +86,7 @@
 						: 'text-white/70 hover:text-white'}"
 					on:click={() => selectedCategory = category}
 				>
-					{category.charAt(0).toUpperCase() + category.slice(1)} <sup class="font-normal text-sm">{getCategoryCount(category)}</sup>
+					{category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)} <sup class="font-normal text-sm">{getCategoryCount(category)}</sup>
 				</button>
 			{/each}
 			
