@@ -6,7 +6,13 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		prerender: {
-			entries: [] // Disable prerendering entirely
+			handleHttpError: ({ path, referrer, message }) => {
+				// Ignore errors for dynamic routes that can't be prerendered
+				if (path.startsWith('/projects/')) {
+					return;
+				}
+				throw new Error(message);
+			}
 		}
 	},
 	preprocess: [
