@@ -13,7 +13,7 @@
     "refresh-cache": "curl -X POST http://localhost:5173/api/refresh-cache"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/adapter-netlify": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
