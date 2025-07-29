@@ -1,7 +1,9 @@
 import Carousel from './Carousel.svelte';
+import Video from './Video.svelte';
 
 export const components = {
-	Carousel
+	Carousel,
+	Video
 };
 
 export type ComponentProps = {
@@ -11,5 +13,11 @@ export type ComponentProps = {
 		interval?: number;
 		showDots?: boolean;
 		showArrows?: boolean;
+	};
+	Video: {
+		videoId: string;
+		title?: string;
+		width?: string;
+		height?: string;
 	};
 }; 

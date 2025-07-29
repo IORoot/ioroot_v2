@@ -123,7 +123,7 @@ function generateTwoRowCarouselHtml(topImages: string[], bottomImages: string[],
 	const duplicatedBottomImagesHtml = bottomImagesHtml + bottomImagesHtml;
 	
 	return `
-		<div class="logo-strip relative w-full overflow-hidden bg-white" style="height: 180px;" data-autoplay="${autoplay}" data-interval="30">
+		<div class="logo-strip relative w-full overflow-hidden bg-white" style="height: 200px;" data-autoplay="${autoplay}" data-interval="30">
 			<!-- Top row - faster speed -->
 			<div class="logo-container-top flex" style="width: 200%;">
 				${duplicatedTopImagesHtml}

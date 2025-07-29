@@ -98,6 +98,25 @@ export function markdownToHtml(markdown: string): string {
 	
 	// Replace HTML blocks with placeholders (including div, iframe, etc.)
 	processedMarkdown = processedMarkdown.replace(/(<div[\s\S]*?<\/div>|<iframe[\s\S]*?<\/iframe>|<video[\s\S]*?<\/video>)/g, (match, html) => {
+		console.log('🔍 Found HTML block:', html.substring(0, 100) + '...');
+		htmlBlocks[htmlBlockIndex] = html;
+		htmlBlockIndex++;
+		return `<!--HTML_BLOCK_${htmlBlockIndex - 1}-->`;
+	});
+	
+	// Also extract any remaining HTML blocks that might have been missed
+	processedMarkdown = processedMarkdown.replace(/(<[^>]+>[\s\S]*?<\/[^>]+>)/g, (match, html) => {
+		// Skip if this is already a placeholder or if it's a simple tag
+		if (match.includes('<!--') || match.length < 50) return match;
+		console.log('🔍 Found additional HTML block:', html.substring(0, 100) + '...');
+		htmlBlocks[htmlBlockIndex] = html;
+		htmlBlockIndex++;
+		return `<!--HTML_BLOCK_${htmlBlockIndex - 1}-->`;
+	});
+	
+	// Specifically extract video-container divs that might have been missed
+	processedMarkdown = processedMarkdown.replace(/(<div class="video-container[\s\S]*?<\/div>)/g, (match, html) => {
+		console.log('🔍 Found video-container HTML block:', html.substring(0, 100) + '...');
 		htmlBlocks[htmlBlockIndex] = html;
 		htmlBlockIndex++;
 		return `<!--HTML_BLOCK_${htmlBlockIndex - 1}-->`;
@@ -125,7 +144,7 @@ export function markdownToHtml(markdown: string): string {
 
 	
 		// Convert markdown to HTML using a simpler approach with emoji support
-	let html = processedContent
+	let html = processedMarkdown
 		// Headers
 		.replace(/^### (.*$)/gim, '<h3 class="text-2xl font-bold text-green-800 dark:text-green-200 mb-6 mt-8">$1</h3>')
 		.replace(/^## (.*$)/gim, '<h2 class="text-3xl font-bold text-green-800 dark:text-green-200 mb-8 mt-12">$1</h2>')
