@@ -1,10 +1,35 @@
 <script lang="ts">
   import Navigation from '$lib/components/Navigation.svelte';
   import type { PageData } from './$types';
+  import { onMount } from 'svelte';
+  import { extractTagsFromRepo, formatDate, type GitHubRepo } from '$lib/github';
 	
 	export let data: PageData;
 	
-	$: ({ repos, totalRepos } = data);
+	// Client-side data fetching
+	let repos: GitHubRepo[] = [];
+	let totalRepos = 0;
+	let loading = true;
+	let error = '';
+	
+	onMount(async () => {
+		try {
+			loading = true;
+			const response = await fetch('/api/github-repos');
+			if (response.ok) {
+				const data = await response.json();
+				repos = data.repos || [];
+				totalRepos = data.totalRepos || 0;
+			} else {
+				error = 'Failed to load projects';
+			}
+		} catch (err) {
+			error = 'Failed to load projects';
+			console.error('Error loading projects:', err);
+		} finally {
+			loading = false;
+		}
+	});
 	
 	// Sort repos based on selected sort option
 	$: sortedRepos = repos.sort((a, b) => {
@@ -90,6 +115,16 @@
 	function clearFilters() {
 		selectedTags = [];
 		statusFilter = 'public';
+	}
+	
+	// Show loading state
+	$: if (loading) {
+		// Loading state will be handled in the template
+	}
+	
+	// Show error state
+	$: if (error) {
+		// Error state will be handled in the template
 	}
 	
 	// Extract first image from markdown content and convert local references to GitHub URLs

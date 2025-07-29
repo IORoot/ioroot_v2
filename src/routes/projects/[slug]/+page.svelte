@@ -4,10 +4,45 @@
   import type { PageData } from './$types';
   import hljs from 'highlight.js';
   import 'highlight.js/styles/atom-one-dark.css';
+  import { onMount } from 'svelte';
+  import { categorizeRepo, extractTagsFromRepo, formatDate, type GitHubRepo } from '$lib/github';
 	
 	export let data: PageData;
 	
-	$: ({ repo } = data);
+	// Client-side data fetching
+	let repo: GitHubRepo | null = null;
+	let loading = true;
+	let error = '';
+	
+	onMount(async () => {
+		try {
+			loading = true;
+			const response = await fetch('/api/github-repos');
+			if (response.ok) {
+				const data = await response.json();
+				const repos = data.repos || [];
+				const foundRepo = repos.find((r: GitHubRepo) => r.name === data.slug);
+				
+				if (foundRepo) {
+					repo = {
+						...foundRepo,
+						category: categorizeRepo(foundRepo),
+						tags: extractTagsFromRepo(foundRepo),
+						formattedDate: formatDate(foundRepo.updated_at)
+					};
+				} else {
+					error = 'Project not found';
+				}
+			} else {
+				error = 'Failed to load project';
+			}
+		} catch (err) {
+			error = 'Failed to load project';
+			console.error('Error loading project:', err);
+		} finally {
+			loading = false;
+		}
+	});
 	
 
 	
