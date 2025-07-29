@@ -16,59 +16,25 @@
 		try {
 			loading = true;
 			
-			// Check for refresh cache query parameter
-			const urlParams = new URLSearchParams(window.location.search);
-			const shouldRefreshCache = urlParams.get('refreshcache') === 'true';
-			
-			if (shouldRefreshCache) {
-				console.log('🔄 Force refreshing cache due to query parameter');
-				localStorage.removeItem('github-repos-cache');
-				localStorage.removeItem('github-repos-timestamp');
-				// Remove the query parameter from URL
-				const newUrl = window.location.pathname;
-				window.history.replaceState({}, '', newUrl);
-			}
-			
-			// Check for cached data first
-			const cachedData = localStorage.getItem('github-repos-cache');
-			const cacheTimestamp = localStorage.getItem('github-repos-timestamp');
-			const now = Date.now();
-			const cacheAge = now - (parseInt(cacheTimestamp || '0'));
-			const cacheValid = cacheAge < 24 * 60 * 60 * 1000; // 24 hours
-			
-			let rawRepos: GitHubRepo[] = [];
-			
-			if (cachedData && cacheValid && !shouldRefreshCache) {
-				console.log('📦 Using cached data (age:', Math.round(cacheAge / 1000 / 60), 'minutes)');
-				const parsedData = JSON.parse(cachedData);
-				rawRepos = parsedData.repos || [];
+			console.log('🔄 Fetching fresh data from API');
+			const response = await fetch('/api/github-repos');
+			if (response.ok) {
+				const data = await response.json();
+				
+				const rawRepos = data.repos || [];
+				
+				// Process repos to add tags and formatted dates
+				repos = rawRepos.map((repo: GitHubRepo) => ({
+					...repo,
+					tags: extractTagsFromRepo(repo),
+					formattedDate: formatDate(repo.updated_at)
+				}));
+				
+				totalRepos = repos.length;
 			} else {
-				console.log('🔄 Fetching fresh data from API');
-				const response = await fetch('/api/github-repos');
-				if (response.ok) {
-					const data = await response.json();
-					console.log('📦 API data received, repos count:', data.repos?.length || 0);
-					
-					// Cache the data
-					localStorage.setItem('github-repos-cache', JSON.stringify(data));
-					localStorage.setItem('github-repos-timestamp', now.toString());
-					console.log('💾 Cached data for 24 hours');
-					
-					rawRepos = data.repos || [];
-				} else {
-					error = 'Failed to load projects';
-					return;
-				}
+				error = 'Failed to load projects';
+				return;
 			}
-			
-			// Process repos to add tags and formatted dates
-			repos = rawRepos.map((repo: GitHubRepo) => ({
-				...repo,
-				tags: extractTagsFromRepo(repo),
-				formattedDate: formatDate(repo.updated_at)
-			}));
-			
-			totalRepos = repos.length;
 		} catch (err) {
 			error = 'Failed to load projects';
 			console.error('Error loading projects:', err);

@@ -19,95 +19,60 @@
 			loading = true;
 			console.log('🔍 Loading project:', data.slug);
 			
-			// Check for refresh cache query parameter
-			const urlParams = new URLSearchParams(window.location.search);
-			const shouldRefreshCache = urlParams.get('refreshcache') === 'true';
+			console.log('🔄 Fetching fresh data from API');
+			const response = await fetch('/api/github-repos');
 			
-			if (shouldRefreshCache) {
-				console.log('🔄 Force refreshing cache due to query parameter');
-				localStorage.removeItem('github-repos-cache');
-				localStorage.removeItem('github-repos-timestamp');
-				// Remove the query parameter from URL
-				const newUrl = window.location.pathname;
-				window.history.replaceState({}, '', newUrl);
-			}
-			
-			// Check for cached data first
-			const cachedData = localStorage.getItem('github-repos-cache');
-			const cacheTimestamp = localStorage.getItem('github-repos-timestamp');
-			const now = Date.now();
-			const cacheAge = now - (parseInt(cacheTimestamp || '0'));
-			const cacheValid = cacheAge < 24 * 60 * 60 * 1000; // 24 hours
-			
-			let repos: GitHubRepo[] = [];
-			
-			if (cachedData && cacheValid && !shouldRefreshCache) {
-				console.log('📦 Using cached data (age:', Math.round(cacheAge / 1000 / 60), 'minutes)');
-				const parsedData = JSON.parse(cachedData);
-				repos = parsedData.repos || [];
-			} else {
-				console.log('🔄 Fetching fresh data from API');
-				const response = await fetch('/api/github-repos');
-				console.log('📡 API response status:', response.status);
+			if (response.ok) {
+				const apiData = await response.json();
 				
-				if (response.ok) {
-					const apiData = await response.json();
-					console.log('📦 API data received, repos count:', apiData.repos?.length || 0);
-					
-					// Cache the data
-					localStorage.setItem('github-repos-cache', JSON.stringify(apiData));
-					localStorage.setItem('github-repos-timestamp', now.toString());
-					console.log('💾 Cached data for 24 hours');
-					
-					repos = apiData.repos || [];
+				const repos = apiData.repos || [];
+				
+				const foundRepo = repos.find((r: GitHubRepo) => r.name === data.slug);
+				console.log('🎯 Found repo:', foundRepo ? foundRepo.name : 'not found');
+				
+				if (foundRepo) {
+					repo = {
+						...foundRepo,
+						category: categorizeRepo(foundRepo),
+						tags: extractTagsFromRepo(foundRepo),
+						formattedDate: formatDate(foundRepo.updated_at)
+					};
+					console.log('✅ Processed repo:', repo?.name);
+					console.log('📚 README content length:', repo?.readme_content?.length || 0);
+					console.log('📚 README HTML URL:', repo?.readme_html);
 				} else {
-					error = 'Failed to load project';
-					console.log('❌ API failed:', response.status, response.statusText);
-					return;
+					// If repo not found, create a fallback with basic info
+					repo = {
+						id: 1,
+						name: data.slug,
+						full_name: `IORoot/${data.slug}`,
+						description: `Project ${data.slug}`,
+						html_url: `https://github.com/IORoot/${data.slug}`,
+						clone_url: `https://github.com/IORoot/${data.slug}.git`,
+						ssh_url: `git@github.com:IORoot/${data.slug}.git`,
+						stargazers_count: 0,
+						watchers_count: 0,
+						forks_count: 0,
+						language: 'Unknown',
+						default_branch: 'main',
+						created_at: '2024-01-01T00:00:00Z',
+						updated_at: '2024-01-01T00:00:00Z',
+						pushed_at: '2024-01-01T00:00:00Z',
+						archived: false,
+						disabled: false,
+						private: false,
+						fork: false,
+						topics: [],
+						category: 'Other',
+						tags: [],
+						formattedDate: 'Unknown'
+					};
+					console.log('⚠️ Using fallback repo for:', data.slug);
 				}
-			}
-			
-			const foundRepo = repos.find((r: GitHubRepo) => r.name === data.slug);
-			console.log('🎯 Found repo:', foundRepo ? foundRepo.name : 'not found');
-			
-			if (foundRepo) {
-				repo = {
-					...foundRepo,
-					category: categorizeRepo(foundRepo),
-					tags: extractTagsFromRepo(foundRepo),
-					formattedDate: formatDate(foundRepo.updated_at)
-				};
-				console.log('✅ Processed repo:', repo.name);
-				console.log('📚 README content length:', repo.readme_content?.length || 0);
-				console.log('📚 README HTML URL:', repo.readme_html);
 			} else {
-				// If repo not found, create a fallback with basic info
-				repo = {
-					id: 1,
-					name: data.slug,
-					full_name: `IORoot/${data.slug}`,
-					description: `Project ${data.slug}`,
-					html_url: `https://github.com/IORoot/${data.slug}`,
-					clone_url: `https://github.com/IORoot/${data.slug}.git`,
-					ssh_url: `git@github.com:IORoot/${data.slug}.git`,
-					stargazers_count: 0,
-					watchers_count: 0,
-					forks_count: 0,
-					language: 'Unknown',
-					default_branch: 'main',
-					created_at: '2024-01-01T00:00:00Z',
-					updated_at: '2024-01-01T00:00:00Z',
-					pushed_at: '2024-01-01T00:00:00Z',
-					archived: false,
-					disabled: false,
-					private: false,
-					fork: false,
-					topics: [],
-					category: 'Other',
-					tags: [],
-					formattedDate: 'Unknown'
-				};
-				console.log('⚠️ Using fallback repo for:', data.slug);
+				error = 'Failed to load project';
+				console.log('❌ API failed:', response.status, response.statusText);
+				return;
 			}
 		} catch (err) {
 			error = 'Failed to load project';
@@ -212,6 +177,9 @@
 			.replace(/^### (.*$)/gim, '<h3 class="text-3xl font-black text-[#434840] mt-8 mb-4">$1</h3>')
 			.replace(/^## (.*$)/gim, '<h2 class="text-4xl font-black text-[#434840] mt-8 mb-4">$1</h2>')
 			.replace(/^# (.*$)/gim, '<h1 class="text-5xl font-black text-[#434840] mt-8 mb-4">$1</h1>')
+			
+			// Horizontal lines (---)
+			.replace(/^---$/gm, '<hr class="border-t-2 border-[#E7A97F] my-8" />')
 			
 			// Bold and italic
 			.replace(/\*\*(.*?)\*\*/g, '<strong class="font-black">$1</strong>')

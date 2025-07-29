@@ -35,18 +35,8 @@
 	// Layout toggle state
 	let isListView = false;
 	
-	// Load saved layout preference from localStorage
-	if (typeof window !== 'undefined') {
-		const savedLayout = localStorage.getItem('showcase-layout');
-		isListView = savedLayout === 'list';
-	}
-	
 	function toggleLayout() {
 		isListView = !isListView;
-		// Save layout preference to localStorage
-		if (typeof window !== 'undefined') {
-			localStorage.setItem('showcase-layout', isListView ? 'list' : 'grid');
-		}
 	}
 </script>
 

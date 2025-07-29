@@ -10,7 +10,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
-    "refresh-cache": "curl -X POST http://localhost:5173/api/refresh-cache",
+    "refresh-cache": "node refresh-cache.js",
     "build-projects": "node scripts/build-projects.js"
   },
   "devDependencies": {

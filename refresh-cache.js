@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const http = require('http');
+import http from 'http';
 
 async function refreshCache() {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: 5175,
+      port: 5173,
       path: '/api/refresh-cache',
       method: 'POST',
       headers: {

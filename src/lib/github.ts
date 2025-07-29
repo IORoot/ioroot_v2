@@ -63,35 +63,27 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
 ];
 
 export async function fetchGitHubRepos(username: string = 'IORoot'): Promise<GitHubRepo[]> {
-  // Check if we should update the cache
-  const shouldUpdate = await githubCache.shouldUpdateCache();
-  
-  // For testing pagination, force update if we have less than 200 repos
+  // Always use cached data unless cache is empty
   const cachedRepos = await githubCache.getCachedRepos();
-  const forceUpdate = cachedRepos.length > 0 && cachedRepos.length < 200;
   
-  if (!shouldUpdate && !forceUpdate) {
-    // Use cached data
-    if (cachedRepos.length > 0) {
-      console.log(`📦 Using cached data (${cachedRepos.length} repos)`);
-      return cachedRepos.map(repo => ({
-        id: repo.id,
-        name: repo.name,
-        full_name: repo.full_name,
-        description: repo.description,
-        html_url: repo.html_url,
-        homepage: repo.homepage,
-        language: repo.language,
-        topics: repo.topics,
-        updated_at: repo.updated_at,
-        created_at: repo.created_at,
-        stargazers_count: repo.stargazers_count,
-        forks_count: repo.forks_count,
-        archived: repo.archived || false,
-        readme_content: repo.readme_content,
-        readme_html: repo.readme_html
-      }));
-    }
+  if (cachedRepos.length > 0) {
+    return cachedRepos.map(repo => ({
+      id: repo.id,
+      name: repo.name,
+      full_name: repo.full_name,
+      description: repo.description,
+      html_url: repo.html_url,
+      homepage: repo.homepage,
+      language: repo.language,
+      topics: repo.topics,
+      updated_at: repo.updated_at,
+      created_at: repo.created_at,
+      stargazers_count: repo.stargazers_count,
+      forks_count: repo.forks_count,
+      archived: repo.archived || false,
+      readme_content: repo.readme_content,
+      readme_html: repo.readme_html
+    }));
   }
   
   // Fetch fresh data from GitHub API
