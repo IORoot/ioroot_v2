@@ -59,31 +59,35 @@ export async function GET() {
               const readmeData = await readmeResponse.json();
               console.log(`✅ Successfully fetched README data for ${repo.name}, content length: ${readmeData.content?.length || 0}`);
               
-              // Use the raw content endpoint which should handle encoding properly
+                            // Use the raw content endpoint which should handle encoding properly
               try {
-              const rawController = new AbortController();
-              const rawTimeoutId = setTimeout(() => rawController.abort(), 10000);
-              
-              const rawResponse = await fetch(`https://raw.githubusercontent.com/IORoot/${repo.name}/main/README.md`, {
-                signal: rawController.signal
-              });
-              
-              clearTimeout(rawTimeoutId);
-              
-              if (rawResponse.ok) {
-                const rawContent = await rawResponse.text();
-                console.log(`📄 Using raw content for: ${repo.name}, length: ${rawContent.length}`);
-                return {
-                  ...repo,
-                  readme_content: rawContent,
-                  readme_html: readmeData.html_url
-                };
-              } else {
-                console.log(`⚠️ Raw content failed for ${repo.name}: ${rawResponse.status} ${rawResponse.statusText}`);
+                const rawController = new AbortController();
+                const rawTimeoutId = setTimeout(() => rawController.abort(), 10000);
+                
+                // Use the default branch from the repo data, fallback to main
+                const defaultBranch = repo.default_branch || 'main';
+                console.log(`🔍 Trying raw content for ${repo.name} on branch: ${defaultBranch}`);
+                
+                const rawResponse = await fetch(`https://raw.githubusercontent.com/IORoot/${repo.name}/${defaultBranch}/README.md`, {
+                  signal: rawController.signal
+                });
+                
+                clearTimeout(rawTimeoutId);
+                
+                if (rawResponse.ok) {
+                  const rawContent = await rawResponse.text();
+                  console.log(`📄 Using raw content for: ${repo.name}, length: ${rawContent.length}`);
+                  return {
+                    ...repo,
+                    readme_content: rawContent,
+                    readme_html: readmeData.html_url
+                  };
+                } else {
+                  console.log(`⚠️ Raw content failed for ${repo.name} on ${defaultBranch}: ${rawResponse.status} ${rawResponse.statusText}`);
+                }
+              } catch (e) {
+                console.warn(`Could not fetch raw content for ${repo.name}:`, e);
               }
-            } catch (e) {
-              console.warn(`Could not fetch raw content for ${repo.name}:`, e);
-            }
             
             // Fallback to base64 decoding
             console.log(`🔄 Falling back to base64 decoding for ${repo.name}`);
@@ -130,6 +134,7 @@ export async function GET() {
                     const rawController = new AbortController();
                     const rawTimeoutId = setTimeout(() => rawController.abort(), 10000);
                     
+                    console.log(`🔍 Trying raw content for ${repo.name} on branch: ${branch}`);
                     const rawResponse = await fetch(`https://raw.githubusercontent.com/IORoot/${repo.name}/${branch}/README.md`, {
                       signal: rawController.signal
                     });
@@ -138,15 +143,17 @@ export async function GET() {
                     
                     if (rawResponse.ok) {
                       const rawContent = await rawResponse.text();
-                      console.log(`📄 Using raw content for ${repo.name} (${branch})`);
+                      console.log(`📄 Using raw content for ${repo.name} (${branch}), length: ${rawContent.length}`);
                       return {
                         ...repo,
                         readme_content: rawContent,
                         readme_html: readmeData.html_url
                       };
+                    } else {
+                      console.log(`⚠️ Raw content failed for ${repo.name} on ${branch}: ${rawResponse.status} ${rawResponse.statusText}`);
                     }
                   } catch (e) {
-                    console.warn(`Could not fetch raw content for ${repo.name} (${branch})`);
+                    console.warn(`Could not fetch raw content for ${repo.name} (${branch}):`, e);
                   }
                   
                   // Fallback to base64 decoding
