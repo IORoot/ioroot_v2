@@ -46,18 +46,21 @@ export async function GET() {
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
           
+          console.log(`🔍 Making API call for ${repo.name} to: https://api.github.com/repos/IORoot/${repo.name}/readme`);
           const readmeResponse = await fetch(`https://api.github.com/repos/IORoot/${repo.name}/readme`, {
             headers,
             signal: controller.signal
           });
           
           clearTimeout(timeoutId);
+          console.log(`📡 Response status for ${repo.name}: ${readmeResponse.status} ${readmeResponse.statusText}`);
           
-          if (readmeResponse.ok) {
-            const readmeData = await readmeResponse.json();
-            
-            // Use the raw content endpoint which should handle encoding properly
-            try {
+                      if (readmeResponse.ok) {
+              const readmeData = await readmeResponse.json();
+              console.log(`✅ Successfully fetched README data for ${repo.name}, content length: ${readmeData.content?.length || 0}`);
+              
+              // Use the raw content endpoint which should handle encoding properly
+              try {
               const rawController = new AbortController();
               const rawTimeoutId = setTimeout(() => rawController.abort(), 10000);
               
@@ -69,24 +72,28 @@ export async function GET() {
               
               if (rawResponse.ok) {
                 const rawContent = await rawResponse.text();
-                console.log('📄 Using raw content for:', repo.name);
+                console.log(`📄 Using raw content for: ${repo.name}, length: ${rawContent.length}`);
                 return {
                   ...repo,
                   readme_content: rawContent,
                   readme_html: readmeData.html_url
                 };
+              } else {
+                console.log(`⚠️ Raw content failed for ${repo.name}: ${rawResponse.status} ${rawResponse.statusText}`);
               }
             } catch (e) {
-              console.warn('Could not fetch raw content, falling back to base64');
+              console.warn(`Could not fetch raw content for ${repo.name}:`, e);
             }
             
             // Fallback to base64 decoding
+            console.log(`🔄 Falling back to base64 decoding for ${repo.name}`);
             const binaryString = atob(readmeData.content);
             const bytes = new Uint8Array(binaryString.length);
             for (let i = 0; i < binaryString.length; i++) {
               bytes[i] = binaryString.charCodeAt(i);
             }
             const readmeContent = new TextDecoder('utf-8').decode(bytes);
+            console.log(`📄 Base64 decoded content for ${repo.name}, length: ${readmeContent.length}`);
             
             // Debug: Check if content contains emojis
             if (readmeContent.includes('🚀') || readmeContent.includes('🎨') || readmeContent.includes('⚡')) {
@@ -98,11 +105,12 @@ export async function GET() {
               readme_html: readmeData.html_url
             };
           } else {
-            console.log(`⚠️ No README found in main branch for: ${repo.name}, trying other branches...`);
+            console.log(`⚠️ No README found in main branch for: ${repo.name}, status: ${readmeResponse.status}, trying other branches...`);
             // Try alternative branch names
             const branches = ['main', 'master', 'develop'];
             for (const branch of branches) {
               try {
+                console.log(`🔍 Trying ${branch} branch for ${repo.name}...`);
                 const branchController = new AbortController();
                 const branchTimeoutId = setTimeout(() => branchController.abort(), 10000);
                 
@@ -112,6 +120,7 @@ export async function GET() {
                 });
                 
                 clearTimeout(branchTimeoutId);
+                console.log(`📡 ${branch} branch response for ${repo.name}: ${branchReadmeResponse.status} ${branchReadmeResponse.statusText}`);
                 
                 if (branchReadmeResponse.ok) {
                   const readmeData = await branchReadmeResponse.json();
