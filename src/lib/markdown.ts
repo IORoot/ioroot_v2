@@ -2,13 +2,65 @@ import { processMdxContent } from './mdx-processor.js';
 import hljs from 'highlight.js';
 
 export function markdownToHtml(markdown: string): string {
+	console.log('🔄 Starting markdown processing, length:', markdown.length);
+	
 	// Debug: Check if markdown contains emojis
 	if (markdown.includes('🚀') || markdown.includes('🎨') || markdown.includes('⚡')) {
 		console.log('🎯 Found emojis in markdown input');
 	}
 	
+	// Debug: Check if markdown contains tables
+	if (markdown.includes('|')) {
+		console.log('📋 Found pipe characters in markdown input');
+		// Show a sample of the markdown content
+		const sample = markdown.substring(0, 500);
+		console.log('📄 Markdown sample:', sample);
+	}
+	
 	// Process MDX components first
 	let processedContent = processMdxContent(markdown);
+	
+	// Extract markdown tables to preserve them (BEFORE other processing)
+	const tableBlocks: string[] = [];
+	let tableBlockIndex = 0;
+	
+	// Replace markdown tables with placeholders
+	console.log('🔍 Looking for tables in processed content...');
+	processedContent = processedContent.replace(/((?:\|.*\|[\r\n]+)+)/g, (match, table) => {
+		console.log('🔍 Found potential table:', match.substring(0, 100) + '...');
+		const lines = table.split('\n').filter((line: string) => line.trim());
+		if (lines.length < 2) return match;
+		
+		// Check if it's actually a table (has separator row)
+		const hasSeparator = lines.some((line: string) => line.includes('---'));
+		console.log('📊 Table lines:', lines.length, 'Has separator:', hasSeparator);
+		if (!hasSeparator) return match;
+		
+		const tableRows = lines.map((line: string, index: number) => {
+			const cells = line.split('|').filter((cell: string) => cell.trim());
+			if (cells.length === 0) return '';
+			
+			if (index === 1) {
+				// Skip separator row (| --- | --- |)
+				return '';
+			}
+			
+			const cellTag = index === 0 ? 'th' : 'td';
+			const cellContent = cells.map((cell: string) => 
+				`<${cellTag} class="px-4 py-2 border border-gray-300 text-left">${cell.trim()}</${cellTag}>`
+			).join('');
+			
+			return `<tr>${cellContent}</tr>`;
+		}).filter((row: string) => row !== '');
+		
+		if (tableRows.length === 0) return match;
+		
+		const tableHtml = `<div class="overflow-x-auto mb-8"><table class="min-w-full border border-gray-300 rounded-lg">${tableRows.join('')}</table></div>`;
+		tableBlocks[tableBlockIndex] = tableHtml;
+		tableBlockIndex++;
+		console.log('✅ Created table block:', tableBlockIndex - 1);
+		return `<!--TABLE_BLOCK_${tableBlockIndex - 1}-->`;
+	});
 	
 	// Extract code blocks to preserve them
 	const codeBlocks: string[] = [];
@@ -70,8 +122,10 @@ export function markdownToHtml(markdown: string): string {
 		return `<!--SVG_BLOCK_${svgBlockIndex - 1}-->`;
 	});
 	
-	// Convert markdown to HTML using a simpler approach with emoji support
-	let html = processedMarkdown
+
+	
+		// Convert markdown to HTML using a simpler approach with emoji support
+	let html = processedContent
 		// Headers
 		.replace(/^### (.*$)/gim, '<h3 class="text-2xl font-bold text-green-800 dark:text-green-200 mb-6 mt-8">$1</h3>')
 		.replace(/^## (.*$)/gim, '<h2 class="text-3xl font-bold text-green-800 dark:text-green-200 mb-8 mt-12">$1</h2>')
@@ -80,10 +134,10 @@ export function markdownToHtml(markdown: string): string {
 		// Horizontal rule
 		.replace(/^---$/gm, '<hr class="my-8 border-gray-300">')
 		
-			// Bold, italic, and underline (using Unicode-aware matching for emoji support)
-	.replace(/\*\*([^*]+?)\*\*/gu, '<strong class="font-bold">$1</strong>')
-	.replace(/\*([^*]+?)\*/gu, '<em class="italic">$1</em>')
-	.replace(/__([^_]+?)__/gu, '<u class="underline">$1</u>')
+		// Bold, italic, and underline (using Unicode-aware matching for emoji support)
+		.replace(/\*\*([^*]+?)\*\*/gu, '<strong class="font-bold">$1</strong>')
+		.replace(/\*([^*]+?)\*/gu, '<em class="italic">$1</em>')
+		.replace(/__([^_]+?)__/gu, '<u class="underline">$1</u>')
 		
 		// Images (must come BEFORE links to avoid conflicts)
 		.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
@@ -103,7 +157,7 @@ export function markdownToHtml(markdown: string): string {
 		})
 		
 		// Paragraphs (but exclude existing HTML tags and code blocks)
-		.replace(/^(?!<[a-z]|<!--CODE_BLOCK_|<!--INLINE_CODE_|<!--SVG_BLOCK_|<!--HTML_BLOCK_).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
+		.replace(/^(?!<[a-z]|<!--CODE_BLOCK_|<!--INLINE_CODE_|<!--SVG_BLOCK_|<!--HTML_BLOCK_|<!--TABLE_BLOCK_).*$/gim, '<p class="mb-8 text-xl leading-relaxed">$&</p>')
 		
 		// Clean up empty paragraphs
 		.replace(/<p class="mb-8 text-xl leading-relaxed"><\/p>/g, '')
@@ -151,6 +205,11 @@ export function markdownToHtml(markdown: string): string {
 	// Restore HTML blocks
 	htmlBlocks.forEach((block, index) => {
 		html = html.replace(`<!--HTML_BLOCK_${index}-->`, block);
+	});
+	
+	// Restore table blocks
+	tableBlocks.forEach((block, index) => {
+		html = html.replace(`<!--TABLE_BLOCK_${index}-->`, block);
 	});
 	
 	return html;

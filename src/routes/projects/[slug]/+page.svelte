@@ -127,6 +127,8 @@
 	function convertMarkdownToHtml(markdown: string, repoName: string | undefined): string {
 		if (!markdown) return '';
 		
+		console.log('🔄 Starting project markdown processing, length:', markdown.length);
+		
 		// First, extract and preserve code blocks
 		const codeBlocks: string[] = [];
 		let codeBlockIndex = 0;
@@ -154,7 +156,47 @@
 			return placeholder;
 		});
 		
-		// Also preserve inline code
+		// Extract and preserve markdown tables
+		const tableBlocks: string[] = [];
+		let tableBlockIndex = 0;
+		
+		processedMarkdown = processedMarkdown.replace(/((?:\|.*\|[\r\n]+)+)/g, (match, table) => {
+			console.log('🔍 Found potential table in project markdown');
+			const lines = table.split('\n').filter((line: string) => line.trim());
+			if (lines.length < 2) return match;
+			
+			// Check if it's actually a table (has separator row)
+			const hasSeparator = lines.some((line: string) => line.includes('---'));
+			console.log('📊 Project table lines:', lines.length, 'Has separator:', hasSeparator);
+			if (!hasSeparator) return match;
+			
+			const tableRows = lines.map((line: string, index: number) => {
+				const cells = line.split('|').filter((cell: string) => cell.trim());
+				if (cells.length === 0) return '';
+				
+				if (index === 1) {
+					// Skip separator row (| --- | --- |)
+					return '';
+				}
+				
+				const cellTag = index === 0 ? 'th' : 'td';
+				const cellContent = cells.map((cell: string) => 
+					`<${cellTag} class="px-4 py-2 border border-gray-300 text-left">${cell.trim()}</${cellTag}>`
+				).join('');
+				
+				return `<tr>${cellContent}</tr>`;
+			}).filter((row: string) => row !== '');
+			
+			if (tableRows.length === 0) return match;
+			
+			const tableHtml = `<div class="overflow-x-auto mb-8"><table class="min-w-full border border-gray-300 rounded-lg">${tableRows.join('')}</table></div>`;
+			tableBlocks[tableBlockIndex] = tableHtml;
+			tableBlockIndex++;
+			console.log('✅ Created project table block:', tableBlockIndex - 1);
+			return `__TABLE_BLOCK_${tableBlockIndex - 1}__`;
+		});
+		
+		// Also preserve inline code (AFTER table extraction)
 		const inlineCodeBlocks: string[] = [];
 		let inlineCodeIndex = 0;
 		
@@ -182,8 +224,8 @@
 			// Convert list items to proper lists
 			.replace(/(<li.*<\/li>)/g, '<ul class="list-disc ml-6 mb-4">$1</ul>')
 			
-			// Paragraphs
-			.replace(/^(?!<[h|u|p|pre])(.*$)/gim, '<p class="mb-4 text-[#434840] font-semibold text-lg">$1</p>')
+					// Paragraphs (but exclude table blocks)
+		.replace(/^(?!<[h|u|p|pre]|__TABLE_BLOCK_)(.*$)/gim, '<p class="mb-4 text-[#434840] font-semibold text-lg">$1</p>')
 			
 			// Clean up empty paragraphs
 			.replace(/<p class="mb-4 text-[#434840] font-semibold text-lg"><\/p>/g, '')
@@ -197,6 +239,11 @@
 		// Restore inline code
 		inlineCodeBlocks.forEach((inlineCode, index) => {
 			html = html.replace(`__INLINE_CODE_${index}__`, inlineCode);
+		});
+		
+		// Restore table blocks
+		tableBlocks.forEach((tableBlock, index) => {
+			html = html.replace(`__TABLE_BLOCK_${index}__`, tableBlock);
 		});
 		
 		// Convert all image references to proper URLs FIRST
