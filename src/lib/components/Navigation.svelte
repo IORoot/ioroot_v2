@@ -13,11 +13,11 @@
 </script>
 
 <nav class="fixed top-2 left-1/2 transform -translate-x-1/2 z-50">
-	<div class="bg-white/90 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg px-6 py-3">
-		<div class="flex items-center space-x-8">
+	<div class="bg-white/90 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg px-3 py-2 md:px-6 md:py-3">
+		<div class="flex items-center space-x-2 md:space-x-8">
 			<!-- Logo -->
-			<a href="/" class="flex items-center px-3 py-2 rounded-lg transition-all duration-200 hover:bg-gray-100 hover:shadow-md">
-				<img src="/images/logo/logo_full.svg" alt="Andy Pearson" class="h-6 w-auto" />
+			<a href="/" class="flex items-center px-2 py-1 md:px-3 md:py-2 rounded-lg transition-all duration-200 hover:bg-gray-100 hover:shadow-md" style="min-width: 100px;">
+				<img src="/images/logo/logo_full.svg" alt="Andy Pearson" class="h-8 w-auto md:h-6" />
 			</a>
 			
 			<!-- Navigation Items -->
@@ -32,7 +32,7 @@
 					'bg-gray-900/20 text-gray-900'}
 				<a 
 					href={item.href}
-					class="px-3 py-2 rounded-lg transition-all duration-200 {isActive(item.href) 
+					class="px-2 py-1 md:px-3 md:py-2 rounded-lg transition-all duration-200 text-sm md:text-base {isActive(item.href) 
 						? activeColor 
 						: `text-gray-600 ${hoverColor}`}"
 				>

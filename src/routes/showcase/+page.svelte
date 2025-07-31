@@ -34,6 +34,7 @@
 	
 	// Layout toggle state
 	let isListView = false;
+	let showCategoryDropdown = false;
 	
 	function toggleLayout() {
 		isListView = !isListView;
@@ -68,34 +69,56 @@
 	
 	<!-- Category Filter -->
 	<div class="p-4 md:p-8 pb-8">
-		<div class="flex flex-wrap gap-4 justify-center items-center">
-			{#each categories as category}
-				<button 
-					class="px-6 py-3 text-lg font-bold transition-all duration-200 {selectedCategory === category 
-						? 'text-white' 
-						: 'text-white/70 hover:text-white'}"
-					on:click={() => selectedCategory = category}
+		<div class="flex flex-col md:flex-row md:justify-center md:items-center space-y-3 md:space-y-0 md:space-x-4 justify-end">
+			<!-- Category Filter Dropdown -->
+			<div class="relative">
+				<button
+					on:click={() => showCategoryDropdown = !showCategoryDropdown}
+					class="inline-flex items-center space-x-1 md:space-x-2 px-3 py-2 md:px-6 md:py-3 bg-[#E7A97F] text-white rounded-lg hover:bg-[#87A7AC] transition-colors font-bold text-sm md:text-base"
 				>
-					{category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)} <sup class="font-normal text-sm">{getCategoryCount(category)}</sup>
+					<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+					</svg>
+					<span>Filter</span>
+					<svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+					</svg>
 				</button>
-			{/each}
+				
+				{#if showCategoryDropdown}
+					<div class="absolute right-0 md:right-0 left-0 md:left-auto mt-2 w-48 bg-white rounded-lg shadow-lg border border-[#87A7AC] z-10">
+						<div class="py-1">
+							{#each categories as category}
+								<button
+									on:click={() => { selectedCategory = category; showCategoryDropdown = false; }}
+									class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {selectedCategory === category ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+								>
+									{category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)} ({getCategoryCount(category)})
+								</button>
+							{/each}
+						</div>
+					</div>
+				{/if}
+			</div>
 			
-			<!-- Layout Toggle Button -->
+			<!-- Layout Toggle Button - Desktop Only -->
 			<button 
 				on:click={toggleLayout}
-				class="ml-4 p-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-200 flex items-center space-x-2"
+				class="hidden md:inline-flex items-center space-x-1 md:space-x-2 px-3 py-2 md:px-6 md:py-3 bg-[#E7A97F] text-white rounded-lg hover:bg-[#87A7AC] transition-colors font-bold text-sm md:text-base"
 				title="{isListView ? 'Switch to Grid View' : 'Switch to List View'}"
 			>
 				{#if isListView}
 					<!-- Grid Icon -->
-					<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
 					</svg>
+					<span>Grid</span>
 				{:else}
 					<!-- List Icon -->
-					<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
 					</svg>
+					<span>List</span>
 				{/if}
 			</button>
 		</div>

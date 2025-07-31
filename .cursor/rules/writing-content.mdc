@@ -1,7 +1,7 @@
 ---
 alwaysApply: true
 ---
-[writing]
+<writing>
 Treat readers like hunters
 Understand that web visitors are actively seeking quick solutions—make your content easy to locate and clearly relevant from the start.
 
@@ -31,9 +31,9 @@ Use images, headlines, bullet points, whitespace, and layout to enhance readabil
 
 Declutter and reduce noise
 Strip away distractions—ads, sidebars, unnecessary widgets—and leave plenty of white space for trust and clarity.
+</writing>
 
-
-[heirarchy]
+<structure>
 These are rules to adhere by when writing content and establishing heirarchy in the content (what is most important vs least important)
 
 - Contrast
@@ -68,10 +68,10 @@ Limit to ~4–5 heading levels—too many make typography unreliable for hierarc
 - Implementation Strategy
 Contrast first, then space
 First establish hierarchy via size/weight/color contrast. Then refine grouping and relationships using spacing adjustments 
+</structure>
 
 
-
-[content]
+<content>
 Rules for Writing Content People Will Actually Read
 
 - Write for a Niche Audience
@@ -100,10 +100,10 @@ Format your writing so it’s clean when saved in “Read Later” apps (no popu
 
 - Build a Content Backlog
 Plan ahead by keeping a running list of topic ideas and writing drafts gradually—don’t always publish reactively.
+</content>
 
 
-
-[seo]
+<seo>
 - Research Thoroughly Before Writing
 Conduct in-depth research using credible sources such as industry reports, expert interviews, or academic studies to ensure accuracy and originality.
 
@@ -133,9 +133,9 @@ Start with a hook that outlines the benefit of reading, and end with a summary o
 
 - Optimize & Iterate Post-Publish
 Update and improve content over time based on performance data. Refresh content that underperforms and optimize what performs well.
+</seo>
 
-
-[microcopy]
+<microcopy>
 Plan Microcopy from the Start
 Don’t treat UI text as an afterthought. Microcopy should be considered during the design phase and integrated with layout and functionality.
 
@@ -159,4 +159,4 @@ Make microcopy short and purposeful—every word should guide, reassure, or clar
 
 Use Microcopy to Improve Conversions
 Small bits of helpful text can reduce friction and increase conversions—especially around forms, buttons, or signup flows.
-
+</microcopy>

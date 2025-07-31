@@ -216,9 +216,9 @@
 				</div>
 			{:else}
 				<!-- Header with Project Count, Sort, and Filter Buttons -->
-				<div class="flex justify-between items-center mb-8">
+				<div class="flex flex-col md:flex-row md:justify-between md:items-center mb-8">
 					<!-- Project Count -->
-					<div>
+					<div class="mb-4 md:mb-0">
 						<h2 class="text-4xl font-black text-[#434840]">
 							{filteredRepos.length} Projects
 						</h2>
@@ -227,107 +227,110 @@
 						</p>
 					</div>
 					
-					<!-- Sort and Filter Buttons -->
-					<div class="flex items-center space-x-4">
-						<!-- Sort Dropdown -->
-						<div class="relative">
+					<!-- Sort and Filter Buttons - Stack on mobile, inline on desktop -->
+					<div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
+						<!-- Sort and Filter Controls -->
+						<div class="flex flex-wrap items-center gap-2 md:space-x-4">
+							<!-- Status Filter Switch - First on mobile -->
+							<div class="flex items-center space-x-1 md:space-x-2 bg-[#EAE6D8] rounded-lg p-1 order-1 md:order-3">
+								<button
+									on:click={() => statusFilter = 'public'}
+									class="flex items-center space-x-1 md:space-x-2 px-2 py-2 md:px-3 md:py-2 rounded-md transition-all duration-200 {statusFilter === 'public' ? 'bg-[#E7A97F] text-white shadow-md' : 'text-[#434840] hover:bg-[#E4EDEE]'}"
+									title="Public repositories"
+								>
+									<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+										<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+									</svg>
+									<span class="text-sm font-bold hidden md:inline">Public</span>
+								</button>
+								<button
+									on:click={() => statusFilter = 'archived'}
+									class="flex items-center space-x-1 md:space-x-2 px-2 py-2 md:px-3 md:py-2 rounded-md transition-all duration-200 {statusFilter === 'archived' ? 'bg-[#E7A97F] text-white shadow-md' : 'text-[#434840] hover:bg-[#E4EDEE]'}"
+									title="Archived repositories"
+								>
+									<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+										<path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5l-4-4h2.5V12h3v1.5H16l-4 4z"/>
+									</svg>
+									<span class="text-sm font-bold hidden md:inline">Archived</span>
+								</button>
+							</div>
+							
+							<!-- Filter Toggle Button - Second on mobile -->
 							<button
-								on:click={() => showSortDropdown = !showSortDropdown}
-								class="inline-flex items-center space-x-2 px-6 py-3 bg-[#E7A97F] text-white rounded-lg hover:bg-[#87A7AC] transition-colors font-bold"
+								on:click={() => showFilters = !showFilters}
+								class="inline-flex items-center space-x-1 md:space-x-2 px-3 py-2 md:px-6 md:py-3 bg-[#E7A97F] text-white rounded-lg hover:bg-[#87A7AC] transition-colors font-bold text-sm md:text-base order-2 md:order-2"
 							>
-								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+								<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
 								</svg>
-								<span>Sort</span>
-								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-								</svg>
+								<span>{showFilters ? 'Hide' : 'Show'} Filters</span>
 							</button>
 							
-							{#if showSortDropdown}
-								<div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-[#87A7AC] z-10">
-									<div class="py-1">
-										<button
-											on:click={() => { sortBy = 'default'; showSortDropdown = false; }}
-											class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'default' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
-										>
-											Newest First
-										</button>
-										<button
-											on:click={() => { sortBy = 'default-reverse'; showSortDropdown = false; }}
-											class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'default-reverse' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
-										>
-											Oldest First
-										</button>
-										<button
-											on:click={() => { sortBy = 'alphabetical'; showSortDropdown = false; }}
-											class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'alphabetical' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
-										>
-											A-Z
-										</button>
-										<button
-											on:click={() => { sortBy = 'alphabetical-reverse'; showSortDropdown = false; }}
-											class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'alphabetical-reverse' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
-										>
-											Z-A
-										</button>
-										<button
-											on:click={() => { sortBy = 'stars'; showSortDropdown = false; }}
-											class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'stars' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
-										>
-											Most Stars
-										</button>
-										<button
-											on:click={() => { sortBy = 'age'; showSortDropdown = false; }}
-											class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'age' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
-										>
-											Oldest Repo
-										</button>
-										<button
-											on:click={() => { sortBy = 'age-reverse'; showSortDropdown = false; }}
-											class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'age-reverse' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
-										>
-											Newest Repo
-										</button>
+							<!-- Sort Dropdown - Third on mobile -->
+							<div class="relative order-3 md:order-1">
+								<button
+									on:click={() => showSortDropdown = !showSortDropdown}
+									class="inline-flex items-center space-x-1 md:space-x-2 px-3 py-2 md:px-6 md:py-3 bg-[#E7A97F] text-white rounded-lg hover:bg-[#87A7AC] transition-colors font-bold text-sm md:text-base"
+								>
+									<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+									</svg>
+									<span>Sort</span>
+									<svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+									</svg>
+								</button>
+								
+								{#if showSortDropdown}
+									<div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-[#87A7AC] z-10">
+										<div class="py-1">
+											<button
+												on:click={() => { sortBy = 'default'; showSortDropdown = false; }}
+												class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'default' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+											>
+												Newest First
+											</button>
+											<button
+												on:click={() => { sortBy = 'default-reverse'; showSortDropdown = false; }}
+												class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'default-reverse' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+											>
+												Oldest First
+											</button>
+											<button
+												on:click={() => { sortBy = 'alphabetical'; showSortDropdown = false; }}
+												class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'alphabetical' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+											>
+												A-Z
+											</button>
+											<button
+												on:click={() => { sortBy = 'alphabetical-reverse'; showSortDropdown = false; }}
+												class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'alphabetical-reverse' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+											>
+												Z-A
+											</button>
+											<button
+												on:click={() => { sortBy = 'stars'; showSortDropdown = false; }}
+												class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'stars' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+											>
+												Most Stars
+											</button>
+											<button
+												on:click={() => { sortBy = 'age'; showSortDropdown = false; }}
+												class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'age' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+											>
+												Oldest Repo
+											</button>
+											<button
+												on:click={() => { sortBy = 'age-reverse'; showSortDropdown = false; }}
+												class="w-full text-left px-4 py-2 text-lg hover:bg-[#EAE6D8] {sortBy === 'age-reverse' ? 'bg-[#EAE6D8] text-[#434840] font-bold' : 'text-[#434840]'}"
+											>
+												Newest Repo
+											</button>
 
+										</div>
 									</div>
-								</div>
-							{/if}
-						</div>
-						
-						<!-- Filter Toggle Button -->
-						<button
-							on:click={() => showFilters = !showFilters}
-							class="inline-flex items-center space-x-2 px-6 py-3 bg-[#E7A97F] text-white rounded-lg hover:bg-[#87A7AC] transition-colors font-bold"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-							</svg>
-							<span>{showFilters ? 'Hide' : 'Show'} Filters</span>
-						</button>
-						
-						<!-- Status Filter Switch -->
-						<div class="flex items-center space-x-2 bg-[#EAE6D8] rounded-lg p-1">
-							<button
-								on:click={() => statusFilter = 'public'}
-								class="flex items-center space-x-2 px-3 py-2 rounded-md transition-all duration-200 {statusFilter === 'public' ? 'bg-[#E7A97F] text-white shadow-md' : 'text-[#434840] hover:bg-[#E4EDEE]'}"
-								title="Public repositories"
-							>
-								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-								</svg>
-								<span class="text-sm font-bold">Public</span>
-							</button>
-							<button
-								on:click={() => statusFilter = 'archived'}
-								class="flex items-center space-x-2 px-3 py-2 rounded-md transition-all duration-200 {statusFilter === 'archived' ? 'bg-[#E7A97F] text-white shadow-md' : 'text-[#434840] hover:bg-[#E4EDEE]'}"
-								title="Archived repositories"
-							>
-								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5l-4-4h2.5V12h3v1.5H16l-4 4z"/>
-								</svg>
-								<span class="text-sm font-bold">Archived</span>
-							</button>
+								{/if}
+							</div>
 						</div>
 					</div>
 				</div>
