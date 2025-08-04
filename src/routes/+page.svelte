@@ -22,6 +22,17 @@
 		updateGridLayout();
 		window.addEventListener('resize', updateGridLayout);
 		
+		// Auto-play videos on mobile
+		if (window.innerWidth < 768) { // Mobile breakpoint
+			const videos = document.querySelectorAll('video');
+			videos.forEach(video => {
+				// Ensure video is muted and has playsinline for mobile autoplay
+				video.muted = true;
+				video.playsInline = true;
+				video.play().catch(e => console.log('Video autoplay failed:', e));
+			});
+		}
+		
 		return () => {
 			window.removeEventListener('resize', updateGridLayout);
 		};

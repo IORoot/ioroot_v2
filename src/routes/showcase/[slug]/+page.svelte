@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Navigation from '$lib/components/Navigation.svelte';
+	import MermaidRenderer from '$lib/components/MermaidRenderer.svelte';
 	import type { PageData } from './$types';
 	import { markdownToHtml } from '$lib/markdown';
 	import 'highlight.js/styles/atom-one-dark.css';
@@ -38,11 +39,11 @@
 	<!-- Hero Section -->
 	<section class="pt-12 pb-20 bg-gradient-to-br from-[#677A67] to-[#87A7AC]">
 		<div class="container-custom">
-			<div class="max-w-4xl mx-auto text-center">
-				<h1 class="text-6xl md:text-7xl font-black text-white mb-6">
+			<div class="max-w-4xl mx-auto text-center px-4">
+				<h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 break-words leading-tight">
 					{website.title}
 				</h1>
-				<p class="text-2xl text-white mb-8 font-semibold">
+				<p class="text-lg sm:text-xl md:text-2xl text-white mb-8 font-semibold">
 					{website.description}
 				</p>
 				<div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -88,7 +89,7 @@
 				
 				<!-- Content Section -->
 				<div class="prose prose-xl max-w-none text-[#434840] mb-12 leading-relaxed text-xl">
-					{@html htmlContent}
+					<MermaidRenderer htmlContent={htmlContent} />
 				</div>
 				
 				<!-- Tech Stack -->

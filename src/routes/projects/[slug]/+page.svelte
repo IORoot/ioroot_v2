@@ -1,6 +1,7 @@
 <script lang="ts">
   import Navigation from '$lib/components/Navigation.svelte';
   import MarkdownTable from '$lib/components/MarkdownTable.svelte';
+  import MermaidRenderer from '$lib/components/MermaidRenderer.svelte';
   import type { PageData } from './$types';
   import hljs from 'highlight.js';
   import 'highlight.js/styles/atom-one-dark.css';
@@ -351,12 +352,12 @@
 				</nav>
 				
 				<!-- Project Header -->
-				<div class="mb-8">
-					<h1 class="text-5xl md:text-6xl font-black text-[#434840] mb-4">
+				<div class="mb-8 px-4">
+					<h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#434840] mb-4 break-words leading-tight">
 						{repo.name}
 					</h1>
 					{#if repo.description}
-						<p class="text-2xl text-[#434840] mb-6 font-semibold">
+						<p class="text-lg sm:text-xl md:text-2xl text-[#434840] mb-6 font-semibold">
 							{repo.description}
 						</p>
 					{/if}
@@ -432,7 +433,7 @@
 					</h2>
 					
 					<div class="prose prose-lg max-w-none text-base leading-relaxed text-[#434840]">
-						{@html htmlContent}
+						<MermaidRenderer htmlContent={htmlContent} />
 					</div>
 				</div>
 			</div>

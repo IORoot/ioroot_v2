@@ -76,22 +76,78 @@
 </svelte:head>
 
 <div class="min-h-screen bg-stone-50 pt-20">
-	<!-- Film Grain Overlay -->
-	<div class="absolute inset-0 opacity-5">
-		<img src="/images/bento/film-grain.svg" alt="" class="w-full h-full object-cover" />
-	</div>
 	
 	<!-- Top Padding Bar for Navigation Background -->
 	<div class="fixed top-0 left-0 right-0 h-20 bg-[#87A7AC] z-40"></div>
 	
 	<Navigation />
 
+	<!-- Mobile Download CV Button - Only visible on mobile -->
+	<div class="md:hidden bg-white border-b border-gray-200 p-4">
+		<a 
+			href="/docs/cv.md" 
+			download="Andy_Pearson_CV.md"
+			class="cv-download-btn w-full p-4 text-center transition-all duration-200 rounded-lg group text-white border border-[#E7A97F]/20 flex items-center justify-center space-x-2"
+		>
+			<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+			</svg>
+			<span class="font-medium">Download CV</span>
+		</a>
+	</div>
+
+	<!-- Mobile Horizontal Sidebar - Only visible on mobile -->
+	<div class="md:hidden bg-white border-b border-gray-200 p-4 overflow-x-auto scrollbar-hide">
+		<div class="flex space-x-3 min-w-max">
+			{#each filteredPages as page}
+				<button
+					on:click={() => navigateToPage(page.slug)}
+					class="flex-shrink-0 w-56 p-4 text-left transition-all duration-200 hover:bg-[#87A7AC] rounded-lg group bg-gray-50/50 {currentSlug === page.slug ? 'bg-[#87A7AC]/20 border border-[#87A7AC]/30' : 'border border-gray-200'}"
+				>
+					<!-- Header with title -->
+					<div class="mb-3">
+						<div class="mb-2">
+							<h3 class="text-gray-800 font-semibold text-sm group-hover:text-white transition-colors">
+								{page.title}
+							</h3>
+							{#if page.contract}
+								<p class="text-[#87A7AC] text-xs font-medium mt-1 group-hover:text-white/80 transition-colors">
+									contract
+								</p>
+							{/if}
+						</div>
+						{#if page.period}
+							<p class="text-[#87A7AC] text-xs group-hover:text-white/80 transition-colors">
+								{getStartDate(page.period)}
+							</p>
+						{/if}
+					</div>
+					
+					<!-- Icon -->
+					<div class="text-center">
+						{#if page.icon}
+							<img 
+								src={page.icon} 
+								alt="{page.title} logo" 
+								class="w-16 h-16 mx-auto logo-accent transition-all duration-200"
+							/>
+						{:else}
+							<div class="text-[#87A7AC] text-lg font-bold text-center group-hover:text-white transition-colors">
+								{page.title}
+							</div>
+						{/if}
+					</div>
+				</button>
+			{/each}
+		</div>
+	</div>
+
 	<!-- Main Content -->
 	<div class="">
-		<div class="max-w-[1600px] mx-auto px-8">
+		<div class="max-w-[1600px] mx-auto px-2">
 			<div class="flex min-h-screen">
-				<!-- Filter Sidebar -->
-				<div class="w-64 bg-white border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
+				<!-- Filter Sidebar - Hidden on mobile -->
+				<div class="hidden md:block w-64 bg-white border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
 					<!-- 8px Grid Overlay for Background -->
 					<div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px); background-size: 8px 8px, 8px 8px;">
 					</div>
@@ -114,7 +170,7 @@
 								</button>
 							{/each}
 							
-							<!-- Download CV Button -->
+							<!-- Download CV Button - Desktop only -->
 							<div class="pt-4 border-t border-gray-200">
 								<a 
 									href="/docs/cv.md" 
@@ -131,8 +187,8 @@
 					</div>
 				</div>
 
-				<!-- Sidebar -->
-				<div class="w-96 bg-white border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
+				<!-- Sidebar - Desktop only -->
+				<div class="hidden md:block w-96 bg-white border-r border-gray-200 relative z-5 pt-8 h-screen overflow-y-auto scrollbar-hide">
 					<!-- 8px Grid Overlay for Background -->
 					<div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px); background-size: 8px 8px, 8px 8px;">
 					</div>
@@ -194,8 +250,10 @@
 							<div class="max-w-4xl">
 																<!-- Header -->
 								<div class="mb-8">
-									<div class="flex items-start space-x-6 mb-4">
-										<div class="flex-shrink-0">
+									<!-- Mobile Layout -->
+									<div class="md:hidden">
+										<!-- Full width image -->
+										<div class="mb-8">
 											{#if currentPage.url}
 												<a 
 													href={currentPage.url} 
@@ -203,14 +261,16 @@
 													rel="noopener noreferrer"
 													class="block transition-transform duration-200 hover:scale-105"
 												>
-													<img src={currentPage.icon} alt="{currentPage.title} logo" class="w-40 h-40 logo-accent" />
+													<img src={currentPage.icon} alt="{currentPage.title} logo" class="h-auto max-h-64 object-contain logo-accent" />
 												</a>
 											{:else}
-												<img src={currentPage.icon} alt="{currentPage.title} logo" class="w-40 h-40 logo-accent" />
+												<img src={currentPage.icon} alt="{currentPage.title} logo" class="h-auto max-h-64 object-contain logo-accent" />
 											{/if}
 										</div>
-										<div class="flex-1 min-w-0">
-											<h1 class="text-gray-900 text-4xl font-bold mb-2">
+										
+										<!-- Title and description below image -->
+										<div class="mb-4">
+											<h1 class="text-gray-900 text-3xl font-bold mb-2">
 												{currentPage.title}
 											</h1>
 											{#if currentPage.url}
@@ -218,19 +278,62 @@
 													href={currentPage.url} 
 													target="_blank" 
 													rel="noopener noreferrer"
-													class="text-[#87A7AC] hover:text-[#E7A97F] text-lg font-medium transition-colors duration-200 underline"
+													class="text-[#87A7AC] hover:text-[#E7A97F] text-base font-medium transition-colors duration-200 underline"
 												>
 													{currentPage.url}
 												</a>
 											{/if}
-											<p class="text-gray-600 text-xl mt-2">
+											<p class="text-gray-600 text-lg mt-2">
 												{currentPage.description}
 											</p>
 											{#if currentPage.period}
-												<p class="text-[#87A7AC] text-lg mt-1">
+												<p class="text-[#87A7AC] text-base mt-1">
 													{getStartDate(currentPage.period)}
 												</p>
 											{/if}
+										</div>
+									</div>
+									
+									<!-- Desktop Layout -->
+									<div class="hidden md:block">
+										<div class="flex items-start space-x-6 mb-4">
+											<div class="flex-shrink-0">
+												{#if currentPage.url}
+													<a 
+														href={currentPage.url} 
+														target="_blank" 
+														rel="noopener noreferrer"
+														class="block transition-transform duration-200 hover:scale-105"
+													>
+														<img src={currentPage.icon} alt="{currentPage.title} logo" class="w-40 h-40 logo-accent" />
+													</a>
+												{:else}
+													<img src={currentPage.icon} alt="{currentPage.title} logo" class="w-40 h-40 logo-accent" />
+												{/if}
+											</div>
+											<div class="flex-1 min-w-0">
+												<h1 class="text-gray-900 text-4xl font-bold mb-2">
+													{currentPage.title}
+												</h1>
+												{#if currentPage.url}
+													<a 
+														href={currentPage.url} 
+														target="_blank" 
+														rel="noopener noreferrer"
+														class="text-[#87A7AC] hover:text-[#E7A97F] text-lg font-medium transition-colors duration-200 underline"
+													>
+														{currentPage.url}
+													</a>
+												{/if}
+												<p class="text-gray-600 text-xl mt-2">
+													{currentPage.description}
+												</p>
+												{#if currentPage.period}
+													<p class="text-[#87A7AC] text-lg mt-1">
+														{getStartDate(currentPage.period)}
+													</p>
+												{/if}
+											</div>
 										</div>
 									</div>
 									

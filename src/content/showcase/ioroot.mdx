@@ -10,11 +10,51 @@ slug: "ioroot"
 category: "website"
 order: 2
 features: [
-  "Portfolio showcase",
+  "Vibe-Coded",
   "Technical blog",
-  "Project documentation",
-  "SEO optimized"
+  "Projects and Showcases",
+  "Experience"
 ]
 ---
 
 # IORoot.com
+
+It's easy to stay in your comfort-zone and carry on with the things you've always done - with programmers and developers this manifests itself with sticking with familiar patterns of work and programming languages. If we look back to the early 2000s and the emergence of internet shopping, it wiped out many bricks-and-mortar stores who refused to evolve quick enough - I think this draws a parallel to the current situation of A.I. today. As a developer we need to keep learning, challenging ourselves and understand these new technologies.
+
+"Your comfort zone will kill you"
+
+## Vibe-Coding
+
+The current iteration of IORoot.com (2025) was completely vibe-coded using Cursor IDE and Claude-4-Sonnet. It's built on Javascript, Typescript, SvelteKit, Tailwind and some node packages. The content is all in markdown format and most images/video are either rendered from Midjourney, screencaptured or SVGs. (There are a couple of exceptions)
+
+I wanted to see if i could build a site that was up to scratch with modern technologies and best practices that would be responsive and performant. It's taken a few weeks, but I think that as long as you can monitor the results and be careful about how you instruct the AI, you can create some truly wonderful results.
+
+
+## Top Tips.
+
+I'd like to make a video about this, but here are my top tips for Vibe-Coding a website.
+
+1. **Know how to code already**. Yes, AI currently lies, breaks, gets caught in loops, and makes mistakes. You need to be able to understand whats going on and how it's doing what it's doing.
+
+2. **Be explicit with instructions**. You need to be quite strict with the exact thing you want the AI to do. Make sure you write out the exact thing every time. For instance "Make page responsive so works on mobile" won't work as well as "On mobile, make the filters change to a drop-down select-option input at the top of the individual project pages.".
+
+3. **Treat it like a Team-mate**. Instead of a slave "do this", "do that"... Use AI as another team mate who is specialised (and probably better than you) at the topic. Ask it "If you were going to build a project-section to this website, what would be the key things to consider and how would you make it more impactful? You can ask me any questions to clarify." This works way better.
+
+4. **Use Github**. Learn basic `git` and `github`. This will keep your work version controlled and backed up. It also makes life easier for deploying to Cloud services like netlify. I tend to use a master-branch that is the main source of truth. I will make feature branches and make any changes in that. I then merge my feature branch in once I'm happy.
+
+5. **Rules and Context**. Use cursor rules with simple xml tags around them. For instance, write a style guide with `< style-guide >` tags around it. Make a lot of rules and documents that describe how the project should work. The best files I've created are a `prime-context.mdc` file, that lists the project description and most important things that should be read every time. Also a `style-guide.mdc` and a `writing-content.mdc` file would help. Use [https://cursor.directory/](https://cursor.directory/) for technology-based ones.
+
+6. **MCP Servers**. These give the AI more actions. A really good one would be to connect your browser to the AI so it can monitor the console log and page for errors. Use MCP servers for anything you wish to extend the functionality and make it easier for the AI to do tasks, monitoring and debugging.
+
+
+## The dangers
+
+Don't switch off your brain. You still need to problem solve, you still need to learn and you should understand what is going on at all times. Otherwise your brain will switch to auto-pilot and your cognitive skills will deteriorate. This is a fact. Please read these research documents by both MIT and Microsoft showing the dangers -
+
+- [Microsoft AI Critical Thinking Survey](https://www.microsoft.com/en-us/research/wp-content/uploads/2025/01/lee_2025_ai_critical_thinking_survey.pdf)
+
+- [MIT - Your Brain on ChatGPT](https://arxiv.org/abs/2506.08872)
+
+## That's it!
+
+This was a fun project and I'm happy with the result. AI did some things that would have taken me much, much longer to do. However be aware of the dangers!

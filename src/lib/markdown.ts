@@ -68,19 +68,25 @@ export function markdownToHtml(markdown: string): string {
 	
 	// Replace code blocks with placeholders
 	let processedMarkdown = processedContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
-		// Use highlight.js for syntax highlighting
-		let highlightedCode = code;
-		if (lang) {
-			try {
-				highlightedCode = hljs.highlight(code, { language: lang }).value;
-			} catch (e) {
+		// Check if this is a Mermaid diagram
+		if (lang === 'mermaid') {
+			const mermaidId = `mermaid-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+			codeBlocks[codeBlockIndex] = `<div class="mermaid-diagram my-8" data-mermaid-id="${mermaidId}" data-mermaid-chart="${encodeURIComponent(code)}"></div>`;
+		} else {
+			// Use highlight.js for syntax highlighting
+			let highlightedCode = code;
+			if (lang) {
+				try {
+					highlightedCode = hljs.highlight(code, { language: lang }).value;
+				} catch (e) {
+					highlightedCode = hljs.highlightAuto(code).value;
+				}
+			} else {
 				highlightedCode = hljs.highlightAuto(code).value;
 			}
-		} else {
-			highlightedCode = hljs.highlightAuto(code).value;
+			
+			codeBlocks[codeBlockIndex] = `<pre class="bg-[#282C34] p-4 rounded-lg overflow-x-auto my-4 font-mono text-sm border border-[#3E4451]"><code class="hljs">${highlightedCode}</code></pre>`;
 		}
-		
-		codeBlocks[codeBlockIndex] = `<pre class="bg-[#282C34] p-4 rounded-lg overflow-x-auto my-4 font-mono text-sm border border-[#3E4451]"><code class="hljs">${highlightedCode}</code></pre>`;
 		codeBlockIndex++;
 		return `<!--CODE_BLOCK_${codeBlockIndex - 1}-->`;
 	});
