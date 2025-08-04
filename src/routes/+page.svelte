@@ -326,7 +326,7 @@
 				<div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(184, 134, 11, 0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(184, 134, 11, 0.6) 1px, transparent 1px); background-size: 61.8px 61.8px, 61.8px 61.8px;">
 				</div>
 				<div class="text-center relative z-10">
-					<h1 class="text-4xl-vh md:text-6xl-vh font-black text-[#434840] {isShortScreen ? 'mb-2' : 'mb-8'}">
+					<h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[#434840] {isShortScreen ? 'mb-2' : 'mb-8'}">
 						Andy Pearson
 					</h1>
 					<p class="text-xl-vh md:text-2xl-vh font-black text-[#87A7AC] {isShortScreen ? 'mb-2' : 'mb-8'}">
@@ -347,7 +347,7 @@
 			</div>
 			
 			<!-- About Me - Spans 4 columns, dynamic rows -->
-			<a href="/about" class="col-span-12 md:col-span-4 bg-gradient-to-br from-[#677A67] to-[#677A67] rounded-xl md:rounded-3xl shadow-xl p-6 flex flex-col justify-start text-white relative overflow-hidden" style="grid-row: span {isShortScreen ? 3 : 2};" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
+			<a href="/about" class="col-span-12 md:col-span-4 bg-gradient-to-br from-[#677A67] to-[#677A67] rounded-xl md:rounded-3xl shadow-xl p-6 flex flex-col justify-start text-white relative overflow-hidden" style="grid-row: span {isShortScreen ? 2 : 2};" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
 				<!-- Video Background -->
 				<video class="absolute inset-0 w-full h-full object-cover rounded-xl md:rounded-3xl transition-transform duration-500 ease-out" muted loop playsinline style="min-width: 100%; min-height: 100%; width: auto; object-position: center;">
 					<source src="/video/jump.mp4" type="video/mp4">
@@ -359,7 +359,7 @@
 			</a>
 			
 			<!-- Projects - Spans 4 columns, dynamic rows -->
-			<a href="/projects" class="col-span-12 md:col-span-4 bg-gradient-to-br from-[#E7A97F] to-[#E7A97F] rounded-xl md:rounded-3xl shadow-xl p-6 flex flex-col justify-start text-white relative overflow-hidden" style="grid-row: span {isShortScreen ? 3 : 2};" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
+			<a href="/projects" class="col-span-12 md:col-span-4 bg-gradient-to-br from-[#E7A97F] to-[#E7A97F] rounded-xl md:rounded-3xl shadow-xl p-6 flex flex-col justify-start text-white relative overflow-hidden" style="grid-row: span {isShortScreen ? 2 : 2};" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
 				<!-- Video Background -->
 				<video class="absolute bottom-0 left-0 w-full h-full object-cover rounded-xl md:rounded-3xl transition-transform duration-500 ease-out" muted loop playsinline style="min-width: 100%; min-height: 100%; width: auto; height: auto;">
 					<source src="/video/system.mp4" type="video/mp4">
@@ -371,7 +371,7 @@
 			</a>
 			
 			<!-- Showcase - Spans 4 columns, dynamic rows -->
-			<a href="/showcase" class="col-span-12 md:col-span-4 bg-gradient-to-br from-[#EAE6D8] to-[#EAE6D8] rounded-xl md:rounded-3xl shadow-xl p-6 flex flex-col justify-start text-[#434840] relative overflow-hidden" style="grid-row: span {isShortScreen ? 3 : 2};" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
+			<a href="/showcase" class="col-span-12 md:col-span-4 bg-gradient-to-br from-[#EAE6D8] to-[#EAE6D8] rounded-xl md:rounded-3xl shadow-xl p-6 flex flex-col justify-start text-[#434840] relative overflow-hidden" style="grid-row: span {isShortScreen ? 2 : 2};" on:mouseenter={(e) => { e.currentTarget.querySelector('video')?.play(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1.1)'; }} on:mouseleave={(e) => { e.currentTarget.querySelector('video')?.pause(); const video = e.currentTarget.querySelector('video'); if (video) video.style.transform = 'scale(1)'; }}>
 				<!-- Video Background -->
 				<video class="absolute bottom-0 left-0 w-full h-full object-cover rounded-xl md:rounded-3xl transition-transform duration-500 ease-out" muted loop playsinline style="min-width: 100%; min-height: 100%; width: auto; height: auto;">
 					<source src="/video/smoke.mp4" type="video/mp4">
