@@ -33,7 +33,7 @@
 	}
 	
 	// Layout toggle state
-	let isListView = false;
+	let isListView = true;
 	let showCategoryDropdown = false;
 	
 	function toggleLayout() {
@@ -133,7 +133,7 @@
 					<a href="/showcase/{website.slug}" class="group block bg-white/5 backdrop-blur-sm rounded-lg p-6 hover:bg-white/10 transition-all duration-200 border border-white/10">
 						<div class="flex items-center space-x-6">
 							<!-- Thumbnail -->
-							<div class="flex-shrink-0 w-32 h-24 rounded-lg overflow-hidden">
+							<div class="flex-shrink-0 w-48 h-36 rounded-lg overflow-hidden">
 								{#if website.image}
 									<img 
 										src={website.image} 
@@ -190,7 +190,7 @@
 							{website.title}
 						</h3>
 						
-						<div class="aspect-video rounded-lg shadow-xl overflow-hidden relative">
+						<div class="aspect-[4/3] rounded-lg shadow-xl overflow-hidden relative">
 							<!-- Background Image -->
 							{#if website.image}
 								<img 
