@@ -295,8 +295,8 @@
 				<!-- 8px Grid Overlay -->
 				<div class="absolute inset-0 opacity-15" style="background-image: linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 8px 8px, 8px 8px;">
 				</div>
-				<div class="text-center relative z-10">
-					<div class="w-4/5 h-auto mx-auto filter brightness-0 invert" style="aspect-ratio: 1/1;">
+				<div class="text-center relative z-10 flex items-center justify-center h-full">
+					<div class="w-4/5 h-auto filter brightness-0 invert" style="aspect-ratio: 1/1;">
 						<svg width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 							<defs>
 								<rect id="path-1" x="0" y="0" width="24" height="40"></rect>
